@@ -3,29 +3,28 @@ using DevExpress.XtraBars.Helpers;
 using DevExpress.XtraBars.Ribbon;
 using DevExpress.XtraGrid.Views.Grid;
 using DevExpress.XtraReports.UI;
-using Model;
 using System;
 using System.Collections;
 using System.Linq;
 using System.Windows.Forms;
+using DataContext;
 namespace QuanLyCuaHangBanXe
 {
     public partial class Main : RibbonForm
     {
-        KhachSanEntities db = new KhachSanEntities();
         MasterDetailInfo CurrentMDI = new MasterDetailInfo();
-        NguoiDung NguoiDung = null;
+        //NguoiDung NguoiDung = null;
         public Main()
         {
-            XtraFormLogin Login = new XtraFormLogin(db.NguoiDung.ToList());
-            if (Login.ShowDialog() == DialogResult.Cancel) Environment.Exit(0);
-            NguoiDung = Login.NguoiDung;
+            //XtraFormLogin Login = new XtraFormLogin(db.NguoiDung.ToList());
+            //if (Login.ShowDialog() == DialogResult.Cancel) Environment.Exit(0);
+            //NguoiDung = Login.NguoiDung;
             InitializeComponent();
-            NguoiDungRibbonPageGroup.Visible = NguoiDung.dsPhanQuyen.Count(m => m.Quyen.Ma == "001") > 0; // admin
-            PhongRibbonPageGroup.Visible = NguoiDung.dsPhanQuyen.Count(m => m.Quyen.Ma == "002") > 0; // quan ly
-            DichVuRibbonPageGroup.Visible = NguoiDung.dsPhanQuyen.Count(m => m.Quyen.Ma == "003") > 0; // tiep tan
-            ThuePhongRibbonPageGroup.Visible = PhongRibbonPageGroup.Visible || DichVuRibbonPageGroup.Visible;
-            iQuanLyDichVu.Visibility = PhongRibbonPageGroup.Visible ? BarItemVisibility.Always : BarItemVisibility.Never;
+            //NguoiDungRibbonPageGroup.Visible = NguoiDung.dsPhanQuyen.Count(m => m.Quyen.Ma == "001") > 0; // admin
+            //PhongRibbonPageGroup.Visible = NguoiDung.dsPhanQuyen.Count(m => m.Quyen.Ma == "002") > 0; // quan ly
+            //DichVuRibbonPageGroup.Visible = NguoiDung.dsPhanQuyen.Count(m => m.Quyen.Ma == "003") > 0; // tiep tan
+            //ThuePhongRibbonPageGroup.Visible = PhongRibbonPageGroup.Visible || DichVuRibbonPageGroup.Visible;
+            //iQuanLyDichVu.Visibility = PhongRibbonPageGroup.Visible ? BarItemVisibility.Always : BarItemVisibility.Never;
             InitSkinGallery();
             InitGrid();
         }
@@ -84,115 +83,22 @@ namespace QuanLyCuaHangBanXe
             e.RelationName = CurrentMDI.GetRelationName(e.RelationIndex);
         }
 
-
-        private void iSave_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
-        {
-            try
-            {
-                if (db.ThuePhong.Local.Count > 0) 
-                {
-                    foreach (var item in db.ThuePhong.Local)
-                    {
-                        item.GioDat = DateTime.Today.AddHours(item.GioDat.Hour).AddMinutes(item.GioDat.Minute);
-                        item.GioNhan = DateTime.Today.AddHours(item.GioNhan.Hour).AddMinutes(item.GioNhan.Minute);
-                        item.GioTra = DateTime.Today.AddHours(item.GioTra.Hour).AddMinutes(item.GioTra.Minute);
-                    }
-                }
-                db.SaveChanges();
-                MessageBox.Show("Đã lưu xong!");
-            }
-            catch (Exception ex)//(DbEntityValidationException dbEx)
-            {
-                var Err = ex.Message;
-                //foreach (var validationErrors in dbEx.EntityValidationErrors)
-                //{
-                //    foreach (var validationError in validationErrors.ValidationErrors)
-                //    {
-                //        Err += string.Format("Class: {0}, Property: {1}, Error: {2}",
-                //            validationErrors.Entry.Entity.GetType().FullName,
-                //            validationError.PropertyName,
-                //            validationError.ErrorMessage) + "\r\n";
-                //    }
-                //}
-                MessageBox.Show("Không lưu được! Lỗi: " + Err);
-            }
-        }
-
-        private void iDelete_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
-        {
-            gridView.DeleteSelectedRows();
-        }
-
-        void rDate_CloseUp(object sender, DevExpress.XtraEditors.Controls.CloseUpEventArgs e)
-        {
-            throw new NotImplementedException();
-        }
-
-        
-        private void iQuanLyTang_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
-        {
-            CurrentMDI = new Tang();
-            UpdateGridView(db.Tang, db.Tang.ToList());
-        }
-
-        private void iQuanLyLoaiPhong_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
-        {
-            CurrentMDI = new LoaiPhong();
-            UpdateGridView(db.LoaiPhong, db.LoaiPhong.ToList());
-        }
-
-        private void iQuanLyPhong_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
-        {
-            CurrentMDI = new Phong();
-            UpdateGridView(db.Phong, db.Phong.ToList());
-        }
-
-        private void iQuanLyThuePhong_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
-        {
-            CurrentMDI = new ThuePhong();
-            UpdateGridView(db.ThuePhong, db.ThuePhong.ToList());
-        }
-
-        private void iQuanLyDichVu_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
-        {
-            CurrentMDI = new DichVu();
-            UpdateGridView(db.DichVu, db.DichVu.ToList());
-        }
-
-        private void iQuanLySuDungDichVu_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
-        {
-            CurrentMDI = new SuDungDichVu();
-            UpdateGridView(db.SuDungDichVu, db.SuDungDichVu.ToList());
-        }
-
-        private void iQuanLyKhachHang_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
-        {
-            CurrentMDI = new KhachHang();
-            UpdateGridView(db.KhachHang, db.KhachHang.ToList());
-        }
-
-        private void iQuanLyHoaDon_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
-        {
-            CurrentMDI = new HoaDon();
-            UpdateGridView(db.HoaDon, db.HoaDon.ToList());
-        }
-
         private void iQuanLyNgoiDung_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
-            CurrentMDI = new NguoiDung();
-            UpdateGridView(db.NguoiDung, db.NguoiDung.ToList());
+            CurrentMDI = new NhanVien();
+            UpdateGridView();
         }
 
         private void iQuanLyQuyen_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
             CurrentMDI = new Quyen();
-            UpdateGridView(db.Quyen, db.Quyen.ToList());
+            UpdateGridView();
         }
 
         private void iQuanLyPhanQuyen_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
-            CurrentMDI = new PhanQuyen();
-            UpdateGridView(db.PhanQuyen, db.PhanQuyen.ToList());
+            //CurrentMDI = new CV_q();
+            UpdateGridView();
         }
 
         private void iBaoCao_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
@@ -201,18 +107,11 @@ namespace QuanLyCuaHangBanXe
             r.Landscape = true;
             
             ReportBuilderHelper rbh = new ReportBuilderHelper();
-            IList aList = db.GetList(CurrentMDI.GetType());
+            IList aList = Table.GetList(CurrentMDI.GetType());
             if(aList == null) { MessageBox.Show("Chọn danh sách đã!"); return; }
             rbh.Header = CurrentMDI.GetName();
             rbh.GenerateReport(r, aList, CurrentMDI.GetType());
             r.ShowPreviewDialog();
-        }
-
-        private void iBaoCaoHoaDon_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
-        {
-            rpHoaDon rHD = new rpHoaDon();
-            rHD.DataSource = db.HoaDon.ToList();
-            rHD.ShowPreviewDialog();
         }
 
     }

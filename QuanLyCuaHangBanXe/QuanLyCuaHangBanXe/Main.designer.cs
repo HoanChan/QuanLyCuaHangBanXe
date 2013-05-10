@@ -36,7 +36,6 @@
             this.gridView = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.ribbonControl = new DevExpress.XtraBars.Ribbon.RibbonControl();
             this.appMenu = new DevExpress.XtraBars.Ribbon.ApplicationMenu(this.components);
-            this.iSave = new DevExpress.XtraBars.BarButtonItem();
             this.iExit = new DevExpress.XtraBars.BarButtonItem();
             this.ribbonImageCollection = new DevExpress.Utils.ImageCollection(this.components);
             this.siStatus = new DevExpress.XtraBars.BarStaticItem();
@@ -47,29 +46,18 @@
             this.iCenterTextAlign = new DevExpress.XtraBars.BarButtonItem();
             this.iRightTextAlign = new DevExpress.XtraBars.BarButtonItem();
             this.rgbiSkins = new DevExpress.XtraBars.RibbonGalleryBarItem();
-            this.iDelete = new DevExpress.XtraBars.BarButtonItem();
-            this.iQuanLyLoaiPhong = new DevExpress.XtraBars.BarButtonItem();
-            this.iQuanLyPhong = new DevExpress.XtraBars.BarButtonItem();
-            this.iQuanLyTang = new DevExpress.XtraBars.BarButtonItem();
-            this.iQuanLyThuePhong = new DevExpress.XtraBars.BarButtonItem();
-            this.iQuanLyDichVu = new DevExpress.XtraBars.BarButtonItem();
-            this.iQuanLySuDungDichVu = new DevExpress.XtraBars.BarButtonItem();
-            this.iQuanLyHoaDon = new DevExpress.XtraBars.BarButtonItem();
+           
             this.iQuanLyNgoiDung = new DevExpress.XtraBars.BarButtonItem();
             this.iQuanLyQuyen = new DevExpress.XtraBars.BarButtonItem();
             this.iQuanLyPhanQuyen = new DevExpress.XtraBars.BarButtonItem();
-            this.iQuanLyKhachHang = new DevExpress.XtraBars.BarButtonItem();
+           
             this.iBaoCao = new DevExpress.XtraBars.BarButtonItem();
-            this.iBaoCaoHoaDon = new DevExpress.XtraBars.BarButtonItem();
             this.barStaticItem1 = new DevExpress.XtraBars.BarStaticItem();
             this.ribbonImageCollectionLarge = new DevExpress.Utils.ImageCollection(this.components);
             this.homeRibbonPage = new DevExpress.XtraBars.Ribbon.RibbonPage();
             this.fileRibbonPageGroup = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
             this.skinsRibbonPageGroup = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
             this.QuanLyRibbonPage = new DevExpress.XtraBars.Ribbon.RibbonPage();
-            this.PhongRibbonPageGroup = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
-            this.DichVuRibbonPageGroup = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
-            this.ThuePhongRibbonPageGroup = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
             this.NguoiDungRibbonPageGroup = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
             this.BaoCaoRibbonPage = new DevExpress.XtraBars.Ribbon.RibbonPage();
             this.ribbonPageGroup1 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
@@ -129,7 +117,6 @@
             this.ribbonControl.Images = this.ribbonImageCollection;
             this.ribbonControl.Items.AddRange(new DevExpress.XtraBars.BarItem[] {
             this.ribbonControl.ExpandCollapseItem,
-            this.iSave,
             this.iExit,
             this.siStatus,
             this.iBoldFontStyle,
@@ -139,20 +126,10 @@
             this.iCenterTextAlign,
             this.iRightTextAlign,
             this.rgbiSkins,
-            this.iDelete,
-            this.iQuanLyLoaiPhong,
-            this.iQuanLyPhong,
-            this.iQuanLyTang,
-            this.iQuanLyThuePhong,
-            this.iQuanLyDichVu,
-            this.iQuanLySuDungDichVu,
-            this.iQuanLyHoaDon,
             this.iQuanLyNgoiDung,
             this.iQuanLyQuyen,
             this.iQuanLyPhanQuyen,
-            this.iQuanLyKhachHang,
             this.iBaoCao,
-            this.iBaoCaoHoaDon,
             this.barStaticItem1});
             this.ribbonControl.LargeImages = this.ribbonImageCollectionLarge;
             this.ribbonControl.Location = new System.Drawing.Point(0, 0);
@@ -168,28 +145,13 @@
             this.ribbonControl.RibbonStyle = DevExpress.XtraBars.Ribbon.RibbonControlStyle.Office2010;
             this.ribbonControl.Size = new System.Drawing.Size(1100, 144);
             this.ribbonControl.StatusBar = this.ribbonStatusBar;
-            this.ribbonControl.Toolbar.ItemLinks.Add(this.iSave);
-            this.ribbonControl.Toolbar.ItemLinks.Add(this.iDelete);
             // 
             // appMenu
             // 
-            this.appMenu.ItemLinks.Add(this.iSave);
             this.appMenu.ItemLinks.Add(this.iExit);
             this.appMenu.Name = "appMenu";
             this.appMenu.Ribbon = this.ribbonControl;
             this.appMenu.ShowRightPane = true;
-            // 
-            // iSave
-            // 
-            this.iSave.Caption = "Lưu";
-            this.iSave.Description = "Saves the active document.";
-            this.iSave.Hint = "Saves the active document";
-            this.iSave.Id = 16;
-            this.iSave.ImageIndex = 4;
-            this.iSave.ItemShortcut = new DevExpress.XtraBars.BarShortcut((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S));
-            this.iSave.LargeImageIndex = 4;
-            this.iSave.Name = "iSave";
-            this.iSave.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.iSave_ItemClick);
             // 
             // iExit
             // 
@@ -286,79 +248,7 @@
             this.rgbiSkins.Gallery.RowCount = 4;
             this.rgbiSkins.Id = 60;
             this.rgbiSkins.Name = "rgbiSkins";
-            // 
-            // iDelete
-            // 
-            this.iDelete.Caption = "Xoá";
-            this.iDelete.Id = 63;
-            this.iDelete.ImageIndex = 6;
-            this.iDelete.ImageIndexDisabled = 6;
-            this.iDelete.LargeImageIndex = 6;
-            this.iDelete.LargeImageIndexDisabled = 6;
-            this.iDelete.Name = "iDelete";
-            this.iDelete.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.iDelete_ItemClick);
-            // 
-            // iQuanLyLoaiPhong
-            // 
-            this.iQuanLyLoaiPhong.Caption = "Loại Phòng";
-            this.iQuanLyLoaiPhong.Id = 64;
-            this.iQuanLyLoaiPhong.LargeImageIndex = 10;
-            this.iQuanLyLoaiPhong.Name = "iQuanLyLoaiPhong";
-            this.iQuanLyLoaiPhong.RibbonStyle = DevExpress.XtraBars.Ribbon.RibbonItemStyles.Large;
-            this.iQuanLyLoaiPhong.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.iQuanLyLoaiPhong_ItemClick);
-            // 
-            // iQuanLyPhong
-            // 
-            this.iQuanLyPhong.Caption = "Phòng";
-            this.iQuanLyPhong.Id = 65;
-            this.iQuanLyPhong.LargeImageIndex = 11;
-            this.iQuanLyPhong.Name = "iQuanLyPhong";
-            this.iQuanLyPhong.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.iQuanLyPhong_ItemClick);
-            // 
-            // iQuanLyTang
-            // 
-            this.iQuanLyTang.Caption = "Tầng";
-            this.iQuanLyTang.Id = 66;
-            this.iQuanLyTang.LargeImageIndex = 9;
-            this.iQuanLyTang.Name = "iQuanLyTang";
-            this.iQuanLyTang.RibbonStyle = DevExpress.XtraBars.Ribbon.RibbonItemStyles.Large;
-            this.iQuanLyTang.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.iQuanLyTang_ItemClick);
-            // 
-            // iQuanLyThuePhong
-            // 
-            this.iQuanLyThuePhong.Caption = "Thuê Phòng";
-            this.iQuanLyThuePhong.Id = 67;
-            this.iQuanLyThuePhong.LargeImageIndex = 17;
-            this.iQuanLyThuePhong.Name = "iQuanLyThuePhong";
-            this.iQuanLyThuePhong.RibbonStyle = DevExpress.XtraBars.Ribbon.RibbonItemStyles.Large;
-            this.iQuanLyThuePhong.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.iQuanLyThuePhong_ItemClick);
-            // 
-            // iQuanLyDichVu
-            // 
-            this.iQuanLyDichVu.Caption = "Dịch Vụ";
-            this.iQuanLyDichVu.Id = 68;
-            this.iQuanLyDichVu.LargeImageIndex = 14;
-            this.iQuanLyDichVu.Name = "iQuanLyDichVu";
-            this.iQuanLyDichVu.RibbonStyle = DevExpress.XtraBars.Ribbon.RibbonItemStyles.Large;
-            this.iQuanLyDichVu.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.iQuanLyDichVu_ItemClick);
-            // 
-            // iQuanLySuDungDichVu
-            // 
-            this.iQuanLySuDungDichVu.Caption = "Sử Dụng Dịch Vụ";
-            this.iQuanLySuDungDichVu.Id = 69;
-            this.iQuanLySuDungDichVu.LargeImageIndex = 13;
-            this.iQuanLySuDungDichVu.Name = "iQuanLySuDungDichVu";
-            this.iQuanLySuDungDichVu.RibbonStyle = DevExpress.XtraBars.Ribbon.RibbonItemStyles.Large;
-            this.iQuanLySuDungDichVu.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.iQuanLySuDungDichVu_ItemClick);
-            // 
-            // iQuanLyHoaDon
-            // 
-            this.iQuanLyHoaDon.Caption = "Hoá Đơn";
-            this.iQuanLyHoaDon.Id = 70;
-            this.iQuanLyHoaDon.LargeImageIndex = 7;
-            this.iQuanLyHoaDon.Name = "iQuanLyHoaDon";
-            this.iQuanLyHoaDon.RibbonStyle = DevExpress.XtraBars.Ribbon.RibbonItemStyles.Large;
-            this.iQuanLyHoaDon.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.iQuanLyHoaDon_ItemClick);
+            
             // 
             // iQuanLyNgoiDung
             // 
@@ -385,15 +275,7 @@
             this.iQuanLyPhanQuyen.Name = "iQuanLyPhanQuyen";
             this.iQuanLyPhanQuyen.RibbonStyle = DevExpress.XtraBars.Ribbon.RibbonItemStyles.Large;
             this.iQuanLyPhanQuyen.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.iQuanLyPhanQuyen_ItemClick);
-            // 
-            // iQuanLyKhachHang
-            // 
-            this.iQuanLyKhachHang.Caption = "Khách Hàng";
-            this.iQuanLyKhachHang.Id = 74;
-            this.iQuanLyKhachHang.LargeImageIndex = 15;
-            this.iQuanLyKhachHang.Name = "iQuanLyKhachHang";
-            this.iQuanLyKhachHang.RibbonStyle = DevExpress.XtraBars.Ribbon.RibbonItemStyles.Large;
-            this.iQuanLyKhachHang.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.iQuanLyKhachHang_ItemClick);
+            
             // 
             // iBaoCao
             // 
@@ -402,14 +284,6 @@
             this.iBaoCao.LargeImageIndex = 18;
             this.iBaoCao.Name = "iBaoCao";
             this.iBaoCao.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.iBaoCao_ItemClick);
-            // 
-            // iBaoCaoHoaDon
-            // 
-            this.iBaoCaoHoaDon.Caption = "Hoá Đơn";
-            this.iBaoCaoHoaDon.Id = 79;
-            this.iBaoCaoHoaDon.LargeImageIndex = 18;
-            this.iBaoCaoHoaDon.Name = "iBaoCaoHoaDon";
-            this.iBaoCaoHoaDon.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.iBaoCaoHoaDon_ItemClick);
             // 
             // barStaticItem1
             // 
@@ -452,8 +326,6 @@
             // 
             // fileRibbonPageGroup
             // 
-            this.fileRibbonPageGroup.ItemLinks.Add(this.iSave);
-            this.fileRibbonPageGroup.ItemLinks.Add(this.iDelete);
             this.fileRibbonPageGroup.ItemLinks.Add(this.iBaoCao);
             this.fileRibbonPageGroup.Name = "fileRibbonPageGroup";
             this.fileRibbonPageGroup.Text = "File";
@@ -468,35 +340,9 @@
             // QuanLyRibbonPage
             // 
             this.QuanLyRibbonPage.Groups.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPageGroup[] {
-            this.PhongRibbonPageGroup,
-            this.DichVuRibbonPageGroup,
-            this.ThuePhongRibbonPageGroup,
             this.NguoiDungRibbonPageGroup});
             this.QuanLyRibbonPage.Name = "QuanLyRibbonPage";
             this.QuanLyRibbonPage.Text = "Quản Lý";
-            // 
-            // PhongRibbonPageGroup
-            // 
-            this.PhongRibbonPageGroup.ItemLinks.Add(this.iQuanLyTang);
-            this.PhongRibbonPageGroup.ItemLinks.Add(this.iQuanLyLoaiPhong);
-            this.PhongRibbonPageGroup.ItemLinks.Add(this.iQuanLyPhong);
-            this.PhongRibbonPageGroup.Name = "PhongRibbonPageGroup";
-            this.PhongRibbonPageGroup.Text = "Phòng";
-            // 
-            // DichVuRibbonPageGroup
-            // 
-            this.DichVuRibbonPageGroup.ItemLinks.Add(this.iQuanLyDichVu);
-            this.DichVuRibbonPageGroup.ItemLinks.Add(this.iQuanLySuDungDichVu);
-            this.DichVuRibbonPageGroup.Name = "DichVuRibbonPageGroup";
-            this.DichVuRibbonPageGroup.Text = "Dịch Vụ";
-            // 
-            // ThuePhongRibbonPageGroup
-            // 
-            this.ThuePhongRibbonPageGroup.ItemLinks.Add(this.iQuanLyKhachHang);
-            this.ThuePhongRibbonPageGroup.ItemLinks.Add(this.iQuanLyThuePhong);
-            this.ThuePhongRibbonPageGroup.ItemLinks.Add(this.iQuanLyHoaDon);
-            this.ThuePhongRibbonPageGroup.Name = "ThuePhongRibbonPageGroup";
-            this.ThuePhongRibbonPageGroup.Text = "Thuê Phòng";
             // 
             // NguoiDungRibbonPageGroup
             // 
@@ -515,7 +361,6 @@
             // 
             // ribbonPageGroup1
             // 
-            this.ribbonPageGroup1.ItemLinks.Add(this.iBaoCaoHoaDon);
             this.ribbonPageGroup1.Name = "ribbonPageGroup1";
             // 
             // rpName
@@ -586,7 +431,6 @@
         #endregion
 
         private DevExpress.XtraBars.Ribbon.RibbonControl ribbonControl;
-        private DevExpress.XtraBars.BarButtonItem iSave;
         private DevExpress.XtraBars.BarButtonItem iExit;
         private DevExpress.XtraBars.BarStaticItem siStatus;
         private DevExpress.XtraBars.BarButtonItem iBoldFontStyle;
@@ -600,30 +444,19 @@
         private DevExpress.XtraBars.Ribbon.RibbonPageGroup fileRibbonPageGroup;
         private DevExpress.XtraBars.Ribbon.RibbonPageGroup skinsRibbonPageGroup;
         private DevExpress.XtraBars.Ribbon.RibbonPage QuanLyRibbonPage;
-        private DevExpress.XtraBars.Ribbon.RibbonPageGroup PhongRibbonPageGroup;
         private DevExpress.XtraBars.Ribbon.ApplicationMenu appMenu;
         private DevExpress.XtraBars.Ribbon.RibbonStatusBar ribbonStatusBar;
         private DevExpress.Utils.ImageCollection ribbonImageCollection;
         private DevExpress.Utils.ImageCollection ribbonImageCollectionLarge;
-        private DevExpress.XtraBars.BarButtonItem iDelete;
-        private DevExpress.XtraBars.BarButtonItem iQuanLyLoaiPhong;
-        private DevExpress.XtraBars.BarButtonItem iQuanLyPhong;
-        private DevExpress.XtraBars.BarButtonItem iQuanLyTang;
-        private DevExpress.XtraBars.BarButtonItem iQuanLyThuePhong;
-        private DevExpress.XtraBars.Ribbon.RibbonPageGroup DichVuRibbonPageGroup;
-        private DevExpress.XtraBars.Ribbon.RibbonPageGroup ThuePhongRibbonPageGroup;
         private DevExpress.XtraBars.Ribbon.RibbonPageGroup NguoiDungRibbonPageGroup;
-        private DevExpress.XtraBars.BarButtonItem iQuanLyDichVu;
-        private DevExpress.XtraBars.BarButtonItem iQuanLySuDungDichVu;
-        private DevExpress.XtraBars.BarButtonItem iQuanLyHoaDon;
+
         private DevExpress.XtraBars.BarButtonItem iQuanLyNgoiDung;
         private DevExpress.XtraBars.BarButtonItem iQuanLyQuyen;
         private DevExpress.XtraBars.BarButtonItem iQuanLyPhanQuyen;
-        private DevExpress.XtraBars.BarButtonItem iQuanLyKhachHang;
+
         private DevExpress.XtraBars.Ribbon.RibbonPage BaoCaoRibbonPage;
         private DevExpress.XtraBars.Ribbon.RibbonPageGroup ribbonPageGroup1;
         private DevExpress.XtraBars.BarButtonItem iBaoCao;
-        private DevExpress.XtraBars.BarButtonItem iBaoCaoHoaDon;
         private DevExpress.XtraBars.BarStaticItem barStaticItem1;
         private DevExpress.XtraEditors.Repository.RepositoryItemTextEdit rpName;
         private DevExpress.XtraEditors.Repository.RepositoryItemTextEdit rpPass;

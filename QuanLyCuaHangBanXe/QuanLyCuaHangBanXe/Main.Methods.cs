@@ -2,26 +2,25 @@
 using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraEditors.DXErrorProvider;
-using Model;
+using DataContext;
 using System;
-using System.Data.Entity;
-using System.Data.Entity.Validation;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using System.Data.SqlClient;
 namespace QuanLyCuaHangBanXe
 {
     public partial class Main
     {
 
-        private void UpdateGridView(DbSet EntityQuery, Object Data)
+        private void UpdateGridView()
         {
             DataGridView.BeginUpdate();
             DataGridView.DataSource = null;
             gridView.Columns.Clear();
             DataGridView.DataSource = new BindingSource(Data, "");
             //DataGridView.DataSource = new BindingSource(EntityQuery.Local, "");
-            var EntityProperties = EntityQuery.ElementType.GetProperties();
+            var EntityProperties = CurrentMDI.GetType().GetProperties();
             int index = 0;
             foreach (var Pro in EntityProperties)
             {
@@ -55,7 +54,7 @@ namespace QuanLyCuaHangBanXe
             }
             DataGridView.EndUpdate();
             DataGridView.RefreshDataSource();
-            CreateDetail(EntityQuery.ElementType);
+            CreateDetail(CurrentMDI.GetType());
             ribbonControl.SelectedPage = homeRibbonPage;
         }
         private void ShowError(Exception e)
@@ -117,7 +116,7 @@ namespace QuanLyCuaHangBanXe
                     }
                     else
                     {
-                        var aList = db.GetList(Pro.PropertyType);
+                        var aList = Table.GetList(Pro.PropertyType);
                         if (aList != null)
                         {
                             var Ri = new LookUpEdit();
@@ -162,43 +161,6 @@ namespace QuanLyCuaHangBanXe
                     textbox.Properties.ReadOnly = true;
                     textbox.Name = Pro.Name;
                     splitContainerControl.Panel2.Controls.AddRange(new Control[] { label, textbox });
-                    #region Nút tính cho tổng tiền
-                    if (textbox.Name == "TongTien" && EntityType == typeof(HoaDon))
-                    {
-                        textbox.Width -= 60;
-                        var btnCalc = new SimpleButton()
-                        {
-                            Text = "Tính",
-                            Top = textbox.Top,
-                            Left = textbox.Left + textbox.Width + 10,
-                            Width = 50,
-                            Enabled = false
-                        };
-                        btnCalc.Click += new EventHandler(delegate(object sender, EventArgs e)
-                        {
-                            try
-                            {
-                                var aThuePhong = (splitContainerControl.Panel2.Controls["ThuePhong"] as BaseEdit).EditValue as ThuePhong;
-                                var KhoanKhac = Convert.ToInt32((splitContainerControl.Panel2.Controls["KhoanKhac"] as BaseEdit).EditValue);
-                                var TienDichVu = 0;
-                                foreach (var item in aThuePhong.dsSuDungDichVu)
-                                {
-                                    TienDichVu += (int)item.DichVu.Gia * item.SoLuong;
-                                }
-                                var ThoiGian = (aThuePhong.NgayTra.Date + aThuePhong.GioTra.TimeOfDay) - (aThuePhong.NgayNhan.Date + aThuePhong.GioDat.TimeOfDay);
-                                var TienPhong = (ThoiGian.Days + ThoiGian.Hours / 24f + ThoiGian.Minutes / 24f / 60f) * (int)aThuePhong.Phong.LoaiPhong.Gia;
-                                var TongTien = (float)TienDichVu + TienPhong + KhoanKhac;
-                                textbox.EditValue = (decimal)(TongTien - TongTien % 1000);
-                            }
-                            catch
-                            {
-                                textbox.EditValue = (decimal)0;
-                            }
-                        });
-                        textbox.Tag = btnCalc;
-                        splitContainerControl.Panel2.Controls.Add(btnCalc);
-                    }
-                    #endregion
                     index++;
                 }
             }
@@ -211,7 +173,7 @@ namespace QuanLyCuaHangBanXe
                 Text = "Chỉnh sửa",
                 Location = new Point(5 + 5*bY + bWidth * bY, 50 + 30 * index),
                 Width = bWidth,
-                Enabled = !(CurrentMDI is PhanQuyen) && gridView.SelectedRowsCount > 0
+                //Enabled = !(CurrentMDI is PhanQuyen) && gridView.SelectedRowsCount > 0
             };
             var btnCancelEdit = new SimpleButton()
             {
@@ -275,19 +237,15 @@ namespace QuanLyCuaHangBanXe
             Action<Exception> ValidateEntity = delegate(Exception e)
             {
                 dxErrorProvider.ClearErrors();
-                if (e is DbEntityValidationException)
+                if (e is SqlException)
                 {
-                    var dbEx = e as DbEntityValidationException;
-                    foreach (var validationErrors in dbEx.EntityValidationErrors)
+                    var dbEx = e as SqlException;
+                    foreach (SqlError validationError in dbEx.Errors)
                     {
-                        foreach (var validationError in validationErrors.ValidationErrors)
-                        {
-                            //Err += string.Format("Bảng: {0}, Thuộc tính: {1}, Lỗi: {2}",
-                            //    validationErrors.Entry.Entity.GetType().FullName,
-                            //    validationError.PropertyName,
-                            //    validationError.ErrorMessage) + "\r\n";
-                            dxErrorProvider.SetError(GetControlByName(validationError.PropertyName), validationError.ErrorMessage, ErrorType.Default);
-                        }
+                        var PropertyName = validationError.Message.IndexOf("_") > 0 ? validationError.Message.Substring(0, validationError.Message.IndexOf("_")) : "";
+                        var ErrorMessage = validationError.Message.IndexOf("_") > 0 ? validationError.Message.Substring(validationError.Message.IndexOf("_")) : "";
+                        dxErrorProvider.SetError(GetControlByName(PropertyName), ErrorMessage, ErrorType.Default);
+
                     }
                 }
                 else
@@ -370,7 +328,7 @@ namespace QuanLyCuaHangBanXe
                 }
                 try
                 {
-                    db.Update(Element, NewElement);
+                    Table.Update(NewElement);
                     dxErrorProvider.ClearErrors();
                     MessageBox.Show("Cập nhật thành công!");
                     DefaultButtonDisplay();
@@ -415,7 +373,7 @@ namespace QuanLyCuaHangBanXe
                 }
                 try
                 {
-                    db.AddNew(NewElement);
+                    Table.Insert(NewElement);
                     dxErrorProvider.ClearErrors();
                     MessageBox.Show("Thêm mới thành công!");
                     DefaultButtonDisplay();
@@ -443,7 +401,7 @@ namespace QuanLyCuaHangBanXe
                 try
                 {
                     gridView.DeleteSelectedRows();
-                    db.Delete(AElement);
+                    Table.Delete(AElement);
                     MessageBox.Show("Xoá thành công!");
                 }
                 catch (System.Exception ex)
