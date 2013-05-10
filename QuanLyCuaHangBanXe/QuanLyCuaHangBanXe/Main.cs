@@ -85,20 +85,20 @@ namespace QuanLyCuaHangBanXe
 
         private void iQuanLyNgoiDung_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
-            CurrentMDI = new NhanVien();
-            UpdateGridView();
+            //CurrentMDI = new NhanVien();
+            //UpdateGridView();
         }
 
         private void iQuanLyQuyen_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
-            CurrentMDI = new Quyen();
-            UpdateGridView();
+            //CurrentMDI = new Quyen();
+            //UpdateGridView();
         }
 
         private void iQuanLyPhanQuyen_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
             //CurrentMDI = new CV_q();
-            UpdateGridView();
+            //UpdateGridView();
         }
 
         private void iBaoCao_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
@@ -112,6 +112,12 @@ namespace QuanLyCuaHangBanXe
             rbh.Header = CurrentMDI.GetName();
             rbh.GenerateReport(r, aList, CurrentMDI.GetType());
             r.ShowPreviewDialog();
+        }
+
+        private void iQuanLyChucVu_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            CurrentMDI = new ChucVu();
+            UpdateGridView();
         }
 
     }

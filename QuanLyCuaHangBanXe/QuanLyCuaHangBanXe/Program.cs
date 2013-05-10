@@ -20,7 +20,7 @@ namespace QuanLyCuaHangBanXe
             DevExpress.UserSkins.BonusSkins.Register();
             UserLookAndFeel.Default.SetSkinStyle("Office 2010 Silver");
 
-            Application.Run(new Form1());
+            Application.Run(new Main());
         }
     }
 }

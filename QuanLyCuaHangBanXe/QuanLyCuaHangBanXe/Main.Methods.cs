@@ -18,7 +18,7 @@ namespace QuanLyCuaHangBanXe
             DataGridView.BeginUpdate();
             DataGridView.DataSource = null;
             gridView.Columns.Clear();
-            DataGridView.DataSource = new BindingSource(Data, "");
+            DataGridView.DataSource = new BindingSource(Table.GetList(CurrentMDI.GetType()), "");
             //DataGridView.DataSource = new BindingSource(EntityQuery.Local, "");
             var EntityProperties = CurrentMDI.GetType().GetProperties();
             int index = 0;
@@ -114,46 +114,46 @@ namespace QuanLyCuaHangBanXe
                         textbox = new CalcEdit();
                         DataBindingsType = "EditValue";
                     }
-                    else
-                    {
-                        var aList = Table.GetList(Pro.PropertyType);
-                        if (aList != null)
-                        {
-                            var Ri = new LookUpEdit();
-                            Ri.Properties.NullText = "Chưa có giá trị";
-                            Ri.Properties.DataSource = aList;
-                            Ri.Properties.BestFitMode = BestFitMode.BestFitResizePopup;
-                            Ri.BindingContextChanged += new EventHandler(delegate(object sender, EventArgs e)
-                            {
-                                var Lookup = (sender as LookUpEdit);
-                                Lookup.Properties.PopulateColumns();
-                                Lookup.Properties.BestFit();
-                                if (Lookup.Properties.Columns.Count == 0) return;
-                                var ci = 0;
-                                foreach (var Column in Pro.PropertyType.GetProperties())
-                                {
-                                    if (Column.PropertyType.IsGenericType)
-                                    {
-                                        Lookup.Properties.Columns[ci].Visible = false;
-                                    }
-                                    else
-                                    {
-                                        Lookup.Properties.Columns[ci].Caption = Column.GetName();
-                                        if (Column.PropertyType == typeof(DateTime))
-                                        {
-                                            if (Column.Name.Substring(0, 3) == "Gio")
-                                                Lookup.Properties.Columns[ci].FormatString = "HH:mm tt";
-                                            else
-                                                Lookup.Properties.Columns[ci].FormatString = "dd/MM/yyy";
-                                        }
-                                    }
-                                    ci++;
-                                }
-                            });
-                            textbox = Ri;
-                            DataBindingsType = "EditValue";
-                        }
-                    }
+                    //else
+                    //{
+                    //    var aList = Table.GetList(Pro.PropertyType);
+                    //    if (aList != null)
+                    //    {
+                    //        var Ri = new LookUpEdit();
+                    //        Ri.Properties.NullText = "Chưa có giá trị";
+                    //        Ri.Properties.DataSource = aList;
+                    //        Ri.Properties.BestFitMode = BestFitMode.BestFitResizePopup;
+                    //        Ri.BindingContextChanged += new EventHandler(delegate(object sender, EventArgs e)
+                    //        {
+                    //            var Lookup = (sender as LookUpEdit);
+                    //            Lookup.Properties.PopulateColumns();
+                    //            Lookup.Properties.BestFit();
+                    //            if (Lookup.Properties.Columns.Count == 0) return;
+                    //            var ci = 0;
+                    //            foreach (var Column in Pro.PropertyType.GetProperties())
+                    //            {
+                    //                if (Column.PropertyType.IsGenericType)
+                    //                {
+                    //                    Lookup.Properties.Columns[ci].Visible = false;
+                    //                }
+                    //                else
+                    //                {
+                    //                    Lookup.Properties.Columns[ci].Caption = Column.GetName();
+                    //                    if (Column.PropertyType == typeof(DateTime))
+                    //                    {
+                    //                        if (Column.Name.Substring(0, 3) == "Gio")
+                    //                            Lookup.Properties.Columns[ci].FormatString = "HH:mm tt";
+                    //                        else
+                    //                            Lookup.Properties.Columns[ci].FormatString = "dd/MM/yyy";
+                    //                    }
+                    //                }
+                    //                ci++;
+                    //            }
+                    //        });
+                    //        textbox = Ri;
+                    //        DataBindingsType = "EditValue";
+                    //    }
+                    //}
                     textbox.Location = new Point(120, 50 + 30 * index);
                     textbox.Width = 200;
                     textbox.TabIndex = index;
@@ -242,10 +242,13 @@ namespace QuanLyCuaHangBanXe
                     var dbEx = e as SqlException;
                     foreach (SqlError validationError in dbEx.Errors)
                     {
-                        var PropertyName = validationError.Message.IndexOf("_") > 0 ? validationError.Message.Substring(0, validationError.Message.IndexOf("_")) : "";
-                        var ErrorMessage = validationError.Message.IndexOf("_") > 0 ? validationError.Message.Substring(validationError.Message.IndexOf("_")) : "";
-                        dxErrorProvider.SetError(GetControlByName(PropertyName), ErrorMessage, ErrorType.Default);
-
+                        if (validationError.Message.IndexOf("]") > 0)
+                        {
+                            var PropertyName = validationError.Message.Substring(validationError.Message.IndexOf("[") + 1, validationError.Message.IndexOf("]"));
+                            var ErrorMessage = validationError.Message.Substring(validationError.Message.IndexOf("]" + 1));
+                            dxErrorProvider.SetError(GetControlByName(PropertyName), ErrorMessage, ErrorType.Default);
+                        }
+                        
                     }
                 }
                 else

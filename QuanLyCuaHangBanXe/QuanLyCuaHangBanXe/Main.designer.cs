@@ -46,11 +46,9 @@
             this.iCenterTextAlign = new DevExpress.XtraBars.BarButtonItem();
             this.iRightTextAlign = new DevExpress.XtraBars.BarButtonItem();
             this.rgbiSkins = new DevExpress.XtraBars.RibbonGalleryBarItem();
-           
             this.iQuanLyNgoiDung = new DevExpress.XtraBars.BarButtonItem();
             this.iQuanLyQuyen = new DevExpress.XtraBars.BarButtonItem();
             this.iQuanLyPhanQuyen = new DevExpress.XtraBars.BarButtonItem();
-           
             this.iBaoCao = new DevExpress.XtraBars.BarButtonItem();
             this.barStaticItem1 = new DevExpress.XtraBars.BarStaticItem();
             this.ribbonImageCollectionLarge = new DevExpress.Utils.ImageCollection(this.components);
@@ -66,6 +64,7 @@
             this.ribbonStatusBar = new DevExpress.XtraBars.Ribbon.RibbonStatusBar();
             this.splitContainerControl = new DevExpress.XtraEditors.SplitContainerControl();
             this.dxErrorProvider = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider(this.components);
+            this.iQuanLyChucVu = new DevExpress.XtraBars.BarButtonItem();
             ((System.ComponentModel.ISupportInitialize)(this.cardView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.DataGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView)).BeginInit();
@@ -130,10 +129,11 @@
             this.iQuanLyQuyen,
             this.iQuanLyPhanQuyen,
             this.iBaoCao,
-            this.barStaticItem1});
+            this.barStaticItem1,
+            this.iQuanLyChucVu});
             this.ribbonControl.LargeImages = this.ribbonImageCollectionLarge;
             this.ribbonControl.Location = new System.Drawing.Point(0, 0);
-            this.ribbonControl.MaxItemId = 85;
+            this.ribbonControl.MaxItemId = 86;
             this.ribbonControl.Name = "ribbonControl";
             this.ribbonControl.Pages.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPage[] {
             this.homeRibbonPage,
@@ -248,7 +248,6 @@
             this.rgbiSkins.Gallery.RowCount = 4;
             this.rgbiSkins.Id = 60;
             this.rgbiSkins.Name = "rgbiSkins";
-            
             // 
             // iQuanLyNgoiDung
             // 
@@ -275,7 +274,6 @@
             this.iQuanLyPhanQuyen.Name = "iQuanLyPhanQuyen";
             this.iQuanLyPhanQuyen.RibbonStyle = DevExpress.XtraBars.Ribbon.RibbonItemStyles.Large;
             this.iQuanLyPhanQuyen.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.iQuanLyPhanQuyen_ItemClick);
-            
             // 
             // iBaoCao
             // 
@@ -349,6 +347,7 @@
             this.NguoiDungRibbonPageGroup.ItemLinks.Add(this.iQuanLyNgoiDung);
             this.NguoiDungRibbonPageGroup.ItemLinks.Add(this.iQuanLyQuyen);
             this.NguoiDungRibbonPageGroup.ItemLinks.Add(this.iQuanLyPhanQuyen);
+            this.NguoiDungRibbonPageGroup.ItemLinks.Add(this.iQuanLyChucVu);
             this.NguoiDungRibbonPageGroup.Name = "NguoiDungRibbonPageGroup";
             this.NguoiDungRibbonPageGroup.Text = "Người Dùng";
             // 
@@ -397,6 +396,14 @@
             // dxErrorProvider
             // 
             this.dxErrorProvider.ContainerControl = this;
+            // 
+            // iQuanLyChucVu
+            // 
+            this.iQuanLyChucVu.Caption = "Chức Vụ";
+            this.iQuanLyChucVu.Id = 85;
+            this.iQuanLyChucVu.LargeImageIndex = 17;
+            this.iQuanLyChucVu.Name = "iQuanLyChucVu";
+            this.iQuanLyChucVu.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.iQuanLyChucVu_ItemClick);
             // 
             // Main
             // 
@@ -465,6 +472,7 @@
         private DevExpress.XtraGrid.Views.Grid.GridView gridView;
         private DevExpress.XtraGrid.Views.Card.CardView cardView1;
         private DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider dxErrorProvider;
+        private DevExpress.XtraBars.BarButtonItem iQuanLyChucVu;
 
     }
 }
