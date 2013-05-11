@@ -132,7 +132,6 @@ begin
 end
 go
 
-
 alter trigger TG_Xoa_Kho on Kho
 instead of delete
 as
