@@ -1,7 +1,6 @@
 ﻿use CUAHANG_BANXE
 go
 
-
 alter function ft_SoLuongTon (@LoaiXe nvarchar(10))
 RETURNS int
 AS 
@@ -26,6 +25,15 @@ alter PROCEDURE sp_ChucVu_Insert
 @Ten nvarchar(30)
 AS
 BEGIN
+	select * from ChucVu where Ma=@Ma
+	declare @message nvarchar(MAX);	
+	set @message= @Ma + 'bị trùng';
+	if(@@ROWCOUNT>0)
+	begin
+		raiserror (@message, 16, 1)
+		rollback transaction
+	end
+
 	Insert into ChucVu values(@Ma, @Ten)                                                 
 END
 go
@@ -44,6 +52,13 @@ alter procedure sp_ChucVu_Update
 as
 begin
 	update ChucVu set Ten=@Ten where Ma=@Ma
+end
+go
+
+alter procedure sp_NCC_Select
+as
+begin
+	select * from NCC
 end
 go
 
@@ -77,6 +92,13 @@ BEGIN
 END
 GO
 
+alter procedure sp_ChiNhanh_Select
+as
+begin
+	select * from ChiNhanh
+end
+go
+
 alter PROCEDURE sp_ChiNhanh_Insert
 @Ma nvarchar(10),
 @Ten nvarchar(30),
@@ -108,6 +130,13 @@ BEGIN
 	delete from ChiNhanh where Ma=@Ma
 END
 GO
+
+alter procedure sp_NhanVien_Select
+as
+begin
+	select * from NhanVien
+end
+go
 
 alter PROCEDURE sp_NhanVien_Insert
 @Ma nvarchar(10),
@@ -154,6 +183,13 @@ BEGIN
 END
 GO
 
+alter procedure sp_KhachHang_Select
+as
+begin
+	select * from KhachHang
+end
+go
+
 alter PROCEDURE sp_KhachHang_Insert
 @Ma nvarchar(10),
 @Ten nvarchar(30),
@@ -185,6 +221,13 @@ BEGIN
 END
 GO
 
+alter procedure sp_Xe_Select
+as
+begin
+	select * from Xe
+end
+go
+
 alter PROCEDURE sp_Xe_Insert
 @SoKhung nvarchar(50),
 @SoMay nvarchar(50), 
@@ -215,6 +258,13 @@ BEGIN
 	DELETE FROM Xe WHERE SoMay=@SoMay
 END
 GO
+
+alter procedure sp_LoaiXe_Select
+as
+begin
+	select * from LoaiXe
+end
+go
 
 alter PROCEDURE sp_LoaiXe_Insert
 @Ma nvarchar(10),
@@ -261,6 +311,13 @@ BEGIN
 END
 GO
 
+alter procedure sp_Kho_Select
+as
+begin
+	select * from Kho
+end
+go
+
 alter PROCEDURE sp_Kho_Insert
 @Ma nvarchar(10),
 @Ten nvarchar(30),
@@ -294,6 +351,13 @@ BEGIN
 END
 GO
 
+alter procedure sp_PhieuXuatKho_Select
+as
+begin
+	select * from PhieuXuatKho
+end
+go
+
 alter procedure sp_PhieuXuatKho_Insert
 @Ma nvarchar(10),
 @NgayXuat datetime,
@@ -306,6 +370,13 @@ begin
 end
 go
 
+alter procedure sp_CTVanChuyen_Select
+as
+begin
+	select * from CTVanChuyen
+end
+go
+
 alter procedure sp_CTVanChuyen_Insert
 @NhanVien nvarchar(10),
 @PhieuXuatKho nvarchar(10)
@@ -315,7 +386,14 @@ begin
 end
 go
 
-alter procedure sp_HSBanXe_Insert
+alter procedure sp_HoSoBanXe_Select
+as
+begin
+	select * from HoSoBanXe
+end
+go
+
+alter procedure sp_HoSoBanXe_Insert
 @Ma nvarchar(10),
 @NgayMua datetime,
 @KhachHang nvarchar(10),
@@ -324,6 +402,13 @@ alter procedure sp_HSBanXe_Insert
 as
 begin
 	insert into HoSoBanXe values (@Ma, @NgayMua, @KhachHang, @NhanVienBan, @Xe)
+end
+go
+
+alter procedure sp_CTPhieuNhapXe_Select
+as
+begin
+	select * from CTPhieuNhapXe
 end
 go
 
@@ -339,6 +424,13 @@ begin
 end
 go
 
+alter procedure sp_CTPhieuXuatXe_Select
+as
+begin
+	select * from CTPhieuXuatXe
+end
+go
+
 alter procedure sp_CTPhieuXuatXe_Insert
 @PhieuXuatKho nvarchar(10),
 @LoaiXe nvarchar(10),
@@ -349,12 +441,26 @@ begin
 end
 go
 
+alter procedure sp_CTCungCapXe_Select
+as
+begin
+	select * from CTCungCapXe
+end
+go
+
 alter procedure sp_CTCungCapXe_Insert
 @NCC nvarchar(10),
 @LoaiXe nvarchar(10)
 as
 begin
 	insert into CTCungCapXe values (@NCC, @LoaiXe)
+end
+go
+
+alter procedure sp_PhieuNhapXe_Select
+as
+begin
+	select * from PhieuNhapXe
 end
 go
 
@@ -371,6 +477,13 @@ begin
 end
 go
 
+alter procedure sp_PhieuNhapPhuKien_Select
+as
+begin
+	select * from PhieuNhapPhuKien
+end
+go
+
 alter procedure sp_PhieuNhapPhuKien_Insert
 @Ma varchar(10),
 @ThoiGian datetime,
@@ -384,12 +497,26 @@ begin
 end
 go
 
+alter procedure sp_CTCungCapPhuKien_Select
+as
+begin
+	select * from CTCungCapPhuKien
+end
+go
+
 alter procedure sp_CTCungCapPhuKien_Insert
 @NCC nvarchar(10),
 @LoaiPhuKien nvarchar(10)
 as
 begin
 	insert into CTCungCapPhuKien values(@NCC, @LoaiPhuKien)
+end
+go
+
+alter procedure sp_CTNhapPhuKien_Select
+as
+begin
+	select * from CTNhapPhuKien
 end
 go
 
@@ -405,6 +532,13 @@ begin
 end
 go
 
+alter procedure sp_CTPhieuXuatPhuKien_Select
+as
+begin
+	select * from CTPhieuXuatPhuKien
+end
+go
+
 alter procedure sp_CTPhieuXuatPhuKien_Insert
 @PhieuXuatKho nvarchar(10),
 @LoaiPhuKien nvarchar(10),
@@ -412,6 +546,13 @@ alter procedure sp_CTPhieuXuatPhuKien_Insert
 as
 begin
 	insert into CTPhieuXuatPhuKien values(@PhieuXuatKho,@LoaiPhuKien,@SoLuong)
+end
+go
+
+alter procedure sp_PhuKien_Select
+as
+begin
+	select * from PhuKien
 end
 go
 
@@ -441,6 +582,13 @@ alter procedure sp_PhuKien_Delete
 as
 begin
 	delete from PhuKien where Ma=@Ma
+end
+go
+
+alter procedure sp_LoaiPhuKien_Select
+as
+begin
+	select * from LoaiPhuKien
 end
 go
 
@@ -475,6 +623,13 @@ begin
 end
 go
 
+alter procedure sp_CTQuyen_Select
+as
+begin
+	select * from CTQuyen
+end
+go
+
 alter procedure sp_CTQuyen_Insert
 @ChucVu nvarchar(10),
 @Quyen nvarchar(10)
@@ -499,6 +654,13 @@ alter procedure sp_CTQuyen_Delete
 as
 begin
 	delete from CTQuyen where ChucVu=@ChucVu and Quyen=@MaQuyen
+end
+go
+
+alter procedure sp_Quyen_Select
+as
+begin
+	select * from Quyen
 end
 go
 
@@ -531,6 +693,13 @@ begin
 end
 go
 
+alter procedure sp_PhieuSuaChua_Select
+as
+begin
+	select * from PhieuSuaChua
+end
+go
+
 alter procedure sp_PhieuSuaChua_Insert
 @Ma nvarchar(10),
 @NgaySua datetime,
@@ -542,13 +711,90 @@ BEGIN
 END
 go
 
+alter procedure sp_CTSuaChua_Select
+as
+begin
+	select * from CTSuaChua
+end
+go
+
 alter procedure sp_CTSuaChua_Insert
 @PhieuSuaChua nvarchar(10),
 @PhuKien nvarchar(10),
-@sl int
+@SoLuong int
 AS
 BEGIN
-	insert into CTSuaChua values (@PhieuSuaChua,@PhuKien,@sl)
+	insert into CTSuaChua values (@PhieuSuaChua, @PhuKien, @SoLuong)
 END
 go
 
+alter procedure sp_Menu_Select
+as
+begin
+	select * from Menu
+end
+go
+
+alter procedure sp_Menu_Insert
+@Ma nvarchar(10),
+@Ten nvarchar(30),
+@GhiChu nvarchar(MAX)
+as
+begin
+	insert into Menu values(@Ma, @Ten, @GhiChu)
+end
+go
+
+alter procedure sp_Menu_Update
+@Ma nvarchar(10),
+@Ten nvarchar(30),
+@GhiChu nvarchar(MAX)
+as
+begin
+	update Menu set Ten=@Ten, GhiChu=@GhiChu
+	where Ma=@Ma
+end
+go
+
+alter procedure sp_Menu_Delete
+@Ma nvarchar(10)
+as
+begin
+	delete from Menu where Ma=@Ma
+end
+go
+
+alter procedure sp_Quyen_Menu_Select
+as
+begin
+	select * from Quyen_Menu
+end
+go
+
+alter procedure sp_Quyen_Menu_Insert
+@Quyen nvarchar(10),
+@Menu nvarchar(10)
+as
+begin
+	insert into Quyen_Menu values(@Quyen, @Menu)
+end
+go
+
+alter procedure sp_Quyen_Menu_Update
+@Quyen nvarchar(10),
+@Menu nvarchar(10)
+as
+begin
+	update Quyen_Menu set Quyen=@Quyen
+	where Menu=@Menu
+end
+go
+
+alter procedure sp_Quyen_Menu_Delete
+@Quyen nvarchar(10),
+@Menu nvarchar(10)
+as
+begin
+	delete from Quyen_Menu where Quyen=@Quyen and Menu=@Menu
+end
+go

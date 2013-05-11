@@ -113,8 +113,22 @@ begin
 	select @Ma=Ma from deleted
 	--update ChiTietQuyen set MaQuyen=null where MaQuyen=@Ma
 	delete from CTQuyen where Quyen=@Ma
+	delete from Quyen_Menu where Quyen=@Ma
 
 	delete from Quyen where Ma=@Ma
+end
+go
+
+alter trigger TG_Xoa_Menu on Menu
+instead of delete
+as
+begin
+	declare @Ma nvarchar(10);
+	select @Ma=Ma from deleted
+
+	delete from Quyen_Menu where Menu=@Ma
+
+	delete from Menu where Ma=@Ma
 end
 go
 
