@@ -136,7 +136,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\QLCuaHangSuaXe\DataContext\DataContext.csproj">
+    <ProjectReference Include="..\DataContext\DataContext.csproj">
       <Project>{fb481d2b-2227-41bc-9bbf-7dd008b32cd4}</Project>
       <Name>DataContext</Name>
     </ProjectReference>
