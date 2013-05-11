@@ -393,7 +393,7 @@ begin
 end
 go
 
-create procedure sp_CTNhapPhuKien_Insert
+alter procedure sp_CTNhapPhuKien_Insert
 @PhieuNhapPhuKien nvarchar(10),
 @LoaiPhuKien nvarchar(10),
 @SoLuong int,
@@ -405,7 +405,7 @@ begin
 end
 go
 
-create procedure sp_CTPhieuXuatPhuKien_Insert
+alter procedure sp_CTPhieuXuatPhuKien_Insert
 @PhieuXuatKho nvarchar(10),
 @LoaiPhuKien nvarchar(10),
 @SoLuong int
@@ -475,7 +475,7 @@ begin
 end
 go
 
-create procedure sp_CTQuyen_Insert
+alter procedure sp_CTQuyen_Insert
 @ChucVu nvarchar(10),
 @Quyen nvarchar(10)
 as
@@ -484,7 +484,7 @@ begin
 end
 go
 
-create procedure sp_CTQuyen_Update
+alter procedure sp_CTQuyen_Update
 @ChucVu nvarchar(10),
 @MaQuyen nvarchar(10)
 as
@@ -493,7 +493,7 @@ begin
 end
 go
 
-create procedure sp_CTQuyen_Delete
+alter procedure sp_CTQuyen_Delete
 @ChucVu nvarchar(10),
 @MaQuyen nvarchar(10)
 as
@@ -542,7 +542,7 @@ BEGIN
 END
 go
 
-create procedure sp_CTSuaChua_Insert
+alter procedure sp_CTSuaChua_Insert
 @PhieuSuaChua nvarchar(10),
 @PhuKien nvarchar(10),
 @sl int

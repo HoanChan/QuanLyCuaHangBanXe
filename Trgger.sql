@@ -77,12 +77,15 @@ as
 begin
 	declare @Ma nvarchar(10);
 	select @Ma=Ma from deleted
+
 	update PhieuSuaChua set NVSuaChua=null where NVSuaChua=@Ma
 	update ChiNhanh set NVQuanLy=null where NVQuanLy=@Ma
-	update PhieuXuatKho set NV_XacNhan=null where NV_XacNhan=@Ma
+	update PhieuXuatKho set NVXacNhan=null where NVXacNhan=@Ma
 	update CTVanChuyen set NhanVien=null where NhanVien=@Ma
 	update Kho set NVQuanLy=null where NVQuanLy=@Ma
 	update PhieuNhapXe set NVXacNhan=null where NVXacNhan=@Ma
+	Update HoSoBanXe set NhanVienBan=null where NhanVienBan=@Ma
+	update PhieuNhapPhuKien set NVXacNhan=null where NVXacNhan=@Ma
 
 	delete from NhanVien where Ma=@Ma
 end
