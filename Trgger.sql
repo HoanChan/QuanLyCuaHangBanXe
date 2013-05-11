@@ -7,7 +7,7 @@ AS
 BEGIN
 	declare @SoMay nvarchar(50);
 	select @SoMay=SoMay from deleted
-	update HoSoBanXe set SoMay=null where SoMay=@SoMay
+	update HoSoBanXe set Xe=null where Xe=@SoMay
 	delete from Xe where SoMay=@SoMay
 END
 GO
@@ -16,14 +16,14 @@ alter trigger TG_Them_HSBanXe On HoSoBanXe
 for insert
 as
 begin
-	declare @MaLoaiXe nvarchar(10);
-	select @MaloaiXe = MaLoaiXe from inserted as x join Xe on x.SoMay=Xe.SoMay
+	declare @LoaiXe nvarchar(10);
+	select @loaiXe = LoaiXe from inserted as x join Xe on x.Xe=Xe.SoMay
 
 	declare @SLBan int;
 	declare @SLNhap int;
 
-	set @SLBan=(select sum(SoLuong) from CTPhieuXuatXe where MaLoaiXe=@MaLoaiXe)
-	set @SLNhap=(select sum(SoLuong) from CTPhieuNhapXe where MaLoaiXe=@MaLoaiXe)
+	set @SLBan=(select sum(SoLuong) from CTPhieuXuatXe where LoaiXe=@LoaiXe)
+	set @SLNhap=(select sum(SoLuong) from CTPhieuNhapXe where LoaiXe=@LoaiXe)
 
 	if(@SLBan>=@SLNhap)
 	begin
@@ -37,14 +37,14 @@ alter trigger TG_Xoa_LoaiXe on LoaiXe
 instead of delete
 as
 begin
-	declare @MaLoai nvarchar(10);
-	select @MaLoai=Ma from deleted
-	update Xe set MaLoaiXe=null where MaLoaiXe=@MaLoai
-	update CTPhieuXuatXe set MaLoaiXe=null where MaLoaiXe=@MaLoai
-	update CTPhieuNhapXe set MaLoaiXe=null where MaLoaiXe=@MaLoai
-	update CTCungCapXe set MaLoaiXe=null where MaLoaiXe=@MaLoai
+	declare @LoaiXe nvarchar(10);
+	select @LoaiXe=Ma from deleted
+	update Xe set LoaiXe=null where LoaiXe=@LoaiXe
+	update CTPhieuXuatXe set LoaiXe=null where LoaiXe=@LoaiXe
+	update CTPhieuNhapXe set LoaiXe=null where LoaiXe=@LoaiXe
+	update CTCungCapXe set LoaiXe=null where LoaiXe=@LoaiXe
 
-	delete from LoaiXe where Ma=@MaLoai
+	delete from LoaiXe where Ma=@LoaiXe
 end
 go
 
@@ -52,11 +52,11 @@ alter trigger TG_Xoa_ChiNhanh on ChiNhanh
 instead of delete
 as
 begin
-	declare @MaCN nvarchar(10);
-	select @MaCN=Ma from deleted
-	update Xe set ChiNhanh=null where ChiNhanh=@MaCN
-	update PhieuXuatKHo set ChiNhanh=null where ChiNhanh=@MaCN
-	delete from ChiNhanh where Ma=@MaCN
+	declare @Ma nvarchar(10);
+	select @Ma=Ma from deleted
+	update Xe set ChiNhanh=null where ChiNhanh=@Ma
+	update PhieuXuatKHo set ChiNhanh=null where ChiNhanh=@Ma
+	delete from ChiNhanh where Ma=@Ma
 end
 go
 
@@ -64,10 +64,10 @@ alter trigger TG_XoaKH on KhachHang
 instead of delete
 as
 begin
-	declare @MaKH nvarchar(10);
-	select @MaKH=Ma from deleted
-	update HoSoBanXe set KhachHang=null where KhachHang=@MaKH
-	delete from KhachHang where Ma=@MaKH
+	declare @Ma nvarchar(10);
+	select @Ma=Ma from deleted
+	update HoSoBanXe set KhachHang=null where KhachHang=@Ma
+	delete from KhachHang where Ma=@Ma
 end
 go
 
@@ -75,16 +75,16 @@ alter trigger TG_Xoa_NV on NhanVien
 instead of delete
 as
 begin
-	declare @MaNV nvarchar(10);
-	select @MaNV=Ma from deleted
-	update PhieuSuaChua set NVSuaChua=null where NVSuaChua=@MaNV
-	update ChiNhanh set NVQuanLy=null where NVQuanLy=@MaNV
-	update PhieuXuatKho set NV_XacNhan=null where NV_XacNhan=@MaNV
-	update CTVanChuyen set MaNV=null where MaNV=@MaNV
-	update Kho set NVQuanLy=null where NVQuanLy=@MaNV
-	update PhieuNhapXe set NVXacNhan=null where NVXacNhan=@MaNV
+	declare @Ma nvarchar(10);
+	select @Ma=Ma from deleted
+	update PhieuSuaChua set NVSuaChua=null where NVSuaChua=@Ma
+	update ChiNhanh set NVQuanLy=null where NVQuanLy=@Ma
+	update PhieuXuatKho set NV_XacNhan=null where NV_XacNhan=@Ma
+	update CTVanChuyen set NhanVien=null where NhanVien=@Ma
+	update Kho set NVQuanLy=null where NVQuanLy=@Ma
+	update PhieuNhapXe set NVXacNhan=null where NVXacNhan=@Ma
 
-	delete from NhanVien where Ma=@MaNV
+	delete from NhanVien where Ma=@Ma
 end
 go
 
@@ -92,12 +92,13 @@ alter trigger TG_Xoa_CV on ChucVu
 instead of delete
 as
 begin
-	declare @MaCV nvarchar(10);
-	select @MaCV=Ma from deleted
-	update NhanVien set ChucVu=null where ChucVu=@MaCV
-	update ChiTietQuyen set MaCV=null where MaCV=@MaCV
+	declare @Ma nvarchar(10);
+	select @Ma=Ma from deleted
+	update NhanVien set ChucVu=null where ChucVu=@Ma
+	--update ChiTietQuyen set MaCV=null where MaCV=@Ma
+	delete from CTQuyen  where ChucVu=@Ma
 
-	delete from ChucVu where Ma=@MaCV
+	delete from ChucVu where Ma=@Ma
 end
 go
 
@@ -105,11 +106,12 @@ alter trigger TG_Xoa_Quyen on Quyen
 instead of delete
 as
 begin
-	declare @MaQuyen nvarchar(10);
-	select @MaQuyen=Ma from deleted
-	update ChiTietQuyen set MaQuyen=null where MaQuyen=@MaQuyen
+	declare @Ma nvarchar(10);
+	select @Ma=Ma from deleted
+	--update ChiTietQuyen set MaQuyen=null where MaQuyen=@Ma
+	delete from CTQuyen where Quyen=@Ma
 
-	delete from Quyen where Ma=@MaQuyen
+	delete from Quyen where Ma=@Ma
 end
 go
 
@@ -131,14 +133,14 @@ alter trigger TG_Xoa_LoaiPhuKien on LoaiPhuKien
 instead of delete
 as
 begin
-	declare @MaLoai nvarchar(10);
-	select @MaLoai=Ma from deleted
-	update PhuKien set MaLoaiPhuKien=null where MaLoaiPhuKien=@MaLoai
-	update CTPhieuXuatPhuKien set MaLoaiPhuKien=null where MaLoaiPhuKien=@MaLoai
-	update CTNhapPhuKien set MaLoaiPhuKien=null where MaLoaiPhuKien=@MaLoai
-	update CTCungCapPhuKien set MaLoaiPhuKien=null where MaLoaiPhuKien=@MaLoai
+	declare @Ma nvarchar(10);
+	select @Ma=Ma from deleted
+	update PhuKien set LoaiPhuKien=null where LoaiPhuKien=@Ma
+	update CTPhieuXuatPhuKien set LoaiPhuKien=null where LoaiPhuKien=@Ma
+	update CTNhapPhuKien set LoaiPhuKien=null where LoaiPhuKien=@Ma
+	update CTCungCapPhuKien set LoaiPhuKien=null where LoaiPhuKien=@Ma
 
-	delete from LoaiPhuKien where Ma=@MaLoai
+	delete from LoaiPhuKien where Ma=@Ma
 end
 go
 
@@ -146,11 +148,11 @@ alter trigger TG_Xoa_PhuKien on PhuKien
 instead of delete
 as
 begin
-	declare @MaPhuKien nvarchar(10);
-	select @MaPhuKien=Ma from deleted
-	update ChiTietSuaChua set MaPhuKien=null where MaPhuKien=@MaPhuKien
+	declare @Ma nvarchar(10);
+	select @Ma=Ma from deleted
+	update CTSuaChua set PhuKien=null where PhuKien=@Ma
 
-	delete from PhuKien where Ma=@MaPhuKien
+	delete from PhuKien where Ma=@Ma
 end
 go
 
@@ -158,14 +160,14 @@ alter trigger TG_Xoa_NCC on NCC
 instead of delete
 as
 begin
-	declare @MaNCC nvarchar(10);
-	select @MaNCC=Ma from deleted
-	update CTCungCapPhuKien set MaNCC=null where MaNCC=@MaNCC
-	update CTCungCapPhuKien set MaNCC=null where MaNCC=@MaNCC
-	update PhieuNhapPhuKien set NCC=null where NCC=@MaNCC
-	update PhieuNhapXe set NCC=null where NCC=@MaNCC
+	declare @Ma nvarchar(10);
+	select @Ma=Ma from deleted
+	update CTCungCapPhuKien set NCC=null where NCC=@Ma
+	update CTCungCapPhuKien set NCC=null where NCC=@Ma
+	update PhieuNhapPhuKien set NCC=null where NCC=@Ma
+	update PhieuNhapXe set NCC=null where NCC=@Ma
 
-	delete from NCC where Ma=@MaNCC
+	delete from NCC where Ma=@Ma
 end
 go
 
