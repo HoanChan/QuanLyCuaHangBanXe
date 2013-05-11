@@ -2,7 +2,7 @@
 go
 
 
-create function ft_SoLuongTon (@MaLoaiXe nvarchar(10))
+alter function ft_SoLuongTon (@MaLoaiXe nvarchar(10))
 RETURNS int
 AS 
 begin
@@ -21,7 +21,7 @@ begin
 end
 go
 
-CREATE PROCEDURE sp_ChucVu_Insert
+alter PROCEDURE sp_ChucVu_Insert
 @MaCV nvarchar(10),
 @TenCV nvarchar(30)
 AS
@@ -30,24 +30,24 @@ BEGIN
 END
 go
 
-create procedure sp_ChucVu_Delete
+alter procedure sp_ChucVu_Delete
 @MaCV nvarchar(10)
 AS
 BEGIN
-	DELETE FROM ChucVu WHERE MaCV=@MaCV
+	DELETE FROM ChucVu WHERE Ma=@MaCV
 END
 go
 
-create procedure sp_ChucVu_Update
+alter procedure sp_ChucVu_Update
 @MaCV nvarchar(10),
 @TenCV nvarchar(30)
 as
 begin
-	update ChucVu set TenCV=@TenCV where MaCV=@MaCV
+	update ChucVu set Ten=@TenCV where Ma=@MaCV
 end
 go
 
-create procedure sp_NCC_Insert
+alter procedure sp_NCC_Insert
 @MaNCC nvarchar(10),
 @TenNCC nvarchar(30),
 @DiaChi nvarchar(50),
@@ -58,26 +58,26 @@ BEGIN
 END
 GO
 
-create procedure sp_NCC_Delete
+alter procedure sp_NCC_Delete
 @MaNCC nvarchar(10)
 AS
 BEGIN
-	delete from NCC where MaNCC=@MaNCC
+	delete from NCC where Ma=@MaNCC
 END
 GO
 
-create procedure sp_NCC_Update
+alter procedure sp_NCC_Update
 @MaNCC nvarchar(10),
 @TenNCC nvarchar(30),
 @DiaChi nvarchar(50),
 @SoDT nchar(15)
 AS
 BEGIN
-	update NCC set TenNCC=@TenNCC, DiaChi=@DiaChi, SoDT=@SoDT where MaNCC=@MaNCC
+	update NCC set Ten=@TenNCC, DiaChi=@DiaChi, SoDT=@SoDT where Ma=@MaNCC
 END
 GO
 
-CREATE PROCEDURE sp_ChiNhanh_Insert
+alter PROCEDURE sp_ChiNhanh_Insert
 @MaCN nvarchar(10),
 @TenCN nvarchar(30),
 @DiaChi nvarchar(50),
@@ -89,7 +89,7 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE sp_ChiNhanh_update
+alter PROCEDURE sp_ChiNhanh_update
 @MaCN nvarchar(10),
 @TenCN nvarchar(30),
 @DiaChi nvarchar(50),
@@ -97,19 +97,19 @@ CREATE PROCEDURE sp_ChiNhanh_update
 @NVQuanLy nvarchar(10)
 AS
 BEGIN
-	update ChiNhanh set TenChiNhanh=@TenCN, DiaChi=@DiaChi, SoDT=@SoDT, NVQuanLy=@NVQuanLy where MaCN=@MaCN
+	update ChiNhanh set Ten=@TenCN, DiaChi=@DiaChi, SoDT=@SoDT, NVQuanLy=@NVQuanLy where Ma=@MaCN
 END
 GO
 
-CREATE PROCEDURE sp_ChiNhanh_Delete
+alter PROCEDURE sp_ChiNhanh_Delete
 @MaCN nvarchar(10)
 AS
 BEGIN
-	delete from ChiNhanh where MaCN=@MaCN
+	delete from ChiNhanh where Ma=@MaCN
 END
 GO
 
-CREATE PROCEDURE sp_NhanVien_Insert
+alter PROCEDURE sp_NhanVien_Insert
 @MaNV nvarchar(10),
 @HoTen nvarchar(30),
 @DiaChi nvarchar(50),
@@ -127,7 +127,7 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE sp_NhanVien_Update
+alter PROCEDURE sp_NhanVien_Update
 @MaNV nvarchar(10),
 @HoTen nvarchar(30),
 @DiaChi nvarchar(50),
@@ -142,19 +142,19 @@ CREATE PROCEDURE sp_NhanVien_Update
 AS
 BEGIN
 	UPDATE NhanVien SET HoTen=@HoTen, DiaChi=@DiaChi, SoDT=@SoDT, GioiTinh=@GioiTinh, Luong=@Luong, ChiNhanh=@ChiNhanh, Kho=@Kho, ChucVu=@ChucVu, NgaySinh=@NgaySinh
-	WHERE MaNV=@MaNV
+	WHERE Ma=@MaNV
 END
 GO
 
-CREATE PROCEDURE sp_NhanVien_Delete
+alter PROCEDURE sp_NhanVien_Delete
 @MaNV nvarchar(10)
 AS
 BEGIN
-	DELETE FROM NhanVien WHERE MaNV=@MaNV
+	DELETE FROM NhanVien WHERE Ma=@MaNV
 END
 GO
 
-CREATE PROCEDURE sp_KhachHang_Insert
+alter PROCEDURE sp_KhachHang_Insert
 @MaKH nvarchar(10),
 @TenKH nvarchar(30),
 @DiaChi nvarchar(50),
@@ -165,27 +165,27 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE sp_KhachHang_Update
+alter PROCEDURE sp_KhachHang_Update
 @MaKH nvarchar(10),
 @TenKH nvarchar(30),
 @DiaChi nvarchar(50),
 @SoDT nvarchar(15)
 AS
 BEGIN
-	UPDATE KhachHang SET TenKH=@TenKH, SoDT=@SoDT, DiaChi=@DiaChi
-	WHERE MaKH=@MaKH
+	UPDATE KhachHang SET Ten=@TenKH, SoDT=@SoDT, DiaChi=@DiaChi
+	WHERE Ma=@MaKH
 END
 GO
 
-CREATE PROCEDURE sp_KhachHang_Delete
+alter PROCEDURE sp_KhachHang_Delete
 @MaKH nvarchar(10)
 AS
 BEGIN
-	DELETE FROM KhachHang WHERE MaKH=@MaKH
+	DELETE FROM KhachHang WHERE Ma=@MaKH
 END
 GO
 
-CREATE PROCEDURE sp_Xe_Insert
+alter PROCEDURE sp_Xe_Insert
 @SoKhung nvarchar(50),
 @SoMay nvarchar(50), 
 @ChiNhanh nvarchar(10),
@@ -196,27 +196,27 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE sp_Xe_Update
+alter PROCEDURE sp_Xe_Update
 @SoKhung nvarchar(50),
 @SoMay nvarchar(50), 
 @ChiNhanh nvarchar(10),
 @LoaiXe nvarchar(10)
 AS
 BEGIN
-	UPDATE Xe SET SoMay=@SoMay, LoaiXe=@LoaiXe, ChiNhanh=@ChiNhanh
-	WHERE SoKhung=@SoKhung
+	UPDATE Xe SET SoKhung=@SoKhung, MaLoaiXe=@LoaiXe, ChiNhanh=@ChiNhanh
+	WHERE SoMay=@SoMay
 END
 GO
 
-CREATE PROCEDURE sp_Xe_Delete
-@SoKhung nvarchar(50)
+alter PROCEDURE sp_Xe_Delete
+@SoMay nvarchar(50)
 AS
 BEGIN
-	DELETE FROM Xe WHERE SoKhung=@SoKhung
+	DELETE FROM Xe WHERE SoMay=@SoMay
 END
 GO
 
-CREATE PROCEDURE sp_LoaiXe_Insert
+alter PROCEDURE sp_LoaiXe_Insert
 @MaLoai nvarchar(10),
 @TenLoai nvarchar(20),
 @Hang nvarchar(10),
@@ -234,7 +234,7 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE sp_LoaiXe_Update
+alter PROCEDURE sp_LoaiXe_Update
 @MaLoai nvarchar(10),
 @TenLoai nvarchar(20),
 @Hang nvarchar(10),
@@ -248,20 +248,20 @@ CREATE PROCEDURE sp_LoaiXe_Update
 @GiaBan money
 AS
 BEGIN
-	UPDATE LoaiXe SET TenLoai=@TenLoai, MauSac=@MauSac, Hang=@Hang, TGBH=@TGBH, DongCo=@DongCo, TrongLuong=@TrongLuong, DTXiLanh=@DTXiLanh, Khung=@Khung, Banh=@Banh, GiaBan=@GiaBan
-	WHERE MaLoai=@MaLoai
+	UPDATE LoaiXe SET Ten=@TenLoai, MauSac=@MauSac, Hang=@Hang, TGBH=@TGBH, DongCo=@DongCo, TrongLuong=@TrongLuong, DTXiLanh=@DTXiLanh, Khung=@Khung, Banh=@Banh, GiaBan=@GiaBan
+	WHERE Ma=@MaLoai
 END
 GO
 
-CREATE PROCEDURE sp_LoaiXe_Delete
+alter PROCEDURE sp_LoaiXe_Delete
 @MaLoaiXe nvarchar(10)
 AS
 BEGIN
-	DELETE FROM LoaiXe WHERE MaLoai=@MaLoaiXe
+	DELETE FROM LoaiXe WHERE Ma=@MaLoaiXe
 END
 GO
 
-CREATE PROCEDURE sp_Kho_Insert
+alter PROCEDURE sp_Kho_Insert
 @MaKho nvarchar(10),
 @TenKho nvarchar(30),
 @DiaChi nvarchar(50),
@@ -273,7 +273,7 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE sp_Kho_Update
+alter PROCEDURE sp_Kho_Update
 @MaKho nvarchar(10),
 @TenKho nvarchar(30),
 @DiaChi nvarchar(50),
@@ -281,20 +281,20 @@ CREATE PROCEDURE sp_Kho_Update
 @NVQuanLy nvarchar(10)
 AS
 BEGIN
-	UPDATE Kho SET TenKho=@TenKho, DiaChi=@DiaChi, SoDT=@SoDT, NVQuanLy=@NVQuanLy
-	WHERE MaKho=@MaKho
+	UPDATE Kho SET Ten=@TenKho, DiaChi=@DiaChi, SoDT=@SoDT, NVQuanLy=@NVQuanLy
+	WHERE Ma=@MaKho
 END
 GO
 
-CREATE PROCEDURE sp_Kho_Delete
+alter PROCEDURE sp_Kho_Delete
 @MaKho nvarchar(10)
 AS
 BEGIN
-	DELETE FROM Kho WHERE MaKho=@MaKho
+	DELETE FROM Kho WHERE Ma=@MaKho
 END
 GO
 
-create procedure sp_PhieuXuatKho_Insert
+alter procedure sp_PhieuXuatKho_Insert
 @MaPhieu nvarchar(10),
 @NgayXuat datetime,
 @ChiNhanh nvarchar(10),
@@ -306,7 +306,7 @@ begin
 end
 go
 
-create procedure sp_CTVanChuyen_Insert
+alter procedure sp_CTVanChuyen_Insert
 @MaNV nvarchar(10),
 @MaPhieuXuatKho nvarchar(10)
 as
@@ -315,7 +315,7 @@ begin
 end
 go
 
-create procedure sp_HSBanXe_Insert
+alter procedure sp_HSBanXe_Insert
 @MaHS nvarchar(10),
 @NgayMua datetime,
 @KhachHang nvarchar(10),
@@ -327,7 +327,7 @@ begin
 end
 go
 
-create procedure sp_CTPhieuNhapXe_Insert
+alter procedure sp_CTPhieuNhapXe_Insert
 @MaPhieu nvarchar(10),
 @MaLoai nvarchar(10),
 @SoLuong int,
@@ -339,7 +339,7 @@ begin
 end
 go
 
-create procedure sp_CTPhieuXuatXe_Insert
+alter procedure sp_CTPhieuXuatXe_Insert
 @MaPhieuXuatKho nvarchar(10),
 @MaLoaiXe nvarchar(10),
 @SoLuong int
@@ -349,7 +349,7 @@ begin
 end
 go
 
-create procedure sp_CTCungCapXe_Insert
+alter procedure sp_CTCungCapXe_Insert
 @MaNCC nvarchar(10),
 @MaLoaiXe nvarchar(10)
 as
@@ -358,7 +358,7 @@ begin
 end
 go
 
-create procedure sp_PhieuNhapXe_Insert
+alter procedure sp_PhieuNhapXe_Insert
 @MaPhieuNhap nvarchar(10),
 @Kho nvarchar(10),
 @NCC nvarchar(10),
@@ -371,7 +371,7 @@ begin
 end
 go
 
-create procedure sp_PhieuNhapPhuKien_Insert
+alter procedure sp_PhieuNhapPhuKien_Insert
 @MaPhieu varchar(10),
 @ThoiGian datetime,
 @NVXacNhan nvarchar(10),
@@ -384,7 +384,7 @@ begin
 end
 go
 
-create procedure sp_CTCungCapPhuKien_Insert
+alter procedure sp_CTCungCapPhuKien_Insert
 @NCC nvarchar(10),
 @MaLoaiPK nvarchar(10)
 as
@@ -393,7 +393,7 @@ begin
 end
 go
 
-create procedure sp_CTNhapPK_Insert
+alter procedure sp_CTNhapPK_Insert
 @MaPhieu nvarchar(10),
 @MaLoai nvarchar(10),
 @SL int,
@@ -406,7 +406,7 @@ end
 go
 
 
-create procedure sp_CTPhieuXuatPK_Insert
+alter procedure sp_CTPhieuXuatPK_Insert
 @MaPhieu nvarchar(10),
 @MaLoaiPK nvarchar(10),
 @SL int
@@ -416,7 +416,7 @@ begin
 end
 go
 
-create procedure sp_PhuKien_Insert
+alter procedure sp_PhuKien_Insert
 @MaPK nvarchar(10),
 @Hang nvarchar(10),
 @LoaiPk nvarchar(10)
@@ -426,26 +426,26 @@ begin
 end
 go
 
-create procedure sp_PhuKien_Update
+alter procedure sp_PhuKien_Update
 @MaPK nvarchar(10),
 @Hang nvarchar(10),
 @LoaiPk nvarchar(10)
 as
 begin
-	update PhuKien set Hang=@Hang, LoaiPhuKien=@LoaiPk
-	where MaPhuKien=@MaPK
+	update PhuKien set Hang=@Hang, MaLoaiPhuKien=@LoaiPk
+	where Ma=@MaPK
 end
 go
 
-create procedure sp_PhuKien_Delete
+alter procedure sp_PhuKien_Delete
 @MaPK nvarchar(10)
 as
 begin
-	delete from PhuKien where MaPhuKien=@MaPK
+	delete from PhuKien where Ma=@MaPK
 end
 go
 
-create procedure sp_LoaiPhuKien_Insert
+alter procedure sp_LoaiPhuKien_Insert
 @MaLoai nvarchar(10),
 @TenLoai nvarchar(50),
 @GiaBan money,
@@ -456,27 +456,27 @@ begin
 end
 go
 
-create procedure sp_LoaiPhuKien_Update
+alter procedure sp_LoaiPhuKien_Update
 @MaLoai nvarchar(10),
 @TenLoai nvarchar(50),
 @GiaBan money,
 @GhiChu nvarchar(MAX)
 as
 begin
-	update LoaiPhuKien set TenLoai=@TenLoai, GiaBan=@GiaBan, GhiChu=@GhiChu
-	where MaLoai=@MaLoai
+	update LoaiPhuKien set Ten=@TenLoai, GiaBan=@GiaBan, GhiChu=@GhiChu
+	where Ma=@MaLoai
 end
 go
 
-create procedure sp_LoaiPhuKien_Delete
+alter procedure sp_LoaiPhuKien_Delete
 @MaLoai nvarchar(10)
 as
 begin
-	delete from LoaiPhuKien where MaLoai=@MaLoai
+	delete from LoaiPhuKien where Ma=@MaLoai
 end
 go
 
-create procedure sp_ChiTietQuyen_Insert
+alter procedure sp_ChiTietQuyen_Insert
 @MaCV nvarchar(10),
 @MaQuyen nvarchar(10)
 as
@@ -485,7 +485,7 @@ begin
 end
 go
 
-create procedure sp_ChiTietQuyen_Update
+alter procedure sp_ChiTietQuyen_Update
 @MaCV nvarchar(10),
 @MaQuyen nvarchar(10)
 as
@@ -495,7 +495,7 @@ end
 go
 
 
-create procedure sp_ChiTietQuyen_Delete
+alter procedure sp_ChiTietQuyen_Delete
 @MaCV nvarchar(10),
 @MaQuyen nvarchar(10)
 as
@@ -504,7 +504,7 @@ begin
 end
 go
 
-create procedure sp_Quyen_Insert
+alter procedure sp_Quyen_Insert
 @MaQuyen nvarchar(10),
 @TenQuyen nvarchar(30),
 @GhiChu nvarchar(MAX)
@@ -514,27 +514,27 @@ begin
 end
 go
 
-create procedure sp_Quyen_Update
+alter procedure sp_Quyen_Update
 @MaQuyen nvarchar(10),
 @TenQuyen nvarchar(30),
 @GhiChu nvarchar(MAX)
 as
 begin
-	update Quyen set TenQuyen=@TenQuyen, GhiChu=@GhiChu
-	where MaQuyen=@MaQuyen
+	update Quyen set Ten=@TenQuyen, GhiChu=@GhiChu
+	where Ma=@MaQuyen
 end
 go
 
-create procedure sp_Quyen_Delete
+alter procedure sp_Quyen_Delete
 @MaQuyen nvarchar(10)
 as
 begin
-	delete from Quyen where MaQuyen=@MaQuyen
+	delete from Quyen where Ma=@MaQuyen
 end
 go
 
 --Thêm phiếu sửa chữa
-create procedure sp_PhieuSuaChua_Insert
+alter procedure sp_PhieuSuaChua_Insert
 @MaPhieu nvarchar(10),
 @NgaySua datetime,
 @GhiChu nvarchar(max),
@@ -546,7 +546,7 @@ END
 go
 
 --Them vào Chi tiet sua chua
-create procedure sp_ChiTietSuaChua_Insert
+alter procedure sp_ChiTietSuaChua_Insert
 @MaPhieu nvarchar(10),
 @MaPhuKien nvarchar(10),
 @sl int
@@ -558,23 +558,23 @@ go
 
 
 --Xóa phiếu sửa chữa khi biết mã phiếu
-create procedure Xoa_PhieuSuaChua
+alter procedure Xoa_PhieuSuaChua
 @MaPhieu nvarchar(10)
 AS
 BEGIN
-	delete from PhieuSuaChua where MaPhieu=@MaPhieu
+	delete from PhieuSuaChua where Ma=@MaPhieu
 END
 go
 
 --Sửa ghi chú của phiếu sửa chữa khi biết mã phiếu
-create procedure CapNhat_PhieuSuaChua
+alter procedure CapNhat_PhieuSuaChua
 @MaPhieu nvarchar(10),
 @NgaySua datetime,
 @GhiChu nvarchar(max),
 @NVSua nvarchar(10)
 AS
 BEGIN
-	update PhieuSuaChua set MaPhieu=@MaPhieu, NgaySuaChua=@NgaySua,GhiChu=@GhiChu, NVSuaChua=@NVSua  where MaPhieu=@MaPhieu
+	update PhieuSuaChua set NgaySuaChua=@NgaySua,GhiChu=@GhiChu, NVSuaChua=@NVSua  where Ma=@MaPhieu
 END
 go
 
