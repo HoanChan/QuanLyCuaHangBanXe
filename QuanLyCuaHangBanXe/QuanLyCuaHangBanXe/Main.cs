@@ -120,5 +120,11 @@ namespace QuanLyCuaHangBanXe
             UpdateGridView();
         }
 
+        private void iQuanLyChiNhanh_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            CurrentMDI = new ChiNhanh();
+            UpdateGridView();
+        }
+
     }
 }
