@@ -545,10 +545,66 @@ go
 alter procedure sp_CTSuaChua_Insert
 @PhieuSuaChua nvarchar(10),
 @PhuKien nvarchar(10),
-@sl int
+@SoLuong int
 AS
 BEGIN
-	insert into CTSuaChua values (@PhieuSuaChua,@PhuKien,@sl)
+	insert into CTSuaChua values (@PhieuSuaChua, @PhuKien, @SoLuong)
 END
 go
 
+alter procedure sp_Menu_Insert
+@Ma nvarchar(10),
+@Ten nvarchar(30),
+@GhiChu nvarchar(MAX)
+as
+begin
+	insert into Menu values(@Ma, @Ten, @GhiChu)
+end
+go
+
+alter procedure sp_Menu_Update
+@Ma nvarchar(10),
+@Ten nvarchar(30),
+@GhiChu nvarchar(MAX)
+as
+begin
+	update Menu set Ten=@Ten, GhiChu=@GhiChu
+	where Ma=@Ma
+end
+go
+
+alter procedure sp_Menu_Delete
+@Ma nvarchar(10)
+as
+begin
+	delete from Menu where Ma=@Ma
+end
+go
+
+alter procedure sp_Quyen_Menu_Insert
+@Quyen nvarchar(10),
+@Menu nvarchar(10)
+as
+begin
+	insert into Quyen_Menu values(@Quyen, @Menu)
+end
+go
+
+alter procedure sp_Quyen_Menu_Update
+@Quyen nvarchar(10),
+@Menu nvarchar(10)
+as
+begin
+	update Quyen_Menu set Quyen=@Quyen
+	where Menu=@Menu
+end
+go
+
+alter procedure sp_Quyen_Menu_Delete
+@Quyen nvarchar(10),
+@Menu nvarchar(10)
+as
+begin
+	delete from Quyen_Menu where Quyen=@Quyen and Menu=@Menu
+end
+go
