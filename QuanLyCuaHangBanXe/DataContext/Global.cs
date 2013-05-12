@@ -114,7 +114,7 @@ namespace DataContext
 
         public static void SetPropertyValue(this object objName, string propertyName, object value)
         {
-            objName.GetType().GetProperty(propertyName).SetValue(objName, (value is DBNull) ? null : value,null);
+            objName.GetType().GetProperty(propertyName).SetValue(objName, (value is DBNull) ? null : value); 
         }
 
         public static object GetPropertyValue(this object objName, string propertyName)

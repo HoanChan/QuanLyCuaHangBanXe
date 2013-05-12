@@ -20,30 +20,44 @@ namespace DataContext
         /// <returns>Danh sách</returns>
         public static IList GetList(Type ItemType, string Name = null, string Value = "")
         {
-            var aList = (IList)(typeof(List<>).MakeGenericType(ItemType).CreateNew());
             var aData = GetData(ItemType);
-            foreach (DataRow Row in aData.Tables[0].Rows)
+            if (string.IsNullOrEmpty(Name))
             {
-                var Item = ItemType.CreateNew();
-                var IsOk = false;
-                foreach (var pro in ItemType.GetProperties())
+                var aList = (IList)(typeof(List<>).MakeGenericType(ItemType).CreateNew());
+                foreach (DataRow Row in aData.Tables[0].Rows) 
                 {
-                    var aName = string.IsNullOrEmpty(Name) ? pro.Name : CultureInfo.CurrentCulture.TextInfo.ToTitleCase(pro.GetName().ToLower()).Replace(" ", string.Empty);
-                    Item.SetPropertyValue(aName, Row[pro.Name]);
-                    if (!string.IsNullOrEmpty(Name))
+                    var Item = ItemType.CreateNew();
+                    foreach (var pro in ItemType.GetProperties())
                     {
+                        Item.SetPropertyValue(pro.Name, Row[pro.Name]);
+                    }
+                    aList.Add(Item);
+                }
+                return aList;
+            }
+            else
+            {
+                var aList = new List<Object>();
+                foreach (DataRow Row in aData.Tables[0].Rows)
+                {
+                    var Item = ItemType.CreateNew();
+                    var IsOk = false;
+                    foreach (var pro in ItemType.GetProperties())
+                    {
+                        //var aName = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(pro.GetName().ToLower()).Replace(" ", string.Empty);
+                        Item.SetPropertyValue(pro.Name, Row[pro.Name]);
                         if (pro.Name == Name)
                         {
                             IsOk = Row[pro.Name] == Value;
                         }
                     }
+                    if (IsOk)
+                    {
+                        aList.Add(Item);
+                    }
                 }
-                if (string.IsNullOrEmpty(Name) || IsOk)
-                {
-                    aList.Add(Item);
-                }
+                return aList;
             }
-            return aList;
         }
 
         public static DataSet GetData(Type ItemType)
