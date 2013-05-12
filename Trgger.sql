@@ -37,6 +37,8 @@ begin
 end
 go
 
+
+
 alter trigger tg_NhanVien_Delete on NhanVien
 instead of delete
 as
@@ -94,7 +96,7 @@ alter trigger tg_Menu_Insert_Update on Menu
 for insert, update
 as
 begin
-	declare @Ma nvarchar(10);
+	declare @Ma nvarchar(50);
 	declare @Ten nvarchar(30);
 	select @Ma=Ma, @Ten=Ten from inserted
 	
@@ -113,7 +115,7 @@ alter trigger tg_Menu_Delete on Menu
 instead of delete
 as
 begin
-	declare @Ma nvarchar(10);
+	declare @Ma nvarchar(50);
 	select @Ma=Ma from deleted
 
 	delete from Quyen_Menu where Menu=@Ma

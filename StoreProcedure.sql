@@ -158,7 +158,7 @@ alter PROCEDURE sp_NhanVien_Insert
 @HoTen nvarchar(30),
 @DiaChi nvarchar(50),
 @SoDT nchar(15),
-@GioiTinh tinyint,
+@GioiTinh bit,
 @Luong money,
 @ChiNhanh nvarchar(10),
 @Kho nvarchar(10),
@@ -175,6 +175,19 @@ BEGIN
 		raiserror (@message, 16, 1)
 		return 
 	end
+
+	if(@ChiNhanh='')
+		set @ChiNhanh=null
+	if(@Kho='')
+		set @Kho=null
+
+	set @message= N'[ChiNhanh] và [Kho] không được đồng thời khác null';
+	if(@ChiNhanh!= null and @Kho!=null)
+	begin
+		raiserror (@message, 16, 1)
+		return 
+	end
+
 	INSERT INTO NhanVien VALUES(@Ma, @HoTen, @DiaChi, @SoDT, @GioiTinh, @Luong, @ChiNhanh, @Kho, @ChucVu, @MatKhau, @NgaySinh)
 END
 GO
@@ -184,7 +197,7 @@ alter PROCEDURE sp_NhanVien_Update
 @HoTen nvarchar(30),
 @DiaChi nvarchar(50),
 @SoDT nchar(15),
-@GioiTinh tinyint,
+@GioiTinh bit,
 @Luong money,
 @ChiNhanh nvarchar(10),
 @Kho nvarchar(10),
