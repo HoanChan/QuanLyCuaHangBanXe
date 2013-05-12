@@ -25,15 +25,14 @@ alter PROCEDURE sp_ChucVu_Insert
 @Ten nvarchar(30)
 AS
 BEGIN
-	select * from ChucVu where Ma=@Ma
 	declare @message nvarchar(MAX);	
-	set @message= @Ma + 'bị trùng';
+	set @message= N'[Ma] bị trùng';
+	select * from ChucVu where Ma=@Ma
 	if(@@ROWCOUNT>0)
 	begin
 		raiserror (@message, 16, 1)
-		rollback transaction
+		return 
 	end
-
 	Insert into ChucVu values(@Ma, @Ten)                                                 
 END
 go
@@ -69,6 +68,14 @@ alter procedure sp_NCC_Insert
 @SoDT nchar(15)
 AS
 BEGIN
+	declare @message nvarchar(MAX);	
+	set @message= N'[Ma] bị trùng';
+	select * from NCC where Ma=@Ma
+	if(@@ROWCOUNT>0)
+	begin
+		raiserror (@message, 16, 1)
+		return 
+	end
 	insert into NCC values(@Ma, @Ten, @DiaChi, @SoDT)
 END
 GO
@@ -107,6 +114,14 @@ alter PROCEDURE sp_ChiNhanh_Insert
 @NVQuanLy nvarchar(10)
 AS
 BEGIN
+	declare @message nvarchar(MAX);	
+	set @message= N'[Ma] bị trùng';
+	select * from ChiNhanh where Ma=@Ma
+	if(@@ROWCOUNT>0)
+	begin
+		raiserror (@message, 16, 1)
+		return 
+	end
 	insert into ChiNhanh values(@Ma, @Ten, @DiaChi, @SoDT, @NVQuanLy)
 END
 GO
@@ -152,6 +167,14 @@ alter PROCEDURE sp_NhanVien_Insert
 @NgaySinh datetime
 AS
 BEGIN
+	declare @message nvarchar(MAX);	
+	set @message= N'[Ma] bị trùng';
+	select * from NhanVien where Ma=@Ma
+	if(@@ROWCOUNT>0)
+	begin
+		raiserror (@message, 16, 1)
+		return 
+	end
 	INSERT INTO NhanVien VALUES(@Ma, @HoTen, @DiaChi, @SoDT, @GioiTinh, @Luong, @ChiNhanh, @Kho, @ChucVu, @MatKhau, @NgaySinh)
 END
 GO
@@ -197,6 +220,14 @@ alter PROCEDURE sp_KhachHang_Insert
 @SoDT nvarchar(15)
 AS
 BEGIN
+	declare @message nvarchar(MAX);	
+	set @message= N'[Ma] bị trùng';
+	select * from KhachHang where Ma=@Ma
+	if(@@ROWCOUNT>0)
+	begin
+		raiserror (@message, 16, 1)
+		return 
+	end
 	INSERT INTO KhachHang VALUES(@Ma, @Ten, @DiaChi, @SoDT)
 END
 GO
@@ -235,6 +266,14 @@ alter PROCEDURE sp_Xe_Insert
 @LoaiXe nvarchar(10)
 AS
 BEGIN
+	declare @message nvarchar(MAX);	
+	set @message= N'[SoMay] bị trùng';
+	select * from Xe where SoMay=@SoMay
+	if(@@ROWCOUNT>0)
+	begin
+		raiserror (@message, 16, 1)
+		return 
+	end
 	INSERT INTO Xe VALUES(@SoKhung, @SoMay, @ChiNhanh, @LoaiXe)
 END
 GO
@@ -280,6 +319,14 @@ alter PROCEDURE sp_LoaiXe_Insert
 @GiaBan money
 AS
 BEGIN
+	declare @message nvarchar(MAX);	
+	set @message= N'[Ma] bị trùng';
+	select * from LoaiXe where Ma=@Ma
+	if(@@ROWCOUNT>0)
+	begin
+		raiserror (@message, 16, 1)
+		return 
+	end
 	INSERT INTO LoaiXe VALUES(@Ma, @Ten, @Hang, @TGBH, @DongCo, @DTXiLanh, @MauSac, @TrongLuong, @Khung, @Banh, @GiaBan)
 END
 GO
@@ -326,6 +373,14 @@ alter PROCEDURE sp_Kho_Insert
 @NVQuanLy nvarchar(10)
 AS
 BEGIN
+	declare @message nvarchar(MAX);	
+	set @message= N'[Ma] bị trùng';
+	select * from Kho where Ma=@Ma
+	if(@@ROWCOUNT>0)
+	begin
+		raiserror (@message, 16, 1)
+		return 
+	end
 	INSERT INTO Kho VALUES(@Ma, @Ten, @DiaChi, @SoDT, @NVQuanLy)
 END
 GO
@@ -366,6 +421,14 @@ alter procedure sp_PhieuXuatKho_Insert
 @Kho nvarchar(10)
 as
 begin
+	declare @message nvarchar(MAX);	
+	set @message= N'[Ma] bị trùng';
+	select * from PhieuXuatKho where Ma=@Ma
+	if(@@ROWCOUNT>0)
+	begin
+		raiserror (@message, 16, 1)
+		return 
+	end
 	insert into PhieuXuatKHo values(@Ma, @NgayXuat, @ChiNhanh, @NVXacNhan, @Kho)
 end
 go
@@ -382,6 +445,14 @@ alter procedure sp_CTVanChuyen_Insert
 @PhieuXuatKho nvarchar(10)
 as
 begin
+	declare @message nvarchar(MAX);	
+	set @message= N'[NhanVien] và [PhieuXuatKho] bị trùng';
+	select * from CTVanChuyen where NhanVien=@NhanVien and PhieuXuatKho=@PhieuXuatKho
+	if(@@ROWCOUNT>0)
+	begin
+		raiserror (@message, 16, 1)
+		return 
+	end
 	insert into CTVanChuyen values(@NhanVien, @PhieuXuatKho)
 end
 go
@@ -401,6 +472,14 @@ alter procedure sp_HoSoBanXe_Insert
 @Xe nvarchar(50)
 as
 begin
+	declare @message nvarchar(MAX);	
+	set @message= N'[Ma] bị trùng';
+	select * from HoSoBanXe where Ma=@Ma
+	if(@@ROWCOUNT>0)
+	begin
+		raiserror (@message, 16, 1)
+		return 
+	end
 	insert into HoSoBanXe values (@Ma, @NgayMua, @KhachHang, @NhanVienBan, @Xe)
 end
 go
@@ -420,6 +499,14 @@ alter procedure sp_CTPhieuNhapXe_Insert
 @ThanhTien money
 as
 begin
+	declare @message nvarchar(MAX);	
+	set @message= N'[PhieuNhapXe] và [LoaiXe] bị trùng';
+	select * from CTPhieuNhapXe where PhieuNhapXe=@PhieuNhapXe and LoaiXe=@loaiXe
+	if(@@ROWCOUNT>0)
+	begin
+		raiserror (@message, 16, 1)
+		return 
+	end
 	insert into CTPhieuNhapXe values(@PhieuNhapXe, @LoaiXe, @SoLuong, @GiaMua, @ThanhTien)
 end
 go
@@ -437,6 +524,14 @@ alter procedure sp_CTPhieuXuatXe_Insert
 @SoLuong int
 as
 begin
+	declare @message nvarchar(MAX);	
+	set @message= N'[PhieuXuatKho] và [LoaiXe] bị trùng';
+	select * from CTPhieuXuatXe where PhieuXuatKho=@PhieuXuatKho and LoaiXe=@LoaiXe
+	if(@@ROWCOUNT>0)
+	begin
+		raiserror (@message, 16, 1)
+		return 
+	end
 	insert into CTPhieuXuatXe values(@PhieuXuatKho, @LoaiXe, @SoLuong)
 end
 go
@@ -453,6 +548,14 @@ alter procedure sp_CTCungCapXe_Insert
 @LoaiXe nvarchar(10)
 as
 begin
+	declare @message nvarchar(MAX);	
+	set @message= N'[NCC] và [LoaiXe] bị trùng';
+	select * from CTCungCapXe where NCC=@NCC and LoaiXe=@LoaiXe
+	if(@@ROWCOUNT>0)
+	begin
+		raiserror (@message, 16, 1)
+		return 
+	end
 	insert into CTCungCapXe values (@NCC, @LoaiXe)
 end
 go
@@ -473,6 +576,14 @@ alter procedure sp_PhieuNhapXe_Insert
 @ThanhTien money
 as
 begin
+	declare @message nvarchar(MAX);	
+	set @message= N'[Ma] bị trùng';
+	select * from PhieuNhapXe where Ma=@Ma
+	if(@@ROWCOUNT>0)
+	begin
+		raiserror (@message, 16, 1)
+		return 
+	end
 	insert into PhieuNhapXe values(@Ma, @Kho, @NCC, @NVXacNhan, @ThoiGian, @ThanhTien)
 end
 go
@@ -493,6 +604,14 @@ alter procedure sp_PhieuNhapPhuKien_Insert
 @ThanhTien money
 as
 begin
+	declare @message nvarchar(MAX);	
+	set @message= N'[Ma] bị trùng';
+	select * from PhieuNhapPhuKien where Ma=@Ma
+	if(@@ROWCOUNT>0)
+	begin
+		raiserror (@message, 16, 1)
+		return 
+	end
 	insert into PhieuNhapPhuKien values(@Ma, @ThoiGian, @NVXacNhan, @Kho, @NCC, @ThanhTien)
 end
 go
@@ -509,6 +628,14 @@ alter procedure sp_CTCungCapPhuKien_Insert
 @LoaiPhuKien nvarchar(10)
 as
 begin
+	declare @message nvarchar(MAX);	
+	set @message= N'[NCC] và [LoaiPhuKien] bị trùng';
+	select * from CTCungCapPhuKien where NCC=@NCC and @LoaiPhuKien=@LoaiPhuKien
+	if(@@ROWCOUNT>0)
+	begin
+		raiserror (@message, 16, 1)
+		return 
+	end
 	insert into CTCungCapPhuKien values(@NCC, @LoaiPhuKien)
 end
 go
@@ -528,6 +655,14 @@ alter procedure sp_CTNhapPhuKien_Insert
 @ThanhTien money
 as
 begin
+	declare @message nvarchar(MAX);	
+	set @message= N'[PhieuNhapPhuKien] và [LoaiPhuKien] bị trùng';
+	select * from CTNhapPhuKien where PhieuNhapPhuKien=@PhieuNhapPhuKien and LoaiPhuKien=@LoaiPhuKien
+	if(@@ROWCOUNT>0)
+	begin
+		raiserror (@message, 16, 1)
+		return 
+	end
 	insert into CTNhapPhuKien values(@PhieuNhapPhuKien, @LoaiPhuKien, @SoLuong, @GiaMua, @ThanhTien)
 end
 go
@@ -545,6 +680,14 @@ alter procedure sp_CTPhieuXuatPhuKien_Insert
 @SoLuong int
 as
 begin
+	declare @message nvarchar(MAX);	
+	set @message= N'[PhieuXuatKho] và [LoaiPhuKien] bị trùng';
+	select * from CTPhieuXuatPhuKien where PhieuXuatKho=@PhieuXuatKho and LoaiPhuKien=@LoaiPhuKien
+	if(@@ROWCOUNT>0)
+	begin
+		raiserror (@message, 16, 1)
+		return 
+	end
 	insert into CTPhieuXuatPhuKien values(@PhieuXuatKho,@LoaiPhuKien,@SoLuong)
 end
 go
@@ -562,6 +705,14 @@ alter procedure sp_PhuKien_Insert
 @LoaiPhuKien nvarchar(10)
 as
 begin
+	declare @message nvarchar(MAX);	
+	set @message= N'[Ma] bị trùng';
+	select * from PhuKien where Ma=@Ma
+	if(@@ROWCOUNT>0)
+	begin
+		raiserror (@message, 16, 1)
+		return 
+	end
 	insert into PhuKien values(@Ma, @Hang, @LoaiPhuKien)
 end
 go
@@ -599,6 +750,14 @@ alter procedure sp_LoaiPhuKien_Insert
 @GhiChu nvarchar(MAX)
 as
 begin
+	declare @message nvarchar(MAX);	
+	set @message= N'[Ma] bị trùng';
+	select * from LoaiPhuKien where Ma=@Ma
+	if(@@ROWCOUNT>0)
+	begin
+		raiserror (@message, 16, 1)
+		return 
+	end
 	insert into LoaiPhuKien values(@Ma, @Ten, @GiaBan, @GhiChu)
 end
 go
@@ -635,16 +794,25 @@ alter procedure sp_CTQuyen_Insert
 @Quyen nvarchar(10)
 as
 begin
+	declare @message nvarchar(MAX);	
+	set @message= N'[ChucVu] và [Quyen] bị trùng';
+	select * from CTQuyen where ChucVu=@ChucVu and Quyen=@Quyen
+	if(@@ROWCOUNT>0)
+	begin
+		raiserror (@message, 16, 1)
+		return 
+	end
 	insert into CTQuyen values(@ChucVu, @Quyen)
 end
 go
 
 alter procedure sp_CTQuyen_Update
 @ChucVu nvarchar(10),
-@MaQuyen nvarchar(10)
+@QuyenMoi nvarchar(10),
+@QuyenCu nvarchar(10)
 as
 begin
-	update CTQuyen set Quyen=@MaQuyen where ChucVu=@ChucVu
+	update CTQuyen set Quyen=@QuyenMoi where ChucVu=@ChucVu and Quyen=@QuyenCu
 end
 go
 
@@ -670,6 +838,14 @@ alter procedure sp_Quyen_Insert
 @GhiChu nvarchar(MAX)
 as
 begin
+	declare @message nvarchar(MAX);	
+	set @message= N'[Ma] bị trùng';
+	select * from Quyen where Ma=@Ma
+	if(@@ROWCOUNT>0)
+	begin
+		raiserror (@message, 16, 1)
+		return 
+	end
 	insert into Quyen values(@Ma, @Ten, @GhiChu)
 end
 go
@@ -707,6 +883,14 @@ alter procedure sp_PhieuSuaChua_Insert
 @NVSua nvarchar(10)
 AS
 BEGIN
+	declare @message nvarchar(MAX);	
+	set @message= N'[Ma] bị trùng';
+	select * from PhieuSuaChua where Ma=@Ma
+	if(@@ROWCOUNT>0)
+	begin
+		raiserror (@message, 16, 1)
+		return 
+	end
 	insert into PhieuSuaChua values (@Ma, @NgaySua, @GhiChu, @NVSua)
 END
 go
@@ -724,6 +908,14 @@ alter procedure sp_CTSuaChua_Insert
 @SoLuong int
 AS
 BEGIN
+	declare @message nvarchar(MAX);	
+	set @message= N'[PhieuSuaChua] và [PhuKien] bị trùng';
+	select * from CTSuaChua where PhieuSuaChua=@PhieuSuaChua and PhuKien=@PhuKien
+	if(@@ROWCOUNT>0)
+	begin
+		raiserror (@message, 16, 1)
+		return 
+	end
 	insert into CTSuaChua values (@PhieuSuaChua, @PhuKien, @SoLuong)
 END
 go
@@ -741,6 +933,14 @@ alter procedure sp_Menu_Insert
 @GhiChu nvarchar(MAX)
 as
 begin
+	declare @message nvarchar(MAX);	
+	set @message= N'[Ma] bị trùng';
+	select * from Menu where Ma=@Ma
+	if(@@ROWCOUNT>0)
+	begin
+		raiserror (@message, 16, 1)
+		return 
+	end
 	insert into Menu values(@Ma, @Ten, @GhiChu)
 end
 go
@@ -776,17 +976,26 @@ alter procedure sp_Quyen_Menu_Insert
 @Menu nvarchar(10)
 as
 begin
+	declare @message nvarchar(MAX);	
+	set @message= N'[Quyen] và [Menu] bị trùng';
+	select * from Quyen_Menu where Quyen=@Quyen and Menu=@Menu
+	if(@@ROWCOUNT>0)
+	begin
+		raiserror (@message, 16, 1)
+		return 
+	end
 	insert into Quyen_Menu values(@Quyen, @Menu)
 end
 go
 
 alter procedure sp_Quyen_Menu_Update
-@Quyen nvarchar(10),
-@Menu nvarchar(10)
+@QuyenMoi nvarchar(10),
+@Menu nvarchar(10),
+@QuyenCu nvarchar(10)
 as
 begin
-	update Quyen_Menu set Quyen=@Quyen
-	where Menu=@Menu
+	update Quyen_Menu set Quyen=@QuyenMoi
+	where Menu=@Menu and Quyen=@QuyenCu
 end
 go
 
