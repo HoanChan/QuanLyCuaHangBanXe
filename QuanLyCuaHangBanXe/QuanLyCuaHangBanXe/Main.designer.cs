@@ -51,6 +51,8 @@
             this.iQuanLyPhanQuyen = new DevExpress.XtraBars.BarButtonItem();
             this.iBaoCao = new DevExpress.XtraBars.BarButtonItem();
             this.barStaticItem1 = new DevExpress.XtraBars.BarStaticItem();
+            this.iQuanLyChucVu = new DevExpress.XtraBars.BarButtonItem();
+            this.iQuanLyChiNhanh = new DevExpress.XtraBars.BarButtonItem();
             this.ribbonImageCollectionLarge = new DevExpress.Utils.ImageCollection(this.components);
             this.homeRibbonPage = new DevExpress.XtraBars.Ribbon.RibbonPage();
             this.fileRibbonPageGroup = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
@@ -64,7 +66,7 @@
             this.ribbonStatusBar = new DevExpress.XtraBars.Ribbon.RibbonStatusBar();
             this.splitContainerControl = new DevExpress.XtraEditors.SplitContainerControl();
             this.dxErrorProvider = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider(this.components);
-            this.iQuanLyChucVu = new DevExpress.XtraBars.BarButtonItem();
+            this.iQuanLyNhanVien = new DevExpress.XtraBars.BarButtonItem();
             ((System.ComponentModel.ISupportInitialize)(this.cardView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.DataGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView)).BeginInit();
@@ -130,10 +132,12 @@
             this.iQuanLyPhanQuyen,
             this.iBaoCao,
             this.barStaticItem1,
-            this.iQuanLyChucVu});
+            this.iQuanLyChucVu,
+            this.iQuanLyChiNhanh,
+            this.iQuanLyNhanVien});
             this.ribbonControl.LargeImages = this.ribbonImageCollectionLarge;
             this.ribbonControl.Location = new System.Drawing.Point(0, 0);
-            this.ribbonControl.MaxItemId = 86;
+            this.ribbonControl.MaxItemId = 88;
             this.ribbonControl.Name = "ribbonControl";
             this.ribbonControl.Pages.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPage[] {
             this.homeRibbonPage,
@@ -290,6 +294,22 @@
             this.barStaticItem1.Name = "barStaticItem1";
             this.barStaticItem1.TextAlignment = System.Drawing.StringAlignment.Near;
             // 
+            // iQuanLyChucVu
+            // 
+            this.iQuanLyChucVu.Caption = "Chức Vụ";
+            this.iQuanLyChucVu.Id = 85;
+            this.iQuanLyChucVu.LargeImageIndex = 17;
+            this.iQuanLyChucVu.Name = "iQuanLyChucVu";
+            this.iQuanLyChucVu.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.iQuanLyChucVu_ItemClick);
+            // 
+            // iQuanLyChiNhanh
+            // 
+            this.iQuanLyChiNhanh.Caption = "Chi Nhánh";
+            this.iQuanLyChiNhanh.Id = 86;
+            this.iQuanLyChiNhanh.LargeImageIndex = 10;
+            this.iQuanLyChiNhanh.Name = "iQuanLyChiNhanh";
+            this.iQuanLyChiNhanh.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.iQuanLyChiNhanh_ItemClick);
+            // 
             // ribbonImageCollectionLarge
             // 
             this.ribbonImageCollectionLarge.ImageSize = new System.Drawing.Size(32, 32);
@@ -348,6 +368,8 @@
             this.NguoiDungRibbonPageGroup.ItemLinks.Add(this.iQuanLyQuyen);
             this.NguoiDungRibbonPageGroup.ItemLinks.Add(this.iQuanLyPhanQuyen);
             this.NguoiDungRibbonPageGroup.ItemLinks.Add(this.iQuanLyChucVu);
+            this.NguoiDungRibbonPageGroup.ItemLinks.Add(this.iQuanLyChiNhanh);
+            this.NguoiDungRibbonPageGroup.ItemLinks.Add(this.iQuanLyNhanVien);
             this.NguoiDungRibbonPageGroup.Name = "NguoiDungRibbonPageGroup";
             this.NguoiDungRibbonPageGroup.Text = "Người Dùng";
             // 
@@ -397,13 +419,13 @@
             // 
             this.dxErrorProvider.ContainerControl = this;
             // 
-            // iQuanLyChucVu
+            // iQuanLyNhanVien
             // 
-            this.iQuanLyChucVu.Caption = "Chức Vụ";
-            this.iQuanLyChucVu.Id = 85;
-            this.iQuanLyChucVu.LargeImageIndex = 17;
-            this.iQuanLyChucVu.Name = "iQuanLyChucVu";
-            this.iQuanLyChucVu.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.iQuanLyChucVu_ItemClick);
+            this.iQuanLyNhanVien.Caption = "Nhân Viên";
+            this.iQuanLyNhanVien.Id = 87;
+            this.iQuanLyNhanVien.LargeImageIndex = 15;
+            this.iQuanLyNhanVien.Name = "iQuanLyNhanVien";
+            this.iQuanLyNhanVien.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.iQuanLyNhanVien_ItemClick);
             // 
             // Main
             // 
@@ -473,6 +495,8 @@
         private DevExpress.XtraGrid.Views.Card.CardView cardView1;
         private DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider dxErrorProvider;
         private DevExpress.XtraBars.BarButtonItem iQuanLyChucVu;
+        private DevExpress.XtraBars.BarButtonItem iQuanLyChiNhanh;
+        private DevExpress.XtraBars.BarButtonItem iQuanLyNhanVien;
 
     }
 }

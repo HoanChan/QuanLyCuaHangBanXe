@@ -18,7 +18,7 @@ namespace DataContext
             }
             catch (Exception)
             {
-                return "Danh Sách " + this.GetType().Name;	
+                return "Danh Sách " + this.GetType().Name;
             }
         }
     }
@@ -29,51 +29,533 @@ namespace DataContext
         public string Name { get; set; }
     }
 
-    //[TypeDisplay(Name="Dịch Vụ")]
-    //public partial class DichVu : MasterDetailInfo
-    //{
-    //    public override int GetRelationCount() { return 1; }
-    //    public override string GetRelationName(int RelationIndex) { return "Sử Dụng Dịch Vụ"; }
-    //    public override bool IsEmpty(int RelationIndex) { return dsSuDungDichVu == null ? true : dsSuDungDichVu.Count == 0; }
-    //    public override IList GetChildList(int RelationIndex)
-    //    {
-    //        return dsSuDungDichVu.Select(m => new
-    //        {
-    //            Mã = m.DichVu.Ma,
-    //            DịchVụ = m.DichVu.Ten,
-    //            Giá = m.DichVu.Gia,
-    //            ĐơnVịTính = m.DichVu.DonViTinh,
-    //            SốLượng = m.SoLuong,
-    //            ThôngTin = m.DichVu.ThongTin
-    //        }).ToList();
-    //    }
-    //    public override string ToString()
-    //    {
-    //        return "(" + Ma + ") " + Ten;
-    //    }
-    //}
-    //} 
+    [TypeDisplay(Name = "Chi nhánh")]
+    public partial class ChiNhanh : MasterDetailInfo
+    {
+        public override int GetRelationCount() { return 3; }
+        public override string GetRelationName(int RelationIndex)
+        {
+            switch (RelationIndex)
+            {
+                case 0: return typeof(NhanVien).GetName();
+                case 1: return typeof(PhieuXuatKho).GetName();
+                default: return typeof(Xe).GetName();
+            }
+        }
+        public override bool IsEmpty(int RelationIndex)
+        {
+            switch (RelationIndex)
+            {
+                case 0: return Table.GetList(typeof(NhanVien), this.GetType().Name, Ma).Count == 0;
+                case 1: return Table.GetList(typeof(PhieuXuatKho), this.GetType().Name, Ma).Count == 0;
+                default: return Table.GetList(typeof(Xe), this.GetType().Name, Ma).Count == 0;
+            }
+        }
+        public override IList GetChildList(int RelationIndex)
+        {
+            switch (RelationIndex)
+            {
+                case 0: return Table.GetList(typeof(NhanVien), this.GetType().Name, Ma);
+                case 1: return Table.GetList(typeof(PhieuXuatKho), this.GetType().Name, Ma);
+                default: return Table.GetList(typeof(Xe), this.GetType().Name, Ma);
+            }
+        }
+        public override string ToString()
+        {
+            return "(" + Ma + ") " + Ten;
+        }
+    }
+
     [TypeDisplay(Name = "Chức vụ")]
     public partial class ChucVu : MasterDetailInfo
     {
-        //public override int GetRelationCount() { return 1; }
-        //public override string GetRelationName(int RelationIndex) { return "Sử Dụng Dịch Vụ"; }
-        //public override bool IsEmpty(int RelationIndex) { return dsSuDungDichVu == null ? true : dsSuDungDichVu.Count == 0; }
-        //public override IList GetChildList(int RelationIndex)
-        //{
-        //    return dsSuDungDichVu.Select(m => new
-        //    {
-        //        Mã = m.DichVu.Ma,
-        //        DịchVụ = m.DichVu.Ten,
-        //        Giá = m.DichVu.Gia,
-        //        ĐơnVịTính = m.DichVu.DonViTinh,
-        //        SốLượng = m.SoLuong,
-        //        ThôngTin = m.DichVu.ThongTin
-        //    }).ToList();
-        //}
+        public override int GetRelationCount() { return 2; }
+        public override string GetRelationName(int RelationIndex)
+        {
+            switch (RelationIndex)
+            {
+                case 0: return typeof(CTQuyen).GetName();
+                default: return typeof(NhanVien).GetName();
+            }
+        }
+        public override bool IsEmpty(int RelationIndex)
+        {
+            switch (RelationIndex)
+            {
+                case 0: return Table.GetList(typeof(CTQuyen), this.GetType().Name, Ma).Count == 0;
+                default: return Table.GetList(typeof(NhanVien), this.GetType().Name, Ma).Count == 0;
+            }
+        }
+        public override IList GetChildList(int RelationIndex)
+        {
+            switch (RelationIndex)
+            {
+                case 0: return Table.GetList(typeof(CTQuyen), this.GetType().Name, Ma);
+                default: return Table.GetList(typeof(NhanVien), this.GetType().Name, Ma);
+            }
+        }
         public override string ToString()
         {
-            return "(" + MaCV + ") " + TenCV;
+            return "(" + Ma + ") " + Ten;
+        }
+    }
+
+    [TypeDisplay(Name = "Chi tiết cung cấp phụ kiện")]
+    public partial class CTCungCapPhuKien : MasterDetailInfo
+    {
+
+    }
+
+    [TypeDisplay(Name = "Chi tiết cung cấp xe")]
+    public partial class CTCungCapXe : MasterDetailInfo
+    {
+    }
+
+    [TypeDisplay(Name = "Chi tiết nhập phụ kiện")]
+    public partial class CTNhapPhuKien : MasterDetailInfo
+    {
+    }
+
+    [TypeDisplay(Name = "Chi tiết phiếu nhập xe")]
+    public partial class CTPhieuNhapXe : MasterDetailInfo
+    {
+    }
+
+    [TypeDisplay(Name = "Chi tiết phiếu xuất phụ kiện")]
+    public partial class CTPhieuXuatPhuKien : MasterDetailInfo
+    {
+    }
+
+    [TypeDisplay(Name = "Chi tiết phiếu xuất xe")]
+    public partial class CTPhieuXuatXe : MasterDetailInfo
+    {
+    }
+
+    [TypeDisplay(Name = "Chi tiết quyền")]
+    public partial class CTQuyen : MasterDetailInfo
+    {
+    }
+
+    [TypeDisplay(Name = "Chi tiết sửa chữa")]
+    public partial class CTSuaChua : MasterDetailInfo
+    {
+    }
+
+    [TypeDisplay(Name = "Chi tiết vận chuyển")]
+    public partial class CTVanChuyen : MasterDetailInfo
+    {
+    }
+
+    [TypeDisplay(Name = "Hồ sơ bán xe")]
+    public partial class HoSoBanXe : MasterDetailInfo
+    {
+        public override string ToString()
+        {
+            return Ma;
+        }
+    }
+
+    [TypeDisplay(Name = "Khách hàng")]
+    public partial class KhachHang : MasterDetailInfo
+    {
+        public override int GetRelationCount() { return 1; }
+        public override string GetRelationName(int RelationIndex)
+        {
+            return typeof(HoSoBanXe).GetName();
+        }
+        public override bool IsEmpty(int RelationIndex)
+        {
+            return Table.GetList(typeof(HoSoBanXe), this.GetType().Name, Ma).Count == 0;
+        }
+        public override IList GetChildList(int RelationIndex)
+        {
+            return Table.GetList(typeof(HoSoBanXe), this.GetType().Name, Ma);
+        }
+        public override string ToString()
+        {
+            return "(" + Ma + ") " + Ten;
+        }
+    }
+
+    [TypeDisplay(Name = "Kho")]
+    public partial class Kho : MasterDetailInfo
+    {
+        public override int GetRelationCount() { return 3; }
+        public override string GetRelationName(int RelationIndex)
+        {
+            switch (RelationIndex)
+            {
+                case 0: return typeof(PhieuNhapXe).GetName();
+                case 1: return typeof(PhieuNhapPhuKien).GetName();
+                default: return typeof(PhieuXuatKho).GetName();
+            }
+        }
+        public override bool IsEmpty(int RelationIndex)
+        {
+            switch (RelationIndex)
+            {
+                case 0: return Table.GetList(typeof(PhieuNhapXe), this.GetType().Name, Ma).Count == 0;
+                case 1: return Table.GetList(typeof(PhieuNhapPhuKien), this.GetType().Name, Ma).Count == 0;
+                default: return Table.GetList(typeof(PhieuXuatKho), this.GetType().Name, Ma).Count == 0;
+            }
+        }
+        public override IList GetChildList(int RelationIndex)
+        {
+            switch (RelationIndex)
+            {
+                case 0: return Table.GetList(typeof(PhieuNhapXe), this.GetType().Name, Ma);
+                case 1: return Table.GetList(typeof(PhieuNhapPhuKien), this.GetType().Name, Ma);
+                default: return Table.GetList(typeof(PhieuXuatKho), this.GetType().Name, Ma);
+            }
+        }
+        public override string ToString()
+        {
+            return "(" + Ma + ") " + Ten;
+        }
+    }
+
+    [TypeDisplay(Name = "Loại phụ kiện")]
+    public partial class LoaiPhuKien : MasterDetailInfo
+    {
+        public override int GetRelationCount() { return 4; }
+        public override string GetRelationName(int RelationIndex)
+        {
+            switch (RelationIndex)
+            {
+                case 0: return typeof(CTNhapPhuKien).GetName();
+                case 1: return typeof(CTPhieuXuatPhuKien).GetName();
+                case 2: return typeof(CTCungCapPhuKien).GetName();
+                default: return typeof(PhuKien).GetName();
+            }
+        }
+        public override bool IsEmpty(int RelationIndex)
+        {
+            switch (RelationIndex)
+            {
+                case 0: return Table.GetList(typeof(CTNhapPhuKien), this.GetType().Name, Ma).Count == 0;
+                case 1: return Table.GetList(typeof(CTPhieuXuatPhuKien), this.GetType().Name, Ma).Count == 0;
+                case 2: return Table.GetList(typeof(CTCungCapPhuKien), this.GetType().Name, Ma).Count == 0;
+                default: return Table.GetList(typeof(PhuKien), this.GetType().Name, Ma).Count == 0;
+            }
+        }
+        public override IList GetChildList(int RelationIndex)
+        {
+            switch (RelationIndex)
+            {
+                case 0: return Table.GetList(typeof(CTNhapPhuKien), this.GetType().Name, Ma);
+                case 1: return Table.GetList(typeof(CTPhieuXuatPhuKien), this.GetType().Name, Ma);
+                case 2: return Table.GetList(typeof(CTCungCapPhuKien), this.GetType().Name, Ma);
+                default: return Table.GetList(typeof(PhuKien), this.GetType().Name, Ma);
+            }
+        }
+        public override string ToString()
+        {
+            return "(" + Ma + ") " + Ten;
+        }
+    }
+
+    [TypeDisplay(Name = "Loại xe")]
+    public partial class LoaiXe : MasterDetailInfo
+    {
+        public override int GetRelationCount() { return 4; }
+        public override string GetRelationName(int RelationIndex)
+        {
+            switch (RelationIndex)
+            {
+                case 0: return typeof(CTCungCapXe).GetName();
+                case 1: return typeof(CTPhieuNhapXe).GetName();
+                case 2: return typeof(CTPhieuXuatXe).GetName();
+                default: return typeof(Xe).GetName();
+            }
+        }
+        public override bool IsEmpty(int RelationIndex)
+        {
+            switch (RelationIndex)
+            {
+                case 0: return Table.GetList(typeof(CTCungCapXe), this.GetType().Name, Ma).Count == 0;
+                case 1: return Table.GetList(typeof(CTPhieuNhapXe), this.GetType().Name, Ma).Count == 0;
+                case 2: return Table.GetList(typeof(CTPhieuXuatXe), this.GetType().Name, Ma).Count == 0;
+                default: return Table.GetList(typeof(Xe), this.GetType().Name, Ma).Count == 0;
+            }
+        }
+        public override IList GetChildList(int RelationIndex)
+        {
+            switch (RelationIndex)
+            {
+                case 0: return Table.GetList(typeof(CTCungCapXe), this.GetType().Name, Ma);
+                case 1: return Table.GetList(typeof(CTPhieuNhapXe), this.GetType().Name, Ma);
+                case 2: return Table.GetList(typeof(CTPhieuXuatXe), this.GetType().Name, Ma);
+                default: return Table.GetList(typeof(Xe), this.GetType().Name, Ma);
+            }
+        }
+        public override string ToString()
+        {
+            return "(" + Ma + ") " + Ten;
+        }
+    }
+
+    [TypeDisplay(Name = "Nhà cung cấp")]
+    public partial class NCC : MasterDetailInfo
+    {
+        public override int GetRelationCount() { return 4; }
+        public override string GetRelationName(int RelationIndex)
+        {
+            switch (RelationIndex)
+            {
+                case 0: return typeof(CTCungCapPhuKien).GetName();
+                case 1: return typeof(CTCungCapXe).GetName();
+                case 2: return typeof(PhieuNhapPhuKien).GetName();
+                default: return typeof(PhieuNhapXe).GetName();
+            }
+        }
+        public override bool IsEmpty(int RelationIndex)
+        {
+            switch (RelationIndex)
+            {
+                case 0: return Table.GetList(typeof(CTCungCapPhuKien), this.GetType().Name, Ma).Count == 0;
+                case 1: return Table.GetList(typeof(CTCungCapXe), this.GetType().Name, Ma).Count == 0;
+                case 2: return Table.GetList(typeof(PhieuNhapPhuKien), this.GetType().Name, Ma).Count == 0;
+                default: return Table.GetList(typeof(PhieuNhapXe), this.GetType().Name, Ma).Count == 0;
+            }
+        }
+        public override IList GetChildList(int RelationIndex)
+        {
+            switch (RelationIndex)
+            {
+                case 0: return Table.GetList(typeof(CTCungCapPhuKien), this.GetType().Name, Ma);
+                case 1: return Table.GetList(typeof(CTCungCapXe), this.GetType().Name, Ma);
+                case 2: return Table.GetList(typeof(PhieuNhapPhuKien), this.GetType().Name, Ma);
+                default: return Table.GetList(typeof(PhieuNhapXe), this.GetType().Name, Ma);
+            }
+        }
+        public override string ToString()
+        {
+            return "(" + Ma + ") " + Ten;
+        }
+    }
+
+    [TypeDisplay(Name = "Nhân viên")]
+    public partial class NhanVien : MasterDetailInfo
+    {
+        public override int GetRelationCount() { return 8; }
+        public override string GetRelationName(int RelationIndex)
+        {
+            switch (RelationIndex)
+            {
+                case 0: return typeof(CTVanChuyen).GetName();
+                case 1: return typeof(HoSoBanXe).GetName();
+                case 2: return typeof(Kho).GetName();
+                case 3: return typeof(PhieuNhapPhuKien).GetName();
+                case 4: return typeof(PhieuNhapXe).GetName();
+                case 5: return typeof(PhieuSuaChua).GetName();
+                case 6: return typeof(ChiNhanh).GetName();
+                default: return typeof(PhieuXuatKho).GetName();
+            }
+        }
+        public override bool IsEmpty(int RelationIndex)
+        {
+            switch (RelationIndex)
+            {
+                case 0: return Table.GetList(typeof(CTVanChuyen), "NhanVien", Ma).Count == 0;
+                case 1: return Table.GetList(typeof(HoSoBanXe), "NhanVienBan", Ma).Count == 0;
+                case 2: return Table.GetList(typeof(Kho), "NVQuanLy", Ma).Count == 0;
+                case 3: return Table.GetList(typeof(PhieuNhapPhuKien), "NVXacNhan", Ma).Count == 0;
+                case 4: return Table.GetList(typeof(PhieuNhapXe), "NVXacNhan", Ma).Count == 0;
+                case 5: return Table.GetList(typeof(PhieuSuaChua), "NVSuaChua", Ma).Count == 0;
+                case 6: return Table.GetList(typeof(ChiNhanh), "NVQuanLy", Ma).Count == 0;
+                default: return Table.GetList(typeof(PhieuXuatKho), "NVXacNhan", Ma).Count == 0;
+            }
+        }
+        public override IList GetChildList(int RelationIndex)
+        {
+            switch (RelationIndex)
+            {
+                case 0: return Table.GetList(typeof(CTVanChuyen), "NhanVien", Ma);
+                case 1: return Table.GetList(typeof(HoSoBanXe), "NhanVienBan", Ma);
+                case 2: return Table.GetList(typeof(Kho), "NVQuanLy", Ma);
+                case 3: return Table.GetList(typeof(PhieuNhapPhuKien), "NVXacNhan", Ma);
+                case 4: return Table.GetList(typeof(PhieuNhapXe), "NVXacNhan", Ma);
+                case 5: return Table.GetList(typeof(PhieuSuaChua), "NVSuaChua", Ma);
+                case 6: return Table.GetList(typeof(ChiNhanh), "NVQuanLy", Ma);
+                default: return Table.GetList(typeof(PhieuXuatKho), "NVXacNhan", Ma);
+            }
+        }
+        public override string ToString()
+        {
+            return "(" + Ma + ") " + HoTen;
+        }
+    }
+
+
+    [TypeDisplay(Name = "Phiếu nhập phụ kiện")]
+    public partial class PhieuNhapPhuKien : MasterDetailInfo
+    {
+        public override int GetRelationCount() { return 1; }
+        public override string GetRelationName(int RelationIndex)
+        {
+            return typeof(CTNhapPhuKien).GetName();
+        }
+        public override bool IsEmpty(int RelationIndex)
+        {
+            return Table.GetList(typeof(CTNhapPhuKien), this.GetType().Name, Ma).Count == 0;
+        }
+        public override IList GetChildList(int RelationIndex)
+        {
+
+            return Table.GetList(typeof(CTNhapPhuKien), this.GetType().Name, Ma);
+
+        }
+        public override string ToString()
+        {
+            return Ma;
+        }
+    }
+
+    [TypeDisplay(Name = "Phiếu nhập xe")]
+    public partial class PhieuNhapXe : MasterDetailInfo
+    {
+        public override int GetRelationCount() { return 1; }
+        public override string GetRelationName(int RelationIndex)
+        {
+            return typeof(CTPhieuNhapXe).GetName();
+        }
+        public override bool IsEmpty(int RelationIndex)
+        {
+            return Table.GetList(typeof(CTPhieuNhapXe), this.GetType().Name, Ma).Count == 0;
+        }
+        public override IList GetChildList(int RelationIndex)
+        {
+            return Table.GetList(typeof(CTPhieuNhapXe), this.GetType().Name, Ma);
+        }
+        public override string ToString()
+        {
+            return Ma;
+        }
+    }
+
+    [TypeDisplay(Name = "Phiếu sửa chữa")]
+    public partial class PhieuSuaChua : MasterDetailInfo
+    {
+
+        public override int GetRelationCount() { return 1; }
+        public override string GetRelationName(int RelationIndex)
+        {
+            return typeof(CTSuaChua).GetName();
+        }
+        public override bool IsEmpty(int RelationIndex)
+        {
+            return Table.GetList(typeof(CTSuaChua), this.GetType().Name, Ma).Count == 0;
+        }
+        public override IList GetChildList(int RelationIndex)
+        {
+            return Table.GetList(typeof(CTSuaChua), this.GetType().Name, Ma);
+        }
+        public override string ToString()
+        {
+            return Ma;
+        }
+    }
+
+    [TypeDisplay(Name = "phiếu xuất kho")]
+    public partial class PhieuXuatKho : MasterDetailInfo
+    {
+        public override int GetRelationCount() { return 3; }
+        public override string GetRelationName(int RelationIndex)
+        {
+            switch (RelationIndex)
+            {
+                case 0: return typeof(CTVanChuyen).GetName();
+                case 1: return typeof(CTPhieuXuatPhuKien).GetName();
+                default: return typeof(CTPhieuXuatXe).GetName();
+            }
+        }
+        public override bool IsEmpty(int RelationIndex)
+        {
+            switch (RelationIndex)
+            {
+                case 0: return Table.GetList(typeof(CTVanChuyen), this.GetType().Name, Ma).Count == 0;
+                case 1: return Table.GetList(typeof(CTPhieuXuatPhuKien), this.GetType().Name, Ma).Count == 0;
+                default: return Table.GetList(typeof(CTPhieuXuatXe), this.GetType().Name, Ma).Count == 0;
+            }
+        }
+        public override IList GetChildList(int RelationIndex)
+        {
+            switch (RelationIndex)
+            {
+                case 0: return Table.GetList(typeof(CTVanChuyen), this.GetType().Name, Ma);
+                case 1: return Table.GetList(typeof(CTPhieuXuatPhuKien), this.GetType().Name, Ma);
+                default: return Table.GetList(typeof(CTPhieuXuatXe), this.GetType().Name, Ma);
+            }
+        }
+        public override string ToString()
+        {
+            return Ma;
+        }
+    }
+
+    [TypeDisplay(Name = "Phụ kiện")]
+    public partial class PhuKien : MasterDetailInfo
+    {
+        public override int GetRelationCount() { return 1; }
+        public override string GetRelationName(int RelationIndex)
+        {
+            return typeof(CTSuaChua).GetName();
+        }
+        public override bool IsEmpty(int RelationIndex)
+        {
+            return Table.GetList(typeof(CTSuaChua), this.GetType().Name, Ma).Count == 0;
+        }
+        public override IList GetChildList(int RelationIndex)
+        {
+            return Table.GetList(typeof(CTSuaChua), this.GetType().Name, Ma);
+        }
+        public override string ToString()
+        {
+            return Ma;
+        }
+    }
+
+    [TypeDisplay(Name = "Quyền")]
+    public partial class Quyen : MasterDetailInfo
+    {
+        public override int GetRelationCount() { return 1; }
+        public override string GetRelationName(int RelationIndex)
+        {
+            return typeof(CTQuyen).GetName();
+        }
+        public override bool IsEmpty(int RelationIndex)
+        {
+            return Table.GetList(typeof(CTQuyen), this.GetType().Name, Ma).Count == 0;
+        }
+        public override IList GetChildList(int RelationIndex)
+        {
+            return Table.GetList(typeof(CTQuyen), this.GetType().Name, Ma);
+        }
+        public override string ToString()
+        {
+            return "(" + Ma + ") " + Ten;
+        }
+    }
+
+    [TypeDisplay(Name = "Xe")]
+    public partial class Xe : MasterDetailInfo
+    {
+        public override int GetRelationCount() { return 1; }
+        public override string GetRelationName(int RelationIndex)
+        {
+            return typeof(HoSoBanXe).GetName();
+        }
+        public override bool IsEmpty(int RelationIndex)
+        {
+            return Table.GetList(typeof(HoSoBanXe), this.GetType().Name, SoMay).Count == 0;
+        }
+        public override IList GetChildList(int RelationIndex)
+        {
+            return Table.GetList(typeof(HoSoBanXe), this.GetType().Name, SoMay);
+        }
+        public override string ToString()
+        {
+            return SoMay;
         }
     }
 }

@@ -7,24 +7,50 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DataContext
 {
+    public partial class ChiNhanh
+    {
+        [Key, Display(Name = "Mã chi nhánh")]
+        public string Ma { get; set; }
+        [Display(Name = "Tên chi nhánh")]
+        public string Ten { get; set; }
+        [Display(Name = "Địa chỉ")]
+        public string DiaChi { get; set; }
+        [Display(Name = "Số điện thoại")]
+        public string SoDT { get; set; }
+        [ForeignKey("NhanVien_Ma"), Display(Name = "Nhân viên quản lý")]
+        public string NVQuanLy { get; set; }
+    }
+
+    public partial class ChucVu
+    {
+        [Key, Display(Name = "Mã chức vụ")]
+        public string Ma { get; set; }
+        [Display(Name = "Tên chức vụ")]
+        public string Ten { get; set; }
+    }
+
     public partial class CTCungCapPhuKien
     {
-        public string MaNCC { get; set; }
-        public string MaLoaiPhuKien { get; set; }
+        [Key, ForeignKey("NCC_Ma"), Display(Name = "Nhà cung cấp")]
+        public string NCC { get; set; }
+        [Key, ForeignKey("LoaiPhuKien_Ma"), Display(Name = "Loại phụ kiện")]
+        public string LoaiPhuKien { get; set; }
     }
 
     public partial class CTCungCapXe
     {
-        public string MaNCC { get; set; }
-        public string MaLoaiXe { get; set; }
+        [Key, ForeignKey("NCC_Ma"), Display(Name = "Nhà cung cấp")]
+        public string NCC { get; set; }
+        [Key, ForeignKey("LoaiXe_Ma"), Display(Name = "Loại xe")]
+        public string LoaiXe { get; set; }
     }
 
     public partial class CTNhapPhuKien
     {
-        [Key, ForeignKey("PhieuNhapPhuKien_MaPhieuNhap"), Display(Name = "Phiếu nhập")]
-        public string MaPhieuNhap { get; set; }
-        [Key, ForeignKey("LoaiPhuKien_MaLoai"), Display(Name = "Loại phụ kiện")]
-        public string MaLoaiPhuKien { get; set; }
+        [Key, ForeignKey("PhieuNhapPhuKien_Ma"), Display(Name = "Phiếu nhập phụ kiện")]
+        public string PhieuNhapPhuKien { get; set; }
+        [Key, ForeignKey("LoaiPhuKien_Ma"), Display(Name = "Loại phụ kiện")]
+        public string LoaiPhuKien { get; set; }
         [Display(Name = "Số lượng")]
         public int SoLuong { get; set; }
         [Display(Name = "Giá mua")]
@@ -35,188 +61,263 @@ namespace DataContext
 
     public partial class CTPhieuNhapXe
     {
-        public string MaPhieuNhapXe { get; set; }
-        public string MaLoaiXe { get; set; }
+        [Key, ForeignKey("PhieuNhapXe_Ma"), Display(Name = "Phiếu nhập xe")]
+        public string PhieuNhapXe { get; set; }
+        [Key, ForeignKey("LoaiXe_Ma"), Display(Name = "Loại xe")]
+        public string LoaiXe { get; set; }
+        [Display(Name = "Số lượng")]
         public int SoLuong { get; set; }
+        [Display(Name = "Giá Mua")]
         public decimal GiaMua { get; set; }
+        [Display(Name = "Thành Tiền")]
         public decimal ThanhTien { get; set; }
     }
 
     public partial class CTPhieuXuatPhuKien
     {
-        public string MaPhieuXuatKho { get; set; }
-        public string MaLoaiPhuKien { get; set; }
+        [Key, ForeignKey("PhieuXuatKho_Ma"), Display(Name = "Phiếu xuất kho")]
+        public string PhieuXuatKho { get; set; }
+        [Key, ForeignKey("LoaiPhuKien_Ma"), Display(Name = "Loại phụ kiện")]
+        public string LoaiPhuKien { get; set; }
+        [Display(Name = "Số lượng")]
         public int SoLuong { get; set; }
     }
 
     public partial class CTPhieuXuatXe
     {
-        public string MaPhieuXuatKho { get; set; }
-        public string MaLoaiXe { get; set; }
+        [Key, ForeignKey("PhieuXuatXe_Ma"), Display(Name = "Phiếu xuất xe")]
+        public string PhieuXuatKho { get; set; }
+        [Key, ForeignKey("LoaiXe_Ma"), Display(Name = "Loại xe")]
+        public string LoaiXe { get; set; }
+        [Display(Name = "Số lượng")]
+        public int SoLuong { get; set; }
+    }
+
+    public partial class CTQuyen
+    {
+        [Key, ForeignKey("ChucVu_Ma"), Display(Name = "Chức vụ")]
+        public string ChucVu { get; set; }
+        [Key, ForeignKey("Quyen_Ma"), Display(Name = "Quyền")]
+        public string Quyen { get; set; }
+    }
+
+    public partial class CTSuaChua
+    {
+        [Key, ForeignKey("PhieuSuaChua_Ma"), Display(Name = "Phiếu sửa chữa")]
+        public string PhieuSuaChua { get; set; }
+        [Key, ForeignKey("PhuKien_Ma"), Display(Name = "Phụ kiện")]
+        public string PhuKien { get; set; }
+        [Display(Name = "Số lượng")]
         public int SoLuong { get; set; }
     }
 
     public partial class CTVanChuyen
     {
-        public string MaNV { get; set; }
-        public string MaPhieuXuatKho { get; set; }
-    }
-
-    public partial class ChiNhanh
-    {
-        public string MaCN { get; set; }
-        public string TenChiNhanh { get; set; }
-        public string DiaChi { get; set; }
-        public string SoDT { get; set; }
-        public string NVQuanLy { get; set; }
-    }
-
-    public partial class ChiTietSuaChua
-    {
-        public string MaPhieuSuaChua { get; set; }
-        public string MaPhuKien { get; set; }
-        public int SoLuong { get; set; }
-    }
-
-    public partial class ChiTietQuyen
-    {
-        public string MaCV { get; set; }
-        public string MaQuyen { get; set; }
-    }
-    
-    public partial class ChucVu
-    {
-        [Key, Display(Name="Mã")]
-        public string MaCV { get; set; }
-        [Display(Name = "Tên")]
-        public string TenCV { get; set; }
+        [Key, ForeignKey("NhanVien_Ma"), Display(Name = "Nhân viên")]
+        public string NhanVien { get; set; }
+        [Key, ForeignKey("PhieuXuatKho_Ma"), Display(Name = "Phiếu xuất kho")]
+        public string PhieuXuatKho { get; set; }
     }
 
     public partial class HoSoBanXe
     {
-        public string MaHS { get; set; }
+        [Key, Display(Name = "Mã hồ sơ bán xe")]
+        public string Ma { get; set; }
+        [Display(Name = "Ngày mua")]
         public DateTime NgayMua { get; set; }
+        [ForeignKey("KhacHang_Ma"), Display(Name = "Khách hàng")]
         public string KhachHang { get; set; }
+        [ForeignKey("NhanVien_Ma"), Display(Name = "Nhân viên bán")]
         public string NhanVienBan { get; set; }
-        public string MaXe { get; set; }
+        [ForeignKey("Xe_SoMay"), Display(Name = "Xe")]
+        public string Xe { get; set; }
     }
 
     public partial class KhachHang
     {
-        public string MaKH { get; set; }
-        public string TenKH { get; set; }
+        [Key, Display(Name = "Mã khách hàng")]
+        public string Ma { get; set; }
+        [Display(Name = "Tên khách hàng")]
+        public string Ten { get; set; }
+        [Display(Name = "Địa chỉ")]
         public string DiaChi { get; set; }
+        [Display(Name = "Số điện thoại")]
         public string SoDT { get; set; }
     }
     public partial class Kho
     {
-        public string MaKho { get; set; }
-        public string TenKho { get; set; }
+        [Key, Display(Name = "Mã kho")]
+        public string Ma { get; set; }
+        [Display(Name = "Tên kho")]
+        public string Ten { get; set; }
+        [Display(Name = "Địa chỉ")]
         public string DiaChi { get; set; }
+        [Display(Name = "Số điện thoại")]
         public string SoDT { get; set; }
+        [ForeignKey("NhanVien_Ma"), Display(Name = "Người quản lý")]
         public string NVQuanLy { get; set; }
     }
 
     public partial class LoaiPhuKien
     {
-        public string MaLoai { get; set; }
-        public string TenLoai { get; set; }
+        [Key, Display(Name = "Mã loại phụ kiện")]
+        public string Ma { get; set; }
+        [Display(Name = "Tên phụ kiện")]
+        public string Ten { get; set; }
+        [Display(Name = "Giá bán")]
         public decimal GiaBan { get; set; }
+        [Display(Name = "Ghi chú")]
         public string GhiChu { get; set; }
     }
 
     public partial class LoaiXe
     {
-        public string MaLoai { get; set; }
-        public string TenLoai { get; set; }
+        [Key, Display(Name = "Mã loại xe")]
+        public string Ma { get; set; }
+        [Display(Name = "Tên loại xe")]
+        public string Ten { get; set; }
+        [Display(Name = "Hãng sản xuất")]
         public string Hang { get; set; }
+        [Display(Name = "Thời gian bảo hành")]
         public DateTime TGBH { get; set; }
+        [Display(Name = "Động cơ")]
         public string DongCo { get; set; }
+        [Display(Name = "Dung tích xi lanh")]
         public int DTXiLanh { get; set; }
+        [Display(Name = "Màu sắc")]
         public string MauSac { get; set; }
-        public int TrongLuong { get; set; }
+        [Display(Name = "Trọng lượng")]
+        public double TrongLuong { get; set; }
+        [Display(Name = "Khung xe")]
         public string Khung { get; set; }
+        [Display(Name = "Bánh xe")]
         public string Banh { get; set; }
+        [Display(Name = "Giá bán")]
         public decimal GiaBan { get; set; }
     }
 
     public partial class NCC
     {
-        public string MaNCC { get; set; }
-        public string TenNCC { get; set; }
+        [Key, Display(Name = "Mã nhà cung cấp")]
+        public string Ma { get; set; }
+        [Display(Name = "Tên nhà cung cấp")]
+        public string Ten { get; set; }
+        [Display(Name = "Địa chỉ")]
         public string DiaChi { get; set; }
+        [Display(Name = "Số điện thoại")]
         public string SoDT { get; set; }
     }
 
     public partial class NhanVien
     {
-        public string MaNV { get; set; }
+        [Key, Display(Name = "Mã (CMND)")]
+        public string Ma { get; set; }
+        [Display(Name = "Họ tên")]
         public string HoTen { get; set; }
+        [Display(Name = "Địa chỉ")]
         public string DiaChi { get; set; }
+        [Display(Name = "Số điện thoại")]
         public string SoDT { get; set; }
-        public string GioiTinh { get; set; }
+        [Display(Name = "Giới tính")]
+        public byte GioiTinh { get; set; }
+        [Display(Name = "Lương")]
         public decimal Luong { get; set; }
+        [Display(Name = "Chi nhánh")]
         public string ChiNhanh { get; set; }
+        [Display(Name = "Kho")]
         public string Kho { get; set; }
+        [ForeignKey("ChucVu_Ma"), Display(Name = "Chức vụ")]
         public string ChucVu { get; set; }
+        [Display(Name = "Mật khẩu")]
         public string MatKhau { get; set; }
+        [Display(Name = "Ngày sinh")]
         public DateTime NgaySinh { get; set; }
     }
 
     public partial class PhieuNhapPhuKien
     {
-        public string MaPhieuNhap { get; set; }
+        [Key, Display(Name = "Mã")]
+        public string Ma { get; set; }
+        [Display(Name = "Thời gian")]
         public DateTime ThoiGian { get; set; }
+        [ForeignKey("NhanVien_Ma"), Display(Name = "Nhân viên xác nhận")]
         public string NVXacNhan { get; set; }
+        [ForeignKey("Kho_Ma"), Display(Name = "Kho")]
         public string Kho { get; set; }
+        [ForeignKey("NCC_Ma"), Display(Name = "Nhà cung cấp")]
         public string NCC { get; set; }
+        [Display(Name = "Thành tiền")]
         public decimal ThanhTien { get; set; }
     }
 
     public partial class PhieuNhapXe
     {
-        public string MaPhieuNhap { get; set; }
+        [Key, Display(Name = "Mã phiếu nhập xe")]
+        public string Ma { get; set; }
+        [ForeignKey("Kho_Ma"), Display(Name = "Kho")]
         public string Kho { get; set; }
+        [ForeignKey("NCC_Ma"), Display(Name = "Nhà cung cấp")]
         public string NCC { get; set; }
+        [ForeignKey("NhanVien_Ma"), Display(Name = "Nhân viên xác nhận")]
         public string NVXacNhan { get; set; }
+        [Display(Name = "Thời gian")]
         public DateTime ThoiGian { get; set; }
+        [Display(Name = "Thành tiền")]
         public decimal ThanhTien { get; set; }
     }
     public partial class PhieuSuaChua
     {
-        public string MaPhieu { get; set; }
+        [Key, Display(Name = "Mã phiếu sửa chữa")]
+        public string Ma { get; set; }
+        [Display(Name = "Ngày sửa chữa")]
         public DateTime NgaySuaChua { get; set; }
+        [Display(Name = "Ghi chú")]
         public string GhiChu { get; set; }
+        [ForeignKey("NhanVien_Ma"), Display(Name = "Nhân viên sửa chữa")]
         public string NVSuaChua { get; set; }
     }
     public partial class PhieuXuatKho
     {
-
-        public string MaPhieuXuat { get; set; }
+        [Key, Display(Name = "Mã phiếu xuất kho")]
+        public string Ma { get; set; }
+        [Display(Name = "Ngày xuất")]
         public DateTime NgayXuat { get; set; }
+        [ForeignKey("ChiNhanh_Ma"), Display(Name = "Chi nhánh")]
         public string ChiNhanh { get; set; }
-        public string NV_XacNhan { get; set; }
+        [ForeignKey("NhanVien_Ma"), Display(Name = "Nhân viên xác nhận")]
+        public string NVXacNhan { get; set; }
+        [ForeignKey("Kho_Ma"), Display(Name = "Kho")]
         public string Kho { get; set; }
     }
     public partial class PhuKien
     {
-        public string MaPhuKien { get; set; }
+        [Key, Display(Name = "Mã phụ kiện")]
+        public string Ma { get; set; }
+        [Display(Name = "Hãng sản xuất")]
         public string Hang { get; set; }
+        [ForeignKey("LoaiPhuKien_Ma"), Display(Name = "Loại phụ kiện")]
         public string LoaiPhuKien { get; set; }
     }
 
     public partial class Quyen
     {
-        public string MaQuyen { get; set; }
-        public string TenQuyen { get; set; }
+        [Key, Display(Name = "Mã quyền")]
+        public string Ma { get; set; }
+        [Display(Name = "Tên quyền")]
+        public string Ten { get; set; }
+        [Display(Name = "Ghi chú")]
         public string GhiChu { get; set; }
     }
 
     public partial class Xe
     {
+        [Display(Name = "Số khung")]
         public string SoKhung { get; set; }
+        [Key, Display(Name = "Số máy")]
         public string SoMay { get; set; }
+        [ForeignKey("ChiNhanh_Ma"), Display(Name = "Chi nhánh")]
         public string ChiNhanh { get; set; }
+        [ForeignKey("LoaiXe_Ma"), Display(Name = "Loại xe")]
         public string LoaiXe { get; set; }
     }
 }
