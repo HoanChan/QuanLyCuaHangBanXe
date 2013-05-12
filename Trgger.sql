@@ -13,7 +13,7 @@ begin
 	declare @message nvarchar(MAX);	
 	set @message= N'[Ten] đã tồn tại';
 	select * from ChucVu where Ten=@Ten
-	if(@@ROWCOUNT>0)
+	if(@@ROWCOUNT>1)
 	begin
 		raiserror (@message, 16, 1)
 		rollback transaction
@@ -68,7 +68,7 @@ begin
 	declare @message nvarchar(MAX);	
 	set @message= N'[Ten] đã tồn tại';
 	select * from ChucVu where Ten=@Ten
-	if(@@ROWCOUNT>0)
+	if(@@ROWCOUNT>1)
 	begin
 		raiserror (@message, 16, 1)
 		rollback transaction
@@ -101,7 +101,7 @@ begin
 	declare @message nvarchar(MAX);	
 	set @message= N'[Ten] đã tồn tại';
 	select * from ChucVu where Ten=@Ten
-	if(@@ROWCOUNT>0)
+	if(@@ROWCOUNT>1)
 	begin
 		raiserror (@message, 16, 1)
 		rollback transaction
@@ -144,7 +144,7 @@ begin
 	declare @message nvarchar(MAX);	
 	set @message= N'[Ten] đã tồn tại';
 	select * from ChucVu where Ten=@Ten
-	if(@@ROWCOUNT>0)
+	if(@@ROWCOUNT>1)
 	begin
 		raiserror (@message, 16, 1)
 		rollback transaction
@@ -179,7 +179,7 @@ begin
 	declare @message nvarchar(MAX);	
 	set @message= N'[Ten] đã tồn tại';
 	select * from ChucVu where Ten=@Ten
-	if(@@ROWCOUNT>0)
+	if(@@ROWCOUNT>1)
 	begin
 		raiserror (@message, 16, 1)
 		rollback transaction
@@ -212,7 +212,7 @@ begin
 	declare @message nvarchar(MAX);	
 	set @message= N'[Ten] đã tồn tại';
 	select * from ChucVu where Ten=@Ten
-	if(@@ROWCOUNT>0)
+	if(@@ROWCOUNT>1)
 	begin
 		raiserror (@message, 16, 1)
 		rollback transaction
@@ -243,7 +243,7 @@ begin
 	declare @message nvarchar(MAX);	
 	set @message= N'[Ten] đã tồn tại';
 	select * from ChucVu where Ten=@Ten
-	if(@@ROWCOUNT>0)
+	if(@@ROWCOUNT>1)
 	begin
 		raiserror (@message, 16, 1)
 		rollback transaction
