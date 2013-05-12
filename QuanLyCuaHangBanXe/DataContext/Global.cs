@@ -18,6 +18,10 @@ namespace DataContext
         //    return (T)property.GetCustomAttributes(attrType, false).First();
         //}
         //} 
+        public static Type GetType(string Name)
+        {
+            return Type.GetType("DataContext." + Name);
+        }
 
         public static string GetName(this Type X)
         {
@@ -159,7 +163,7 @@ namespace DataContext
                 string propertyName = Names[Index];
 
                 // Generate a private field
-                FieldBuilder field = typeBuilder.DefineField("_" + propertyName, typeof(string), FieldAttributes.Private);
+                FieldBuilder field = typeBuilder.DefineField(propertyName, Types[Index], FieldAttributes.Private);
                 // Generate a public property
                 PropertyBuilder property =
                     typeBuilder.DefineProperty(propertyName,
@@ -220,7 +224,7 @@ namespace DataContext
             // Loop over the values that we will assign to the properties
             foreach (var value in Values)
             {
-                properties[propertiesCounter].SetValue(generetedObject, value, null);
+                properties[propertiesCounter].SetValue(generetedObject, value);
                 propertiesCounter++;
             }
 

@@ -91,8 +91,8 @@ namespace QuanLyCuaHangBanXe
 
         private void iQuanLyQuyen_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
-            //CurrentMDI = new Quyen();
-            //UpdateGridView();
+            CurrentMDI = new Quyen();
+            UpdateGridView();
         }
 
         private void iQuanLyPhanQuyen_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
@@ -129,6 +129,18 @@ namespace QuanLyCuaHangBanXe
         private void iQuanLyNhanVien_ItemClick(object sender, ItemClickEventArgs e)
         {
             CurrentMDI = new NhanVien();
+            UpdateGridView();
+        }
+
+        private void iQuanLyMenu_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            CurrentMDI = new DataContext.Menu();
+            UpdateGridView();
+        }
+
+        private void iQuanLyQuyenMenu_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            CurrentMDI = new Quyen_Menu();
             UpdateGridView();
         }
 

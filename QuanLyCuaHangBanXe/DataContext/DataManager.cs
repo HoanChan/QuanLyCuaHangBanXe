@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 namespace DataContext
 {
     public class MasterDetailInfo
     {
-        public virtual bool IsEmpty(int RelationIndex) { return true; }
-        public virtual IList GetChildList(int RelationIndex) { return null; }
+        public virtual bool IsEmpty(int RelationIndex) { return GetChildList(RelationIndex).Count == 0; }
+        public virtual IList GetChildList(int RelationIndex) { return new List<object>(); }
         public virtual int GetRelationCount() { return 0; }
         public virtual string GetRelationName(int RelationIndex) { return "Detail"; }
         public virtual string GetName()
@@ -20,6 +21,17 @@ namespace DataContext
             {
                 return "Danh Sách " + this.GetType().Name;
             }
+        }
+        public virtual bool EnabledEdit()
+        {
+            foreach (var pro in this.GetType().GetProperties())
+            {
+                if (!this.IsPrimaryKey(pro.Name))
+                {
+                    return true;
+                }
+            }
+            return false;
         }
     }
 
@@ -40,15 +52,6 @@ namespace DataContext
                 case 0: return typeof(NhanVien).GetName();
                 case 1: return typeof(PhieuXuatKho).GetName();
                 default: return typeof(Xe).GetName();
-            }
-        }
-        public override bool IsEmpty(int RelationIndex)
-        {
-            switch (RelationIndex)
-            {
-                case 0: return Table.GetList(typeof(NhanVien), this.GetType().Name, Ma).Count == 0;
-                case 1: return Table.GetList(typeof(PhieuXuatKho), this.GetType().Name, Ma).Count == 0;
-                default: return Table.GetList(typeof(Xe), this.GetType().Name, Ma).Count == 0;
             }
         }
         public override IList GetChildList(int RelationIndex)
@@ -76,14 +79,6 @@ namespace DataContext
             {
                 case 0: return typeof(CTQuyen).GetName();
                 default: return typeof(NhanVien).GetName();
-            }
-        }
-        public override bool IsEmpty(int RelationIndex)
-        {
-            switch (RelationIndex)
-            {
-                case 0: return Table.GetList(typeof(CTQuyen), this.GetType().Name, Ma).Count == 0;
-                default: return Table.GetList(typeof(NhanVien), this.GetType().Name, Ma).Count == 0;
             }
         }
         public override IList GetChildList(int RelationIndex)
@@ -163,10 +158,6 @@ namespace DataContext
         {
             return typeof(HoSoBanXe).GetName();
         }
-        public override bool IsEmpty(int RelationIndex)
-        {
-            return Table.GetList(typeof(HoSoBanXe), this.GetType().Name, Ma).Count == 0;
-        }
         public override IList GetChildList(int RelationIndex)
         {
             return Table.GetList(typeof(HoSoBanXe), this.GetType().Name, Ma);
@@ -188,15 +179,6 @@ namespace DataContext
                 case 0: return typeof(PhieuNhapXe).GetName();
                 case 1: return typeof(PhieuNhapPhuKien).GetName();
                 default: return typeof(PhieuXuatKho).GetName();
-            }
-        }
-        public override bool IsEmpty(int RelationIndex)
-        {
-            switch (RelationIndex)
-            {
-                case 0: return Table.GetList(typeof(PhieuNhapXe), this.GetType().Name, Ma).Count == 0;
-                case 1: return Table.GetList(typeof(PhieuNhapPhuKien), this.GetType().Name, Ma).Count == 0;
-                default: return Table.GetList(typeof(PhieuXuatKho), this.GetType().Name, Ma).Count == 0;
             }
         }
         public override IList GetChildList(int RelationIndex)
@@ -226,16 +208,6 @@ namespace DataContext
                 case 1: return typeof(CTPhieuXuatPhuKien).GetName();
                 case 2: return typeof(CTCungCapPhuKien).GetName();
                 default: return typeof(PhuKien).GetName();
-            }
-        }
-        public override bool IsEmpty(int RelationIndex)
-        {
-            switch (RelationIndex)
-            {
-                case 0: return Table.GetList(typeof(CTNhapPhuKien), this.GetType().Name, Ma).Count == 0;
-                case 1: return Table.GetList(typeof(CTPhieuXuatPhuKien), this.GetType().Name, Ma).Count == 0;
-                case 2: return Table.GetList(typeof(CTCungCapPhuKien), this.GetType().Name, Ma).Count == 0;
-                default: return Table.GetList(typeof(PhuKien), this.GetType().Name, Ma).Count == 0;
             }
         }
         public override IList GetChildList(int RelationIndex)
@@ -268,16 +240,6 @@ namespace DataContext
                 default: return typeof(Xe).GetName();
             }
         }
-        public override bool IsEmpty(int RelationIndex)
-        {
-            switch (RelationIndex)
-            {
-                case 0: return Table.GetList(typeof(CTCungCapXe), this.GetType().Name, Ma).Count == 0;
-                case 1: return Table.GetList(typeof(CTPhieuNhapXe), this.GetType().Name, Ma).Count == 0;
-                case 2: return Table.GetList(typeof(CTPhieuXuatXe), this.GetType().Name, Ma).Count == 0;
-                default: return Table.GetList(typeof(Xe), this.GetType().Name, Ma).Count == 0;
-            }
-        }
         public override IList GetChildList(int RelationIndex)
         {
             switch (RelationIndex)
@@ -287,6 +249,24 @@ namespace DataContext
                 case 2: return Table.GetList(typeof(CTPhieuXuatXe), this.GetType().Name, Ma);
                 default: return Table.GetList(typeof(Xe), this.GetType().Name, Ma);
             }
+        }
+        public override string ToString()
+        {
+            return "(" + Ma + ") " + Ten;
+        }
+    }
+
+    [TypeDisplay(Name = "Menu")]
+    public partial class Menu : MasterDetailInfo
+    {
+        public override int GetRelationCount() { return 1; }
+        public override string GetRelationName(int RelationIndex)
+        {
+            return typeof(Quyen_Menu).GetName();
+        }
+        public override IList GetChildList(int RelationIndex)
+        {
+            return Table.GetList(typeof(Quyen_Menu), this.GetType().Name, Ma);
         }
         public override string ToString()
         {
@@ -306,16 +286,6 @@ namespace DataContext
                 case 1: return typeof(CTCungCapXe).GetName();
                 case 2: return typeof(PhieuNhapPhuKien).GetName();
                 default: return typeof(PhieuNhapXe).GetName();
-            }
-        }
-        public override bool IsEmpty(int RelationIndex)
-        {
-            switch (RelationIndex)
-            {
-                case 0: return Table.GetList(typeof(CTCungCapPhuKien), this.GetType().Name, Ma).Count == 0;
-                case 1: return Table.GetList(typeof(CTCungCapXe), this.GetType().Name, Ma).Count == 0;
-                case 2: return Table.GetList(typeof(PhieuNhapPhuKien), this.GetType().Name, Ma).Count == 0;
-                default: return Table.GetList(typeof(PhieuNhapXe), this.GetType().Name, Ma).Count == 0;
             }
         }
         public override IList GetChildList(int RelationIndex)
@@ -352,20 +322,6 @@ namespace DataContext
                 default: return typeof(PhieuXuatKho).GetName();
             }
         }
-        public override bool IsEmpty(int RelationIndex)
-        {
-            switch (RelationIndex)
-            {
-                case 0: return Table.GetList(typeof(CTVanChuyen), "NhanVien", Ma).Count == 0;
-                case 1: return Table.GetList(typeof(HoSoBanXe), "NhanVienBan", Ma).Count == 0;
-                case 2: return Table.GetList(typeof(Kho), "NVQuanLy", Ma).Count == 0;
-                case 3: return Table.GetList(typeof(PhieuNhapPhuKien), "NVXacNhan", Ma).Count == 0;
-                case 4: return Table.GetList(typeof(PhieuNhapXe), "NVXacNhan", Ma).Count == 0;
-                case 5: return Table.GetList(typeof(PhieuSuaChua), "NVSuaChua", Ma).Count == 0;
-                case 6: return Table.GetList(typeof(ChiNhanh), "NVQuanLy", Ma).Count == 0;
-                default: return Table.GetList(typeof(PhieuXuatKho), "NVXacNhan", Ma).Count == 0;
-            }
-        }
         public override IList GetChildList(int RelationIndex)
         {
             switch (RelationIndex)
@@ -395,10 +351,6 @@ namespace DataContext
         {
             return typeof(CTNhapPhuKien).GetName();
         }
-        public override bool IsEmpty(int RelationIndex)
-        {
-            return Table.GetList(typeof(CTNhapPhuKien), this.GetType().Name, Ma).Count == 0;
-        }
         public override IList GetChildList(int RelationIndex)
         {
 
@@ -419,10 +371,7 @@ namespace DataContext
         {
             return typeof(CTPhieuNhapXe).GetName();
         }
-        public override bool IsEmpty(int RelationIndex)
-        {
-            return Table.GetList(typeof(CTPhieuNhapXe), this.GetType().Name, Ma).Count == 0;
-        }
+
         public override IList GetChildList(int RelationIndex)
         {
             return Table.GetList(typeof(CTPhieuNhapXe), this.GetType().Name, Ma);
@@ -442,14 +391,12 @@ namespace DataContext
         {
             return typeof(CTSuaChua).GetName();
         }
-        public override bool IsEmpty(int RelationIndex)
-        {
-            return Table.GetList(typeof(CTSuaChua), this.GetType().Name, Ma).Count == 0;
-        }
+
         public override IList GetChildList(int RelationIndex)
         {
             return Table.GetList(typeof(CTSuaChua), this.GetType().Name, Ma);
         }
+
         public override string ToString()
         {
             return Ma;
@@ -467,15 +414,6 @@ namespace DataContext
                 case 0: return typeof(CTVanChuyen).GetName();
                 case 1: return typeof(CTPhieuXuatPhuKien).GetName();
                 default: return typeof(CTPhieuXuatXe).GetName();
-            }
-        }
-        public override bool IsEmpty(int RelationIndex)
-        {
-            switch (RelationIndex)
-            {
-                case 0: return Table.GetList(typeof(CTVanChuyen), this.GetType().Name, Ma).Count == 0;
-                case 1: return Table.GetList(typeof(CTPhieuXuatPhuKien), this.GetType().Name, Ma).Count == 0;
-                default: return Table.GetList(typeof(CTPhieuXuatXe), this.GetType().Name, Ma).Count == 0;
             }
         }
         public override IList GetChildList(int RelationIndex)
@@ -501,10 +439,6 @@ namespace DataContext
         {
             return typeof(CTSuaChua).GetName();
         }
-        public override bool IsEmpty(int RelationIndex)
-        {
-            return Table.GetList(typeof(CTSuaChua), this.GetType().Name, Ma).Count == 0;
-        }
         public override IList GetChildList(int RelationIndex)
         {
             return Table.GetList(typeof(CTSuaChua), this.GetType().Name, Ma);
@@ -515,21 +449,31 @@ namespace DataContext
         }
     }
 
+    [TypeDisplay(Name = "Phân quyền cho menu")]
+    public partial class Quyen_Menu : MasterDetailInfo
+    {
+
+    }
+
     [TypeDisplay(Name = "Quyền")]
     public partial class Quyen : MasterDetailInfo
     {
-        public override int GetRelationCount() { return 1; }
+        public override int GetRelationCount() { return 2; }
         public override string GetRelationName(int RelationIndex)
         {
-            return typeof(CTQuyen).GetName();
-        }
-        public override bool IsEmpty(int RelationIndex)
-        {
-            return Table.GetList(typeof(CTQuyen), this.GetType().Name, Ma).Count == 0;
+            switch(RelationIndex)
+            {
+                case 0: return typeof(CTQuyen).GetName();
+                default: return typeof(Quyen_Menu).GetName();
+            }           
         }
         public override IList GetChildList(int RelationIndex)
         {
-            return Table.GetList(typeof(CTQuyen), this.GetType().Name, Ma);
+            switch (RelationIndex)
+            {
+                case 0: return Table.GetList(typeof(CTQuyen), this.GetType().Name, Ma);
+                default: return Table.GetList(typeof(Quyen_Menu), this.GetType().Name, Ma);
+            } 
         }
         public override string ToString()
         {
@@ -544,10 +488,6 @@ namespace DataContext
         public override string GetRelationName(int RelationIndex)
         {
             return typeof(HoSoBanXe).GetName();
-        }
-        public override bool IsEmpty(int RelationIndex)
-        {
-            return Table.GetList(typeof(HoSoBanXe), this.GetType().Name, SoMay).Count == 0;
         }
         public override IList GetChildList(int RelationIndex)
         {
