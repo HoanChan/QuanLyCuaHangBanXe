@@ -16,6 +16,18 @@ namespace DataContext
         //}
         //} 
 
+        public static string GetName(this Type X)
+        {
+            try
+            {
+                return ((TypeDisplay)(X.GetCustomAttributes(typeof(TypeDisplay), false).First())).Name;
+            }
+            catch (Exception)
+            {
+                return X.Name;
+            }
+        }
+
         public static string GetName(this PropertyInfo X)
         {
             try
@@ -26,7 +38,6 @@ namespace DataContext
             {
                 return X.Name;
             }
-
         }
 
         public static string GetForeignKeyTargetName(this PropertyInfo X)
@@ -40,6 +51,18 @@ namespace DataContext
                 return null;
             }
 
+        }
+
+        public static bool IsForeignKey(this Type aType, String propertyName)
+        {
+            try
+            {
+                return aType.GetProperty(propertyName).GetCustomAttributes(typeof(ForeignKeyAttribute), false).Count() > 0;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
         public static bool IsForeignKey(this object objName, String propertyName)
