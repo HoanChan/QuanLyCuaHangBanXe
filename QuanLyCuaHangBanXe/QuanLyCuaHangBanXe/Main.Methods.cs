@@ -117,14 +117,14 @@ namespace QuanLyCuaHangBanXe
                     else if(EntityType.IsForeignKey(Pro.Name))
                     {
                         var ForeignInfo = Pro.GetForeignKeyTargetName();
-                        var TableName = ForeignInfo.Substring(0, ForeignInfo.IndexOf("_") - 1);
+                        var TableName = ForeignInfo.Substring(0, ForeignInfo.IndexOf("_"));
                         var KeyName = ForeignInfo.Substring(ForeignInfo.IndexOf("_") + 1);
-                        var x = Type.GetType(TableName);
+                        var x = Global.GetType(TableName);
                         var aList = Table.GetList(x);
                         if (aList != null)
                         {
                             var Ri = new LookUpEdit();
-                            Ri.Properties.NullText = "Chưa có giá trị";
+                            Ri.Properties.NullText = "Không có giá trị";
                             Ri.Properties.DataSource = aList;
                             Ri.Properties.ValueMember = KeyName;
                             Ri.Properties.BestFitMode = BestFitMode.BestFitResizePopup;
@@ -133,6 +133,7 @@ namespace QuanLyCuaHangBanXe
                                 var Lookup = (sender as LookUpEdit);
                                 Lookup.Properties.PopulateColumns();
                                 Lookup.Properties.BestFit();
+                                Lookup.Properties.AllowNullInput = DefaultBoolean.True;
                                 if (Lookup.Properties.Columns.Count == 0) return;
                                 var ci = 0;
                                 foreach (var Column in Pro.PropertyType.GetProperties())
@@ -178,7 +179,7 @@ namespace QuanLyCuaHangBanXe
                 Text = "Chỉnh sửa",
                 Location = new Point(5 + 5*bY + bWidth * bY, 50 + 30 * index),
                 Width = bWidth,
-                //Enabled = !(CurrentMDI is PhanQuyen) && gridView.SelectedRowsCount > 0
+                Enabled = CurrentMDI.EnabledEdit() && gridView.SelectedRowsCount > 0
             };
             var btnCancelEdit = new SimpleButton()
             {

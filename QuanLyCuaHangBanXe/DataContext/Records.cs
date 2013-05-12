@@ -9,9 +9,9 @@ namespace DataContext
 {
     public partial class ChiNhanh
     {
-        [Key, Display(Name = "Mã chi nhánh")]
+        [Key, Display(Name = "Mã")]
         public string Ma { get; set; }
-        [Display(Name = "Tên chi nhánh")]
+        [Display(Name = "Tên")]
         public string Ten { get; set; }
         [Display(Name = "Địa chỉ")]
         public string DiaChi { get; set; }
@@ -23,9 +23,9 @@ namespace DataContext
 
     public partial class ChucVu
     {
-        [Key, Display(Name = "Mã chức vụ")]
+        [Key, Display(Name = "Mã")]
         public string Ma { get; set; }
-        [Display(Name = "Tên chức vụ")]
+        [Display(Name = "Tên")]
         public string Ten { get; set; }
     }
 
@@ -121,7 +121,7 @@ namespace DataContext
 
     public partial class HoSoBanXe
     {
-        [Key, Display(Name = "Mã hồ sơ bán xe")]
+        [Key, Display(Name = "Mã")]
         public string Ma { get; set; }
         [Display(Name = "Ngày mua")]
         public DateTime NgayMua { get; set; }
@@ -135,9 +135,9 @@ namespace DataContext
 
     public partial class KhachHang
     {
-        [Key, Display(Name = "Mã khách hàng")]
+        [Key, Display(Name = "Mã (CMND)")]
         public string Ma { get; set; }
-        [Display(Name = "Tên khách hàng")]
+        [Display(Name = "Tên")]
         public string Ten { get; set; }
         [Display(Name = "Địa chỉ")]
         public string DiaChi { get; set; }
@@ -146,9 +146,9 @@ namespace DataContext
     }
     public partial class Kho
     {
-        [Key, Display(Name = "Mã kho")]
+        [Key, Display(Name = "Mã")]
         public string Ma { get; set; }
-        [Display(Name = "Tên kho")]
+        [Display(Name = "Tên")]
         public string Ten { get; set; }
         [Display(Name = "Địa chỉ")]
         public string DiaChi { get; set; }
@@ -160,9 +160,9 @@ namespace DataContext
 
     public partial class LoaiPhuKien
     {
-        [Key, Display(Name = "Mã loại phụ kiện")]
+        [Key, Display(Name = "Mã")]
         public string Ma { get; set; }
-        [Display(Name = "Tên phụ kiện")]
+        [Display(Name = "Tên")]
         public string Ten { get; set; }
         [Display(Name = "Giá bán")]
         public decimal GiaBan { get; set; }
@@ -172,9 +172,9 @@ namespace DataContext
 
     public partial class LoaiXe
     {
-        [Key, Display(Name = "Mã loại xe")]
+        [Key, Display(Name = "Mã")]
         public string Ma { get; set; }
-        [Display(Name = "Tên loại xe")]
+        [Display(Name = "Tên")]
         public string Ten { get; set; }
         [Display(Name = "Hãng sản xuất")]
         public string Hang { get; set; }
@@ -196,11 +196,21 @@ namespace DataContext
         public decimal GiaBan { get; set; }
     }
 
+    public partial class Menu
+    {
+        [Key, Display(Name="Mã")]
+        public string Ma { get; set; }
+        [Display(Name="Tên")]
+        public string Ten { get; set; }
+        [Display(Name="Ghi chú")]
+        public string GhiChu { get; set; }
+    }
+
     public partial class NCC
     {
-        [Key, Display(Name = "Mã nhà cung cấp")]
+        [Key, Display(Name = "Mã")]
         public string Ma { get; set; }
-        [Display(Name = "Tên nhà cung cấp")]
+        [Display(Name = "Tên")]
         public string Ten { get; set; }
         [Display(Name = "Địa chỉ")]
         public string DiaChi { get; set; }
@@ -218,13 +228,13 @@ namespace DataContext
         public string DiaChi { get; set; }
         [Display(Name = "Số điện thoại")]
         public string SoDT { get; set; }
-        [Display(Name = "Giới tính")]
-        public byte GioiTinh { get; set; }
+        [Display(Name = "Giới tính (Là Nam)")]
+        public bool GioiTinh { get; set; }
         [Display(Name = "Lương")]
         public decimal Luong { get; set; }
-        [Display(Name = "Chi nhánh")]
+        [ForeignKey("ChiNhanh_Ma"), Display(Name = "Chi nhánh")]
         public string ChiNhanh { get; set; }
-        [Display(Name = "Kho")]
+        [ForeignKey("Kho_Ma"), Display(Name = "Kho")]
         public string Kho { get; set; }
         [ForeignKey("ChucVu_Ma"), Display(Name = "Chức vụ")]
         public string ChucVu { get; set; }
@@ -252,7 +262,7 @@ namespace DataContext
 
     public partial class PhieuNhapXe
     {
-        [Key, Display(Name = "Mã phiếu nhập xe")]
+        [Key, Display(Name = "Mã")]
         public string Ma { get; set; }
         [ForeignKey("Kho_Ma"), Display(Name = "Kho")]
         public string Kho { get; set; }
@@ -267,7 +277,7 @@ namespace DataContext
     }
     public partial class PhieuSuaChua
     {
-        [Key, Display(Name = "Mã phiếu sửa chữa")]
+        [Key, Display(Name = "Mã")]
         public string Ma { get; set; }
         [Display(Name = "Ngày sửa chữa")]
         public DateTime NgaySuaChua { get; set; }
@@ -278,7 +288,7 @@ namespace DataContext
     }
     public partial class PhieuXuatKho
     {
-        [Key, Display(Name = "Mã phiếu xuất kho")]
+        [Key, Display(Name = "Mã")]
         public string Ma { get; set; }
         [Display(Name = "Ngày xuất")]
         public DateTime NgayXuat { get; set; }
@@ -291,7 +301,7 @@ namespace DataContext
     }
     public partial class PhuKien
     {
-        [Key, Display(Name = "Mã phụ kiện")]
+        [Key, Display(Name = "Mã")]
         public string Ma { get; set; }
         [Display(Name = "Hãng sản xuất")]
         public string Hang { get; set; }
@@ -301,20 +311,28 @@ namespace DataContext
 
     public partial class Quyen
     {
-        [Key, Display(Name = "Mã quyền")]
+        [Key, Display(Name = "Mã")]
         public string Ma { get; set; }
-        [Display(Name = "Tên quyền")]
+        [Display(Name = "Tên")]
         public string Ten { get; set; }
         [Display(Name = "Ghi chú")]
         public string GhiChu { get; set; }
     }
 
+    public partial class Quyen_Menu
+    {
+        [Key, ForeignKey("Quyen_Ma"), Display(Name = "Quyền")]
+        public string Quyen { get; set; }
+        [Key, ForeignKey("Menu_Ma"), Display(Name = "Menu")]
+        public string Menu { get; set; }
+    }
+
     public partial class Xe
     {
-        [Display(Name = "Số khung")]
-        public string SoKhung { get; set; }
         [Key, Display(Name = "Số máy")]
         public string SoMay { get; set; }
+        [Display(Name = "Số khung")]
+        public string SoKhung { get; set; }
         [ForeignKey("ChiNhanh_Ma"), Display(Name = "Chi nhánh")]
         public string ChiNhanh { get; set; }
         [ForeignKey("LoaiXe_Ma"), Display(Name = "Loại xe")]

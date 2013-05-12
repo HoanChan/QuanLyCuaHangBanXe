@@ -18,7 +18,7 @@ namespace DataContext
         /// <param name="Name">Tên cột cần lọc, mặc định = null sẽ lấy hết không lọc</param>
         /// <param name="Value">Giá trị sẽ lọc</param>
         /// <returns>Danh sách</returns>
-        public static IList GetList(Type ItemType, string Name = null, string Value = "")
+        public static IList GetList(Type ItemType, string Name = null, object Value = null)
         {
             var aData = GetData(ItemType);
             if (string.IsNullOrEmpty(Name))
@@ -40,19 +40,26 @@ namespace DataContext
                 var aList = new List<Object>();
                 foreach (DataRow Row in aData.Tables[0].Rows)
                 {
-                    var Item = ItemType.CreateNew();
+                    //var Item = ItemType.CreateNew();
                     var IsOk = false;
+                    var Names = new List<string>();
+                    var Types = new List<Type>();
+                    var Values = new List<object>();
                     foreach (var pro in ItemType.GetProperties())
                     {
-                        //var aName = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(pro.GetName().ToLower()).Replace(" ", string.Empty);
-                        Item.SetPropertyValue(pro.Name, Row[pro.Name]);
+                        var aName = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(pro.GetName().ToLower()).Replace(" ", string.Empty);
+                        //Item.SetPropertyValue(pro.Name, Row[pro.Name]);
+                        Names.Add(aName);
+                        Types.Add(pro.PropertyType);
+                        Values.Add(Row[pro.Name]);
                         if (pro.Name == Name)
                         {
-                            IsOk = Row[pro.Name] == Value;
+                            IsOk = Row[pro.Name].Equals(Value);
                         }
                     }
                     if (IsOk)
                     {
+                        var Item = Global.CreateOurNewObject(Names, Types, Values);
                         aList.Add(Item);
                     }
                 }
@@ -62,7 +69,7 @@ namespace DataContext
 
         public static DataSet GetData(Type ItemType)
         {
-            return db.ExecuteQueryDataSet("SELECT * FROM " + ItemType.Name, CommandType.Text, null);
+            return db.ExecuteQueryDataSet("SELECT * FROM " + ItemType.Name, CommandType.Text);
         }
 
         public static void Insert(object Item)
