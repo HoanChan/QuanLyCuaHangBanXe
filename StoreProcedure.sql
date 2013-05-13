@@ -167,6 +167,32 @@ alter PROCEDURE sp_NhanVien_Insert
 @NgaySinh datetime
 AS
 BEGIN
+	
+	if(len(@Ma)>10)
+	begin
+		raiserror(N'[Ma] không dài quá 10 kí tự', 16, 1)
+		return
+	end
+
+	if(len(@HoTen)>30)
+	begin
+		raiserror(N'[HoTen] không dài quá 30 kí tự', 16, 1)
+		return
+	end
+
+	if(len(@DiaChi)>50)
+	begin
+		raiserror(N'[DiaChi] không dài quá 50 kí tự', 16, 1)
+		return
+	end
+
+	
+	if(len(@SoDT)>15)
+	begin
+		raiserror(N'[SoDT] không dài quá 15 kí tự', 16, 1)
+		return
+	end
+
 	declare @message nvarchar(MAX);	
 	set @message= N'[Ma] bị trùng';
 	select * from NhanVien where Ma=@Ma
@@ -186,6 +212,31 @@ BEGIN
 	begin
 		raiserror (@message, 16, 1)
 		return 
+	end
+
+	if(@Luong < 0)
+	begin
+		raiserror(N'[Luong] phải >= 0', 16, 1)
+		return
+	end
+
+	if(@GioiTinh!=1 or @GioiTinh != 0)
+	begin
+		raiserror(N'[GioiTinh]', 16, 1)
+		return
+	end
+
+	if(len(@MatKhau)>50)
+	begin
+		raiserror(N'[MatKhau] không dài quá 50 kí tự', 16, 1)
+		return
+	end
+
+	
+	if(year(@NgaySinh)<1950)
+	begin
+		raiserror(N'[NgaySinh] năm lớn hơn 1950', 16, 1)
+		return
 	end
 
 	INSERT INTO NhanVien VALUES(@Ma, @HoTen, @DiaChi, @SoDT, @GioiTinh, @Luong, @ChiNhanh, @Kho, @ChucVu, @MatKhau, @NgaySinh)
