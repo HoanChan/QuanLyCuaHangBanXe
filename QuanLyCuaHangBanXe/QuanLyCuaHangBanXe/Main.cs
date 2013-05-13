@@ -144,5 +144,11 @@ namespace QuanLyCuaHangBanXe
             UpdateGridView();
         }
 
+        private void iQuanLyKho_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            CurrentMDI = new Kho();
+            UpdateGridView();
+        }
+
     }
 }

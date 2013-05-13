@@ -146,7 +146,7 @@ namespace DataContext
         }
 
 
-        public static object CreateOurNewObject(List<String> Names, List<Type> Types, List<Object> Values)
+        public static Type CreateDynamicType(List<String> Names, List<Type> Types)
         {
             // create a dynamic assembly and module
             AssemblyName assemblyName = new AssemblyName();
@@ -155,7 +155,7 @@ namespace DataContext
             ModuleBuilder module = assemblyBuilder.DefineDynamicModule("tmpModule");
 
             // create a new type builder
-            TypeBuilder typeBuilder = module.DefineType("BindableRowCellCollection", TypeAttributes.Public | TypeAttributes.Class);
+            TypeBuilder typeBuilder = module.DefineType("DynamicItem", TypeAttributes.Public | TypeAttributes.Class);
 
             // Loop over the attributes that will be used as the properties names in out new type
             for (int Index = 0; Index < Names.Count; Index++) 
@@ -166,23 +166,14 @@ namespace DataContext
                 FieldBuilder field = typeBuilder.DefineField(propertyName, Types[Index], FieldAttributes.Private);
                 // Generate a public property
                 PropertyBuilder property =
-                    typeBuilder.DefineProperty(propertyName,
-                                     PropertyAttributes.None,
-                                     Types[Index],
-                                     new Type[] { Types[Index] });
+                    typeBuilder.DefineProperty(propertyName, PropertyAttributes.None, Types[Index], new Type[] { Types[Index] });
 
                 // The property set and property get methods require a special set of attributes:
 
-                MethodAttributes GetSetAttr =
-                    MethodAttributes.Public |
-                    MethodAttributes.HideBySig;
+                MethodAttributes GetSetAttr = MethodAttributes.Public | MethodAttributes.HideBySig;
 
                 // Define the "get" accessor method for current private field.
-                MethodBuilder currGetPropMthdBldr =
-                    typeBuilder.DefineMethod("get_value",
-                                               GetSetAttr,
-                                               Types[Index],
-                                               Type.EmptyTypes);
+                MethodBuilder currGetPropMthdBldr = typeBuilder.DefineMethod("get_value", GetSetAttr, Types[Index], Type.EmptyTypes);
 
                 // Intermediate Language stuff...
                 ILGenerator currGetIL = currGetPropMthdBldr.GetILGenerator();
@@ -191,11 +182,7 @@ namespace DataContext
                 currGetIL.Emit(OpCodes.Ret);
 
                 // Define the "set" accessor method for current private field.
-                MethodBuilder currSetPropMthdBldr =
-                    typeBuilder.DefineMethod("set_value",
-                                               GetSetAttr,
-                                               null,
-                                               new Type[] { Types[Index] });
+                MethodBuilder currSetPropMthdBldr = typeBuilder.DefineMethod("set_value", GetSetAttr, null, new Type[] { Types[Index] });
 
                 // Again some Intermediate Language stuff...
                 ILGenerator currSetIL = currSetPropMthdBldr.GetILGenerator();
@@ -212,24 +199,7 @@ namespace DataContext
 
             // Generate our type
             Type generetedType = typeBuilder.CreateType();
-
-            // Now we have our type. Let's create an instance from it:
-            object generetedObject = Activator.CreateInstance(generetedType);
-
-            // Loop over all the generated properties, and assign the values from our XML:
-            PropertyInfo[] properties = generetedType.GetProperties();
-
-            int propertiesCounter = 0;
-
-            // Loop over the values that we will assign to the properties
-            foreach (var value in Values)
-            {
-                properties[propertiesCounter].SetValue(generetedObject, value);
-                propertiesCounter++;
-            }
-
-            //Yoopy ! Return our new genereted object.
-            return generetedObject;
+            return generetedType;
         }
 
     }
