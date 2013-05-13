@@ -29,7 +29,8 @@ namespace DataContext
                     var Item = ItemType.CreateNew();
                     foreach (var pro in ItemType.GetProperties())
                     {
-                        Item.SetPropertyValue(pro.Name, Row[pro.Name]);
+                        var aValue = Row[pro.Name] == DBNull.Value ? null : Row[pro.Name];
+                        Item.SetPropertyValue(pro.Name, aValue);
                     }
                     aList.Add(Item);
                 }
@@ -37,29 +38,34 @@ namespace DataContext
             }
             else
             {
-                var aList = new List<Object>();
+                var Names = new List<string>();
+                var Types = new List<Type>();
+                foreach (var pro in ItemType.GetProperties())
+                {
+                    var aName = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(pro.GetName().ToLower()).Replace(" ", string.Empty);
+                    //Item.SetPropertyValue(pro.Name, Row[pro.Name]);
+                    Names.Add(aName);
+                    Types.Add(pro.PropertyType);
+                }
+                var DynamicType = Global.CreateDynamicType(Names, Types);
+
+                var aList = (IList)(typeof(List<>).MakeGenericType(DynamicType).CreateNew());
                 foreach (DataRow Row in aData.Tables[0].Rows)
                 {
-                    //var Item = ItemType.CreateNew();
+                    var Item = DynamicType.CreateNew();
                     var IsOk = false;
-                    var Names = new List<string>();
-                    var Types = new List<Type>();
-                    var Values = new List<object>();
                     foreach (var pro in ItemType.GetProperties())
                     {
                         var aName = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(pro.GetName().ToLower()).Replace(" ", string.Empty);
-                        //Item.SetPropertyValue(pro.Name, Row[pro.Name]);
-                        Names.Add(aName);
-                        Types.Add(pro.PropertyType);
-                        Values.Add(Row[pro.Name]);
+                        var aValue = Row[pro.Name] == DBNull.Value ? null : Row[pro.Name];
+                        Item.SetPropertyValue(aName, aValue);
                         if (pro.Name == Name)
                         {
-                            IsOk = Row[pro.Name].Equals(Value);
+                            IsOk = aValue.Equals(Value);
                         }
                     }
                     if (IsOk)
                     {
-                        var Item = Global.CreateOurNewObject(Names, Types, Values);
                         aList.Add(Item);
                     }
                 }
