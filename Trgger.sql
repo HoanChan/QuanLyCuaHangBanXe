@@ -56,6 +56,18 @@ begin
 	Update HoSoBanXe set NhanVienBan=null where NhanVienBan=@Ma
 	update PhieuNhapPhuKien set NVXacNhan=null where NVXacNhan=@Ma
 
+	declare @message nvarchar(MAX);	
+	set @message= N'[Ma] bị xóa bạn phải cập nhật các thông tin sau:'+ CHAR(13) +
+				  N'- [NVSuaChua] trong Phiếu Sửa Chữa'+ CHAR(13) + 
+				  N'- [NVQuanLy] trong Chi Nhánh'+ CHAR(13) +
+				  N'- [NVXacNhan] trong Phiếu Xuất Kho'+ CHAR(13) +
+				  N'- [NVQuanLy] trong Kho'+ CHAR(13) +
+				  N'- [NVXacNhan] trong Phiếu Nhập Xe'+ CHAR(13) +
+				  N'- [NhanVienBan] trong HoSoBanXe'+ CHAR(13) +
+				  N'- [NVXacNhan] trong PhieuNhapPhuKien'+ CHAR(13) 
+					;
+	raiserror (@message, 16, 1)
+
 	delete from NhanVien where Ma=@Ma
 end
 go
