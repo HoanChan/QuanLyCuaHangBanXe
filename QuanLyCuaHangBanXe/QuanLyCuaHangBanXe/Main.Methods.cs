@@ -1,13 +1,15 @@
-﻿using DevExpress.Utils;
-using DevExpress.XtraEditors;
-using DevExpress.XtraEditors.Controls;
-using DevExpress.XtraEditors.DXErrorProvider;
-using DataContext;
-using System;
+﻿using System;
+using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using System.Data.SqlClient;
+using DataContext;
+using DevExpress.Utils;
+using DevExpress.XtraEditors;
+using DevExpress.XtraEditors.Controls;
+using DevExpress.XtraEditors.DXErrorProvider;
+using DevExpress.XtraGrid;
+using DevExpress.XtraGrid.Columns;
 namespace QuanLyCuaHangBanXe
 {
     public partial class Main
@@ -171,6 +173,7 @@ namespace QuanLyCuaHangBanXe
                 }
             }
             #endregion
+            
             #region Button
             int bWidth = 60;
             int bY = 0;
@@ -228,6 +231,7 @@ namespace QuanLyCuaHangBanXe
             };
 
             #endregion
+            
             #region Func
             var Element = EntityType.CreateNew();
 
@@ -294,6 +298,7 @@ namespace QuanLyCuaHangBanXe
             };
 
             #endregion
+            
             #region Button Events
             btnEdit.Click += new EventHandler(delegate(object sender, EventArgs e)
                 {
@@ -420,8 +425,37 @@ namespace QuanLyCuaHangBanXe
                 }
             });
             #endregion
-
+            
             splitContainerControl.Panel2.Controls.AddRange(new Control[] { btnEdit, btnCancelEdit, btnUpdate, btnCreateNew, btnCancelNew, btnAddNew, btnDelete });
+
+            #region Relation
+            var Count = CurrentMDI.GetRelationCount();
+            index += 1;
+            bY = 0;
+            bWidth = 105;
+            for (int i = 0; i < Count; i++)
+            {
+                var MDI = (MasterDetailInfo)CurrentMDI.GetRelationType(i).CreateNew();
+                var aButton = new SimpleButton()
+                {
+                    Text = MDI.GetName(),
+                    Location = new Point(5 + 5 * bY + bWidth * bY, 50 + 30 * index),
+                    Width = bWidth
+                };
+
+                aButton.Click += new EventHandler(delegate(object sender, EventArgs e)
+                {
+                    var ColumnName = CurrentMDI.GetType().Name;
+                    var KeyValue = CurrentMDI.GetKeyValue();
+                    CurrentMDI = MDI;
+                    UpdateGridView();
+                    gridView.Columns[0].FilterInfo = new ColumnFilterInfo(gridView.Columns[ColumnName], KeyValue);
+                });
+                splitContainerControl.Panel2.Controls.Add(aButton);
+                index = bY > 1 ? index + 1 : index;
+                bY = bY > 1 ? 0 : bY + 1;
+            }
+            #endregion
         }
 
     }
