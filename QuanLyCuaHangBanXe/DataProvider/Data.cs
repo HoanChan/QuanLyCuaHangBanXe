@@ -42,10 +42,10 @@ namespace DataProvider
             {
                 var value = pro.GetValue(param);
                 value = value == null ? DBNull.Value : value;
-                if (pro.PropertyType.Equals(typeof(string)) || pro.PropertyType.Equals(typeof(String)))
-                {
-                    value = string.IsNullOrEmpty(value as string) ? DBNull.Value : value;
-                }
+                //if (pro.PropertyType.Equals(typeof(string)) || pro.PropertyType.Equals(typeof(String)))
+                //{
+                //    value = string.IsNullOrWhiteSpace(value as string) ? DBNull.Value : value;
+                //}
                 paramList.Add(new SqlParameter("@" + pro.Name, value));
             }
             ExecuteNonQuery(StoredProcedureName, CommandType.StoredProcedure, paramList.ToArray());

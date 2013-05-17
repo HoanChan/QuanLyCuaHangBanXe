@@ -98,6 +98,7 @@ namespace QuanLyCuaHangBanXe
                         var rDate = new DateEdit();
                         var rTime = new TimeEdit();
 
+                        rDate.Properties.MinValue = new DateTime(1753, 1, 1); // SQL min value
                         if (Pro.Name.Substring(0, 3) == "Gio")
                             textbox = rTime;
                         else
