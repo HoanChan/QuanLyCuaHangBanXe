@@ -56,12 +56,13 @@
             this.iQuanLyNhanVien = new DevExpress.XtraBars.BarButtonItem();
             this.iQuanLyMenu = new DevExpress.XtraBars.BarButtonItem();
             this.iQuanLyQuyenMenu = new DevExpress.XtraBars.BarButtonItem();
+            this.iQuanLyKho = new DevExpress.XtraBars.BarButtonItem();
             this.ribbonImageCollectionLarge = new DevExpress.Utils.ImageCollection(this.components);
             this.homeRibbonPage = new DevExpress.XtraBars.Ribbon.RibbonPage();
             this.fileRibbonPageGroup = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
             this.skinsRibbonPageGroup = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
             this.QuanLyRibbonPage = new DevExpress.XtraBars.Ribbon.RibbonPage();
-            this.NguoiDungRibbonPageGroup = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
+            this.RPGNguoiDung = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
             this.BaoCaoRibbonPage = new DevExpress.XtraBars.Ribbon.RibbonPage();
             this.ribbonPageGroup1 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
             this.rpName = new DevExpress.XtraEditors.Repository.RepositoryItemTextEdit();
@@ -69,7 +70,6 @@
             this.ribbonStatusBar = new DevExpress.XtraBars.Ribbon.RibbonStatusBar();
             this.splitContainerControl = new DevExpress.XtraEditors.SplitContainerControl();
             this.dxErrorProvider = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider(this.components);
-            this.iQuanLyKho = new DevExpress.XtraBars.BarButtonItem();
             ((System.ComponentModel.ISupportInitialize)(this.cardView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.DataGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView)).BeginInit();
@@ -340,6 +340,14 @@
             this.iQuanLyQuyenMenu.Name = "iQuanLyQuyenMenu";
             this.iQuanLyQuyenMenu.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.iQuanLyQuyenMenu_ItemClick);
             // 
+            // iQuanLyKho
+            // 
+            this.iQuanLyKho.Caption = "Kho";
+            this.iQuanLyKho.Id = 90;
+            this.iQuanLyKho.LargeImageIndex = 11;
+            this.iQuanLyKho.Name = "iQuanLyKho";
+            this.iQuanLyKho.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.iQuanLyKho_ItemClick);
+            // 
             // ribbonImageCollectionLarge
             // 
             this.ribbonImageCollectionLarge.ImageSize = new System.Drawing.Size(32, 32);
@@ -388,23 +396,23 @@
             // QuanLyRibbonPage
             // 
             this.QuanLyRibbonPage.Groups.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPageGroup[] {
-            this.NguoiDungRibbonPageGroup});
+            this.RPGNguoiDung});
             this.QuanLyRibbonPage.Name = "QuanLyRibbonPage";
             this.QuanLyRibbonPage.Text = "Quản Lý";
             // 
-            // NguoiDungRibbonPageGroup
+            // RPGNguoiDung
             // 
-            this.NguoiDungRibbonPageGroup.ItemLinks.Add(this.iQuanLyNgoiDung);
-            this.NguoiDungRibbonPageGroup.ItemLinks.Add(this.iQuanLyQuyen);
-            this.NguoiDungRibbonPageGroup.ItemLinks.Add(this.iQuanLyPhanQuyen);
-            this.NguoiDungRibbonPageGroup.ItemLinks.Add(this.iQuanLyChucVu);
-            this.NguoiDungRibbonPageGroup.ItemLinks.Add(this.iQuanLyChiNhanh);
-            this.NguoiDungRibbonPageGroup.ItemLinks.Add(this.iQuanLyNhanVien);
-            this.NguoiDungRibbonPageGroup.ItemLinks.Add(this.iQuanLyMenu);
-            this.NguoiDungRibbonPageGroup.ItemLinks.Add(this.iQuanLyQuyenMenu);
-            this.NguoiDungRibbonPageGroup.ItemLinks.Add(this.iQuanLyKho);
-            this.NguoiDungRibbonPageGroup.Name = "NguoiDungRibbonPageGroup";
-            this.NguoiDungRibbonPageGroup.Text = "Người Dùng";
+            this.RPGNguoiDung.ItemLinks.Add(this.iQuanLyNgoiDung);
+            this.RPGNguoiDung.ItemLinks.Add(this.iQuanLyQuyen);
+            this.RPGNguoiDung.ItemLinks.Add(this.iQuanLyPhanQuyen);
+            this.RPGNguoiDung.ItemLinks.Add(this.iQuanLyChucVu);
+            this.RPGNguoiDung.ItemLinks.Add(this.iQuanLyChiNhanh);
+            this.RPGNguoiDung.ItemLinks.Add(this.iQuanLyNhanVien);
+            this.RPGNguoiDung.ItemLinks.Add(this.iQuanLyMenu);
+            this.RPGNguoiDung.ItemLinks.Add(this.iQuanLyQuyenMenu);
+            this.RPGNguoiDung.ItemLinks.Add(this.iQuanLyKho);
+            this.RPGNguoiDung.Name = "RPGNguoiDung";
+            this.RPGNguoiDung.Text = "Người Dùng";
             // 
             // BaoCaoRibbonPage
             // 
@@ -451,14 +459,6 @@
             // dxErrorProvider
             // 
             this.dxErrorProvider.ContainerControl = this;
-            // 
-            // iQuanLyKho
-            // 
-            this.iQuanLyKho.Caption = "Kho";
-            this.iQuanLyKho.Id = 90;
-            this.iQuanLyKho.LargeImageIndex = 11;
-            this.iQuanLyKho.Name = "iQuanLyKho";
-            this.iQuanLyKho.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.iQuanLyKho_ItemClick);
             // 
             // Main
             // 
@@ -510,7 +510,7 @@
         private DevExpress.XtraBars.Ribbon.RibbonStatusBar ribbonStatusBar;
         private DevExpress.Utils.ImageCollection ribbonImageCollection;
         private DevExpress.Utils.ImageCollection ribbonImageCollectionLarge;
-        private DevExpress.XtraBars.Ribbon.RibbonPageGroup NguoiDungRibbonPageGroup;
+        private DevExpress.XtraBars.Ribbon.RibbonPageGroup RPGNguoiDung;
 
         private DevExpress.XtraBars.BarButtonItem iQuanLyNgoiDung;
         private DevExpress.XtraBars.BarButtonItem iQuanLyQuyen;

@@ -14,7 +14,7 @@ namespace DataProvider
 
         public Data()
         {
-            string ConnStr = string.Format("Data Source = '{0}';Integrated Security = SSPI; Database = '{1}'", @"(localdb)\v11.0", @"SuaXe");
+            string ConnStr = string.Format("Data Source = '{0}';Integrated Security = SSPI; Database = '{1}'", @"(localdb)\v11.0", @"NORTHWND");
             conn = new SqlConnection(ConnStr);
             comm = conn.CreateCommand();
         }
@@ -27,6 +27,13 @@ namespace DataProvider
         public Data(string Server, string Database)
         {
             string ConnStr = string.Format("Data Source = '{0}';Integrated Security = SSPI; Database = '{1}'", Server, Database);
+            conn = new SqlConnection(ConnStr);
+            comm = conn.CreateCommand();
+        }
+
+        public Data(string Server, string Database, string UserName, string Password)
+        {
+            string ConnStr = string.Format("Server={0};Database={1};User Id={2};Password={3};", Server, Database, UserName, Password);
             conn = new SqlConnection(ConnStr);
             comm = conn.CreateCommand();
         }

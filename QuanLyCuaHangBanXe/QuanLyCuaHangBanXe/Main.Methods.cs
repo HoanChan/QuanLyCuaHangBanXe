@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using DataContext;
 using DevExpress.Utils;
+using DevExpress.XtraBars;
+using DevExpress.XtraBars.Ribbon;
 using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraEditors.DXErrorProvider;
@@ -123,7 +126,7 @@ namespace QuanLyCuaHangBanXe
                         var TableName = ForeignInfo.Substring(0, ForeignInfo.IndexOf("_"));
                         var KeyName = ForeignInfo.Substring(ForeignInfo.IndexOf("_") + 1);
                         var x = Global.GetType(TableName);
-                        var aList = Table.GetList(x);
+                        var aList = x.Equals(typeof(DataContext.Menu)) ? GetMenuList() : Table.GetList(x);
                         if (aList != null)
                         {
                             var Ri = new LookUpEdit();
@@ -139,7 +142,7 @@ namespace QuanLyCuaHangBanXe
                                 Lookup.Properties.AllowNullInput = DefaultBoolean.True;
                                 if (Lookup.Properties.Columns.Count == 0) return;
                                 var ci = 0;
-                                foreach (var Column in Pro.PropertyType.GetProperties())
+                                foreach (var Column in x.GetProperties())
                                 {
                                     if (Column.PropertyType.IsGenericType)
                                     {
@@ -206,6 +209,7 @@ namespace QuanLyCuaHangBanXe
                 Text = "Tạo mới",
                 Location = new Point(5 + 5 * bY + bWidth * bY, 50 + 30 * index),
                 Width = 60,
+                Enabled = CurrentMDI.EnabledAddNew()
             };
             var btnCancelNew = new SimpleButton()
             {
@@ -457,6 +461,30 @@ namespace QuanLyCuaHangBanXe
                 bY = bY > 1 ? 0 : bY + 1;
             }
             #endregion
+        }
+
+        private List<DataContext.Menu> GetMenuList()
+        {
+            var result = new List<DataContext.Menu>();
+            var TabList = new List<RibbonPage>() { QuanLyRibbonPage };
+            foreach (var page in TabList)
+            {
+                foreach(var group in page.Groups.Cast<RibbonPageGroup>())
+                {
+                    var MenuList = group.ItemLinks.Cast<BarButtonItemLink>()
+                                    .Select(m=>m.Item)
+                                    .Where(c => c.GetType().Equals(typeof(BarButtonItem)))
+                                    .Select(m => new DataContext.Menu()
+                                    {
+                                        Ma = m.Name,
+                                        Ten = m.Caption,
+                                        GhiChu = page.Name + "/" + group.Name + "/" + m.Name
+                                    });
+                    result.AddRange(MenuList);
+                }
+                
+            }
+            return result;
         }
 
     }

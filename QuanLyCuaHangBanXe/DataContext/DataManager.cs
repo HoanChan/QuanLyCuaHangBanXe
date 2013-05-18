@@ -35,6 +35,11 @@ namespace DataContext
             return false;
         }
 
+        public virtual bool EnabledAddNew()
+        {
+            return true;
+        }
+
         public virtual object GetKeyValue()
         {
             foreach (var pro in this.GetType().GetProperties())
@@ -281,6 +286,10 @@ namespace DataContext
         {
             return Table.GetList(typeof(Quyen_Menu), this.GetType().Name, Ma);
         }
+
+        public override bool EnabledAddNew() { return false; }
+        public override bool EnabledEdit() { return false; }
+
         public override string ToString()
         {
             return "(" + Ma + ") " + Ten;

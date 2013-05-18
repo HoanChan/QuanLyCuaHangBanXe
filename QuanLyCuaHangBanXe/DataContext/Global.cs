@@ -11,6 +11,7 @@ namespace DataContext
 {
     public static class Global
     {
+
         public static string ToBeauty(this string str)
         {
             return System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(str.ToLower());
@@ -25,7 +26,7 @@ namespace DataContext
         {
             try
             {
-                return ((TypeDisplay)(X.GetCustomAttributes(typeof(TypeDisplay), false).First())).Name;
+                return ((TypeDisplay)(X.GetCustomAttribute(typeof(TypeDisplay), false))).Name;
             }
             catch (Exception)
             {
@@ -37,7 +38,7 @@ namespace DataContext
         {
             try
             {
-                return ((DisplayAttribute)(X.GetCustomAttributes(typeof(DisplayAttribute), false).First())).Name;
+                return ((DisplayAttribute)(X.GetCustomAttribute(typeof(DisplayAttribute), false))).Name;
             }
             catch (Exception)
             {
@@ -49,7 +50,7 @@ namespace DataContext
         {
             try
             {
-                return ((ForeignKeyAttribute)(X.GetCustomAttributes(typeof(ForeignKeyAttribute), false).First())).Name;
+                return ((ForeignKeyAttribute)(X.GetCustomAttribute(typeof(ForeignKeyAttribute), false))).Name;
             }
             catch (Exception)
             {
