@@ -20,20 +20,46 @@ begin
 end
 go
 
+alter procedure sp_ChucVu_KiemTra(
+@Ma nvarchar(10),
+@Ten nvarchar(30),
+@Ok bit output)
+as
+begin
+	if(len(@Ten) not between 1 and 30)
+	begin
+		raiserror( N'[Ten]Số lượng ký tự không được ít hơn 1 và lớn hơn 30',16,1)
+		set @ok=0
+	end	
+end
+GO
+
 alter PROCEDURE sp_ChucVu_Insert
 @Ma nvarchar(10),
 @Ten nvarchar(30)
 AS
 BEGIN
+	declare @ok bit;
+	set @ok=1;
+	
+	if(@Ma is null)
+	begin
+		raiserror (N'[Ma]Phải nhập vào',16,1);
+		set @ok=0;
+	end
+
 	declare @message nvarchar(MAX);	
-	set @message= N'[Ma] bị trùng';
+	set @message= N'[Ma]Bị trùng';
 	select * from ChucVu where Ma=@Ma
 	if(@@ROWCOUNT>0)
 	begin
 		raiserror (@message, 16, 1)
-		return 
+		set @ok = 0
 	end
-	Insert into ChucVu values(@Ma, @Ten)                                                 
+	
+	EXECUTE dbo.sp_ChucVu_KiemTra @Ma, @Ten, @ok output
+	if(@ok <> 0)
+		Insert into ChucVu values(@Ma, @Ten)
 END
 go
 
@@ -50,6 +76,24 @@ alter procedure sp_ChucVu_Update
 @Ten nvarchar(30)
 as
 begin
+	declare @ok bit;
+	set @ok=1;
+	
+	if(@Ma is null)
+	begin
+		raiserror (N'[Ma]Phải nhập vào',16,1);
+		set @ok=0;
+	end
+	declare @message nvarchar(MAX);	
+	set @message= N'[Ma]Không tồn tại';
+	select * from ChucVu where Ma=@Ma
+	if(@@ROWCOUNT=0)
+	begin
+		raiserror (@message, 16, 1)
+		set @ok=0
+	end
+	if(@ok = 0)
+		return
 	update ChucVu set Ten=@Ten where Ma=@Ma
 end
 go
@@ -106,6 +150,37 @@ begin
 end
 go
 
+alter procedure sp_ChiNhanh_KiemTra(
+@Ma nvarchar(10),
+@Ten nvarchar(30),
+@DiaChi nvarchar(50),
+@SoDT nvarchar(15),
+@NVQuanLy nvarchar(10),
+@Ok bit output)
+as
+begin
+	if(len(@Ten) not between 1 and 30)
+	begin
+		raiserror( N'[Ten]Số lượng ký tự không được ít hơn 1 và lớn hơn 30',16,1)
+		set @ok=0
+	end
+
+	if(len(@DiaChi) not between 1 and 50)
+	begin
+		raiserror( N'[DiaChi]Số lượng ký tự không được ít hơn 1 và lớn hơn 50',16,1)
+		set @ok=0
+	end
+
+	
+	if(len(@SoDT)not between 10 and 15 )
+	begin
+		raiserror( N'[SoDT]Số lượng ký tự không được ít hơn 10 và lớn hơn 15',16,1)
+		set @ok=0
+	end
+	
+end
+GO
+
 alter PROCEDURE sp_ChiNhanh_Insert
 @Ma nvarchar(10),
 @Ten nvarchar(30),
@@ -114,15 +189,50 @@ alter PROCEDURE sp_ChiNhanh_Insert
 @NVQuanLy nvarchar(10)
 AS
 BEGIN
+	declare @ok bit;
+	set @ok=1
+	
+	if(@Ma is null)
+	begin
+		raiserror ('N[Ma]Phải được nhập vào',16,1)
+		set @ok=0
+		return
+	end
+	
 	declare @message nvarchar(MAX);	
-	set @message= N'[Ma] bị trùng';
+	set @message= N'[Ma] Bị trùng';
 	select * from ChiNhanh where Ma=@Ma
 	if(@@ROWCOUNT>0)
 	begin
 		raiserror (@message, 16, 1)
-		return 
+		set @ok=0
 	end
-	insert into ChiNhanh values(@Ma, @Ten, @DiaChi, @SoDT, @NVQuanLy)
+
+	if(@NVQuanLy is null)
+	begin
+		EXECUTE  dbo.sp_ChiNhanh_KiemTra @Ma, @Ten, @DiaChi, @SoDT,@NVQuanLy, @ok output
+		if(@ok<>0)
+		begin
+			insert into ChiNhanh values(@Ma, @Ten, @DiaChi, @SoDT, null)
+		end
+	end
+
+	declare @message2 nvarchar(MAX);	
+	set @message2= N'[NVQuanLy]Không tồn tại';
+	select * from NhanVien where Ma=@NVQuanLy
+	if(@@ROWCOUNT=0)
+	begin
+		raiserror (@message2, 16, 1)
+		set @ok=0
+	end
+
+	EXECUTE  dbo.sp_ChiNhanh_KiemTra @Ma, @Ten, @DiaChi, @SoDT,@NVQuanLy, @ok output
+
+	if(@ok<>0)
+	begin
+		insert into ChiNhanh values(@Ma, @Ten, @DiaChi, @SoDT, @NVQuanLy)
+		return
+	end	
 END
 GO
 
@@ -134,6 +244,25 @@ alter PROCEDURE sp_ChiNhanh_update
 @NVQuanLy nvarchar(10)
 AS
 BEGIN
+	declare @ok bit;
+	set @ok=1;
+	
+	if(@Ma is null)
+	begin
+		raiserror ('N[Ma]Phải được nhập vào',16,1)
+		set @ok=0
+	end
+	
+	select * from ChiNhanh where Ma=@Ma
+	if(@@ROWCOUNT=0)
+	begin
+		raiserror (N'[Ma] Không tồn tại', 16, 1)
+		set @ok=0
+	end
+
+	EXECUTE  dbo.sp_ChiNhanh_KiemTra @Ma, @Ten, @DiaChi, @SoDT, @NVQuanLy, @ok output
+	if(@ok = 0)
+		return
 	update ChiNhanh set Ten=@Ten, DiaChi=@DiaChi, SoDT=@SoDT, NVQuanLy=@NVQuanLy where Ma=@Ma
 END
 GO
@@ -176,7 +305,7 @@ begin
 end
 go
 
-alter procedure sp_KiemTraNhanVien(
+create procedure sp_NhanVien_KiemTra(
 @Ma nvarchar(10),
 @HoTen nvarchar(30),
 @DiaChi nvarchar(50),
@@ -191,14 +320,14 @@ alter procedure sp_KiemTraNhanVien(
 @Ok bit output)
 as
 begin
-	if(@ChiNhanh <> null and @Kho <> null)
+	if(@ChiNhanh is not null and @Kho is not null)
 	begin
 		raiserror( N'[ChiNhanh] không được đồng thời khác null',16,1)
 		raiserror( N'[Kho] không được đồng thời khác null',16,1)
 		set @ok=0
 	end
 
-	if(@ChiNhanh = null and @Kho = null)
+	if(@ChiNhanh is null and @Kho is null)
 	begin
 		raiserror( N'[ChiNhanh] phải chọn 1 trong 2',16,1)
 		raiserror( N'[Kho] phải chọn 1 trong 2',16,1)
@@ -262,7 +391,7 @@ BEGIN
 	declare @ok bit;
 	set @ok=1
 
-	if(@Ma = null)
+	if(@Ma is null)
 	begin
 		raiserror( N'[Ma] nhập vào',16,1)
 		set @ok=0
@@ -289,7 +418,7 @@ BEGIN
 	--if(@Kho='')
 		--set @Kho=null
 
-	EXECUTE  dbo.sp_KiemTraNhanVien @Ma, @HoTen, @DiaChi, @SoDT,@GioiTinh, @Luong, @ChiNhanh, @Kho, @ChucVu, @MatKhau, @NgaySinh, @ok output
+	EXECUTE  dbo.sp_NhanVien_KiemTra @Ma, @HoTen, @DiaChi, @SoDT,@GioiTinh, @Luong, @ChiNhanh, @Kho, @ChucVu, @MatKhau, @NgaySinh, @ok output
 
 	if(@ok=0)
 		return
