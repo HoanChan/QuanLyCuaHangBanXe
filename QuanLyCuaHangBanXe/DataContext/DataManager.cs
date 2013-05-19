@@ -10,16 +10,17 @@ namespace DataContext
         public virtual bool IsEmpty(int RelationIndex) { return GetChildList(RelationIndex).Count == 0; }
         public virtual IList GetChildList(int RelationIndex) { return new List<object>(); }
         public virtual int GetRelationCount() { return 0; }
-        public virtual string GetRelationName(int RelationIndex) { return "Detail"; }
+        public virtual string GetRelationName(int RelationIndex) { return GetRelationType(RelationIndex).GetName(); }
+        public virtual Type GetRelationType(int RelationIndex) { return typeof(MasterDetailInfo); }
         public virtual string GetName()
         {
             try
             {
-                return "Danh Sách " + ((TypeDisplay)this.GetType().GetCustomAttributes(typeof(TypeDisplay), false).First()).Name;
+                return ((TypeDisplay)this.GetType().GetCustomAttributes(typeof(TypeDisplay), false).First()).Name;
             }
             catch (Exception)
             {
-                return "Danh Sách " + this.GetType().Name;
+                return this.GetType().Name;
             }
         }
         public virtual bool EnabledEdit()
@@ -33,6 +34,23 @@ namespace DataContext
             }
             return false;
         }
+
+        public virtual bool EnabledAddNew()
+        {
+            return true;
+        }
+
+        public virtual object GetKeyValue()
+        {
+            foreach (var pro in this.GetType().GetProperties())
+            {
+                if (!this.IsPrimaryKey(pro.Name))
+                {
+                    return pro.GetValue(this);
+                }
+            }
+            return null;
+        }
     }
 
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
@@ -45,13 +63,13 @@ namespace DataContext
     public partial class ChiNhanh : MasterDetailInfo
     {
         public override int GetRelationCount() { return 3; }
-        public override string GetRelationName(int RelationIndex)
+        public override Type GetRelationType(int RelationIndex)
         {
             switch (RelationIndex)
             {
-                case 0: return typeof(NhanVien).GetName();
-                case 1: return typeof(PhieuXuatKho).GetName();
-                default: return typeof(Xe).GetName();
+                case 0: return typeof(NhanVien);
+                case 1: return typeof(PhieuXuatKho);
+                default: return typeof(Xe);
             }
         }
         public override IList GetChildList(int RelationIndex)
@@ -73,12 +91,12 @@ namespace DataContext
     public partial class ChucVu : MasterDetailInfo
     {
         public override int GetRelationCount() { return 2; }
-        public override string GetRelationName(int RelationIndex)
+        public override Type GetRelationType(int RelationIndex)
         {
             switch (RelationIndex)
             {
-                case 0: return typeof(CTQuyen).GetName();
-                default: return typeof(NhanVien).GetName();
+                case 0: return typeof(CTQuyen);
+                default: return typeof(NhanVien);
             }
         }
         public override IList GetChildList(int RelationIndex)
@@ -154,9 +172,9 @@ namespace DataContext
     public partial class KhachHang : MasterDetailInfo
     {
         public override int GetRelationCount() { return 1; }
-        public override string GetRelationName(int RelationIndex)
+        public override Type GetRelationType(int RelationIndex)
         {
-            return typeof(HoSoBanXe).GetName();
+            return typeof(HoSoBanXe);
         }
         public override IList GetChildList(int RelationIndex)
         {
@@ -172,13 +190,13 @@ namespace DataContext
     public partial class Kho : MasterDetailInfo
     {
         public override int GetRelationCount() { return 3; }
-        public override string GetRelationName(int RelationIndex)
+        public override Type GetRelationType(int RelationIndex)
         {
             switch (RelationIndex)
             {
-                case 0: return typeof(PhieuNhapXe).GetName();
-                case 1: return typeof(PhieuNhapPhuKien).GetName();
-                default: return typeof(PhieuXuatKho).GetName();
+                case 0: return typeof(PhieuNhapXe);
+                case 1: return typeof(PhieuNhapPhuKien);
+                default: return typeof(PhieuXuatKho);
             }
         }
         public override IList GetChildList(int RelationIndex)
@@ -200,14 +218,14 @@ namespace DataContext
     public partial class LoaiPhuKien : MasterDetailInfo
     {
         public override int GetRelationCount() { return 4; }
-        public override string GetRelationName(int RelationIndex)
+        public override Type GetRelationType(int RelationIndex)
         {
             switch (RelationIndex)
             {
-                case 0: return typeof(CTNhapPhuKien).GetName();
-                case 1: return typeof(CTPhieuXuatPhuKien).GetName();
-                case 2: return typeof(CTCungCapPhuKien).GetName();
-                default: return typeof(PhuKien).GetName();
+                case 0: return typeof(CTNhapPhuKien);
+                case 1: return typeof(CTPhieuXuatPhuKien);
+                case 2: return typeof(CTCungCapPhuKien);
+                default: return typeof(PhuKien);
             }
         }
         public override IList GetChildList(int RelationIndex)
@@ -230,14 +248,14 @@ namespace DataContext
     public partial class LoaiXe : MasterDetailInfo
     {
         public override int GetRelationCount() { return 4; }
-        public override string GetRelationName(int RelationIndex)
+        public override Type GetRelationType(int RelationIndex)
         {
             switch (RelationIndex)
             {
-                case 0: return typeof(CTCungCapXe).GetName();
-                case 1: return typeof(CTPhieuNhapXe).GetName();
-                case 2: return typeof(CTPhieuXuatXe).GetName();
-                default: return typeof(Xe).GetName();
+                case 0: return typeof(CTCungCapXe);
+                case 1: return typeof(CTPhieuNhapXe);
+                case 2: return typeof(CTPhieuXuatXe);
+                default: return typeof(Xe);
             }
         }
         public override IList GetChildList(int RelationIndex)
@@ -260,14 +278,18 @@ namespace DataContext
     public partial class Menu : MasterDetailInfo
     {
         public override int GetRelationCount() { return 1; }
-        public override string GetRelationName(int RelationIndex)
+        public override Type GetRelationType(int RelationIndex)
         {
-            return typeof(Quyen_Menu).GetName();
+            return typeof(Quyen_Menu);
         }
         public override IList GetChildList(int RelationIndex)
         {
             return Table.GetList(typeof(Quyen_Menu), this.GetType().Name, Ma);
         }
+
+        public override bool EnabledAddNew() { return false; }
+        public override bool EnabledEdit() { return false; }
+
         public override string ToString()
         {
             return "(" + Ma + ") " + Ten;
@@ -278,14 +300,14 @@ namespace DataContext
     public partial class NCC : MasterDetailInfo
     {
         public override int GetRelationCount() { return 4; }
-        public override string GetRelationName(int RelationIndex)
+        public override Type GetRelationType(int RelationIndex)
         {
             switch (RelationIndex)
             {
-                case 0: return typeof(CTCungCapPhuKien).GetName();
-                case 1: return typeof(CTCungCapXe).GetName();
-                case 2: return typeof(PhieuNhapPhuKien).GetName();
-                default: return typeof(PhieuNhapXe).GetName();
+                case 0: return typeof(CTCungCapPhuKien);
+                case 1: return typeof(CTCungCapXe);
+                case 2: return typeof(PhieuNhapPhuKien);
+                default: return typeof(PhieuNhapXe);
             }
         }
         public override IList GetChildList(int RelationIndex)
@@ -308,18 +330,18 @@ namespace DataContext
     public partial class NhanVien : MasterDetailInfo
     {
         public override int GetRelationCount() { return 8; }
-        public override string GetRelationName(int RelationIndex)
+        public override Type GetRelationType(int RelationIndex)
         {
             switch (RelationIndex)
             {
-                case 0: return typeof(CTVanChuyen).GetName();
-                case 1: return typeof(HoSoBanXe).GetName();
-                case 2: return typeof(Kho).GetName();
-                case 3: return typeof(PhieuNhapPhuKien).GetName();
-                case 4: return typeof(PhieuNhapXe).GetName();
-                case 5: return typeof(PhieuSuaChua).GetName();
-                case 6: return typeof(ChiNhanh).GetName();
-                default: return typeof(PhieuXuatKho).GetName();
+                case 0: return typeof(CTVanChuyen);
+                case 1: return typeof(HoSoBanXe);
+                case 2: return typeof(Kho);
+                case 3: return typeof(PhieuNhapPhuKien);
+                case 4: return typeof(PhieuNhapXe);
+                case 5: return typeof(PhieuSuaChua);
+                case 6: return typeof(ChiNhanh);
+                default: return typeof(PhieuXuatKho);
             }
         }
         public override IList GetChildList(int RelationIndex)
@@ -347,9 +369,9 @@ namespace DataContext
     public partial class PhieuNhapPhuKien : MasterDetailInfo
     {
         public override int GetRelationCount() { return 1; }
-        public override string GetRelationName(int RelationIndex)
+        public override Type GetRelationType(int RelationIndex)
         {
-            return typeof(CTNhapPhuKien).GetName();
+            return typeof(CTNhapPhuKien);
         }
         public override IList GetChildList(int RelationIndex)
         {
@@ -367,9 +389,9 @@ namespace DataContext
     public partial class PhieuNhapXe : MasterDetailInfo
     {
         public override int GetRelationCount() { return 1; }
-        public override string GetRelationName(int RelationIndex)
+        public override Type GetRelationType(int RelationIndex)
         {
-            return typeof(CTPhieuNhapXe).GetName();
+            return typeof(CTPhieuNhapXe);
         }
 
         public override IList GetChildList(int RelationIndex)
@@ -387,9 +409,9 @@ namespace DataContext
     {
 
         public override int GetRelationCount() { return 1; }
-        public override string GetRelationName(int RelationIndex)
+        public override Type GetRelationType(int RelationIndex)
         {
-            return typeof(CTSuaChua).GetName();
+            return typeof(CTSuaChua);
         }
 
         public override IList GetChildList(int RelationIndex)
@@ -407,13 +429,13 @@ namespace DataContext
     public partial class PhieuXuatKho : MasterDetailInfo
     {
         public override int GetRelationCount() { return 3; }
-        public override string GetRelationName(int RelationIndex)
+        public override Type GetRelationType(int RelationIndex)
         {
             switch (RelationIndex)
             {
-                case 0: return typeof(CTVanChuyen).GetName();
-                case 1: return typeof(CTPhieuXuatPhuKien).GetName();
-                default: return typeof(CTPhieuXuatXe).GetName();
+                case 0: return typeof(CTVanChuyen);
+                case 1: return typeof(CTPhieuXuatPhuKien);
+                default: return typeof(CTPhieuXuatXe);
             }
         }
         public override IList GetChildList(int RelationIndex)
@@ -435,9 +457,9 @@ namespace DataContext
     public partial class PhuKien : MasterDetailInfo
     {
         public override int GetRelationCount() { return 1; }
-        public override string GetRelationName(int RelationIndex)
+        public override Type GetRelationType(int RelationIndex)
         {
-            return typeof(CTSuaChua).GetName();
+            return typeof(CTSuaChua);
         }
         public override IList GetChildList(int RelationIndex)
         {
@@ -459,12 +481,12 @@ namespace DataContext
     public partial class Quyen : MasterDetailInfo
     {
         public override int GetRelationCount() { return 2; }
-        public override string GetRelationName(int RelationIndex)
+        public override Type GetRelationType(int RelationIndex)
         {
             switch(RelationIndex)
             {
-                case 0: return typeof(CTQuyen).GetName();
-                default: return typeof(Quyen_Menu).GetName();
+                case 0: return typeof(CTQuyen);
+                default: return typeof(Quyen_Menu);
             }           
         }
         public override IList GetChildList(int RelationIndex)
@@ -485,9 +507,9 @@ namespace DataContext
     public partial class Xe : MasterDetailInfo
     {
         public override int GetRelationCount() { return 1; }
-        public override string GetRelationName(int RelationIndex)
+        public override Type GetRelationType(int RelationIndex)
         {
-            return typeof(HoSoBanXe).GetName();
+            return typeof(HoSoBanXe);
         }
         public override IList GetChildList(int RelationIndex)
         {

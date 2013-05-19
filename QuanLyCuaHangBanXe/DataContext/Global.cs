@@ -11,13 +11,12 @@ namespace DataContext
 {
     public static class Global
     {
-        //public static T GetAttributeFrom<T>(this object instance, string propertyName) where T : Attribute
-        //{
-        //    var attrType = typeof(T);
-        //    var property = instance.GetType().GetProperty(propertyName);
-        //    return (T)property.GetCustomAttributes(attrType, false).First();
-        //}
-        //} 
+
+        public static string ToBeauty(this string str)
+        {
+            return System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(str.ToLower());
+        }
+
         public static Type GetType(string Name)
         {
             return Type.GetType("DataContext." + Name);
@@ -27,7 +26,7 @@ namespace DataContext
         {
             try
             {
-                return ((TypeDisplay)(X.GetCustomAttributes(typeof(TypeDisplay), false).First())).Name;
+                return ((TypeDisplay)(X.GetCustomAttribute(typeof(TypeDisplay), false))).Name;
             }
             catch (Exception)
             {
@@ -39,7 +38,7 @@ namespace DataContext
         {
             try
             {
-                return ((DisplayAttribute)(X.GetCustomAttributes(typeof(DisplayAttribute), false).First())).Name;
+                return ((DisplayAttribute)(X.GetCustomAttribute(typeof(DisplayAttribute), false))).Name;
             }
             catch (Exception)
             {
@@ -51,7 +50,7 @@ namespace DataContext
         {
             try
             {
-                return ((ForeignKeyAttribute)(X.GetCustomAttributes(typeof(ForeignKeyAttribute), false).First())).Name;
+                return ((ForeignKeyAttribute)(X.GetCustomAttribute(typeof(ForeignKeyAttribute), false))).Name;
             }
             catch (Exception)
             {

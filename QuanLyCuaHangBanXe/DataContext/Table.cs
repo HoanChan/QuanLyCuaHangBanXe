@@ -42,8 +42,7 @@ namespace DataContext
                 var Types = new List<Type>();
                 foreach (var pro in ItemType.GetProperties())
                 {
-                    var aName = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(pro.GetName().ToLower()).Replace(" ", string.Empty);
-                    //Item.SetPropertyValue(pro.Name, Row[pro.Name]);
+                    var aName = pro.GetName().ToBeauty().Replace(" ", string.Empty);
                     Names.Add(aName);
                     Types.Add(pro.PropertyType);
                 }
@@ -56,7 +55,7 @@ namespace DataContext
                     var IsOk = false;
                     foreach (var pro in ItemType.GetProperties())
                     {
-                        var aName = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(pro.GetName().ToLower()).Replace(" ", string.Empty);
+                        var aName = pro.GetName().ToBeauty().Replace(" ", string.Empty);
                         var aValue = Row[pro.Name] == DBNull.Value ? null : Row[pro.Name];
                         Item.SetPropertyValue(aName, aValue);
                         if (pro.Name == Name)
@@ -75,11 +74,12 @@ namespace DataContext
 
         public static DataSet GetData(Type ItemType)
         {
-            return db.ExecuteQueryDataSet("SELECT * FROM " + ItemType.Name, CommandType.Text);
+            return db.ExecuteQueryDataSet("sp_" + ItemType.Name + "_Select", CommandType.StoredProcedure);
         }
 
         public static void Insert(object Item)
         {
+            CheckItemValues(Item);
             db.RunStoredProcedure("sp_" + Item.GetType().Name + "_Insert", Item);
         }
 
@@ -98,7 +98,27 @@ namespace DataContext
 
         public static void Update(object Item)
         {
+            CheckItemValues(Item);
             db.RunStoredProcedure("sp_" + Item.GetType().Name + "_Update", Item);
+        }
+
+        private static void CheckItemValues(object Item)
+        {
+            foreach (var pro in Item.GetType().GetProperties())
+            {
+                if (pro.PropertyType.Equals(typeof(DateTime)))
+                {
+                    var avalue = (DateTime)pro.GetValue(Item);
+                    if (avalue.Year < 1753) //sql min
+                        pro.SetValue(Item, null);
+                }
+                else if (pro.PropertyType.Equals(typeof(string)))
+                {
+                    var avalue = (string)pro.GetValue(Item);
+                    if(string.IsNullOrWhiteSpace(avalue.Trim()))
+                        pro.SetValue(Item, null);
+                }
+            }
         }
     }
 }

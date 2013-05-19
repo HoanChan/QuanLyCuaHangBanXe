@@ -14,7 +14,7 @@ namespace DataProvider
 
         public Data()
         {
-            string ConnStr = string.Format("Data Source = '{0}';Integrated Security = SSPI; Database = '{1}'", @"(localdb)\v11.0", @"SuaXe");
+            string ConnStr = string.Format("Data Source = '{0}';Integrated Security = SSPI; Database = '{1}'", @"(localdb)\v11.0", @"NORTHWND");
             conn = new SqlConnection(ConnStr);
             comm = conn.CreateCommand();
         }
@@ -30,6 +30,13 @@ namespace DataProvider
             conn = new SqlConnection(ConnStr);
             comm = conn.CreateCommand();
         }
+
+        public Data(string Server, string Database, string UserName, string Password)
+        {
+            string ConnStr = string.Format("Server={0};Database={1};User Id={2};Password={3};", Server, Database, UserName, Password);
+            conn = new SqlConnection(ConnStr);
+            comm = conn.CreateCommand();
+        }
         /// <summary>
         /// Gọi 1 StoredPorcedure
         /// </summary>
@@ -42,10 +49,10 @@ namespace DataProvider
             {
                 var value = pro.GetValue(param);
                 value = value == null ? DBNull.Value : value;
-                if (pro.PropertyType.Equals(typeof(string)) || pro.PropertyType.Equals(typeof(String)))
-                {
-                    value = string.IsNullOrEmpty(value as string) ? DBNull.Value : value;
-                }
+                //if (pro.PropertyType.Equals(typeof(string)) || pro.PropertyType.Equals(typeof(String)))
+                //{
+                //    value = string.IsNullOrWhiteSpace(value as string) ? DBNull.Value : value;
+                //}
                 paramList.Add(new SqlParameter("@" + pro.Name, value));
             }
             ExecuteNonQuery(StoredProcedureName, CommandType.StoredProcedure, paramList.ToArray());

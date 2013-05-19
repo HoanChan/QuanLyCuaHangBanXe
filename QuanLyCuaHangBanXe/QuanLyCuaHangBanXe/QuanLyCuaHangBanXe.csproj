@@ -83,8 +83,8 @@
       <DependentUpon>Main.cs</DependentUpon>
     </Compile>
     <Compile Include="Main.Methods.cs">
-      <SubType>Form</SubType>
       <DependentUpon>Main.cs</DependentUpon>
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
