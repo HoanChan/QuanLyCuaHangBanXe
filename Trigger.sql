@@ -29,15 +29,16 @@ begin
 
 	select @Ma=Ma from deleted
 
-	update NhanVien set ChucVu=null where ChucVu=@Ma
-	--update ChiTietQuyen set MaCV=null where MaCV=@Ma
-	delete from CTQuyen  where ChucVu=@Ma
+	begin tran t1
 
-	delete from ChucVu where Ma=@Ma
+		update NhanVien set ChucVu=null where ChucVu=@Ma
+		--update ChiTietQuyen set MaCV=null where MaCV=@Ma
+		delete from CTQuyen  where ChucVu=@Ma
+
+		delete from ChucVu where Ma=@Ma
+	commit tran t1
 end
 go
-
-
 
 alter trigger tg_NhanVien_Delete on NhanVien
 instead of delete
@@ -46,29 +47,33 @@ begin
 	declare @Ma nvarchar(10);
 	select @Ma=Ma from deleted
 
-	update PhieuSuaChua set NVSuaChua=null where NVSuaChua=@Ma
-	update ChiNhanh set NVQuanLy=null where NVQuanLy=@Ma
-	update PhieuXuatKho set NVXacNhan=null where NVXacNhan=@Ma
-	--update CTVanChuyen set NhanVien=null where NhanVien=@Ma
-	delete from CTVanChuyen where NhanVien=@Ma
-	update Kho set NVQuanLy=null where NVQuanLy=@Ma
-	update PhieuNhapXe set NVXacNhan=null where NVXacNhan=@Ma
-	Update HoSoBanXe set NhanVienBan=null where NhanVienBan=@Ma
-	update PhieuNhapPhuKien set NVXacNhan=null where NVXacNhan=@Ma
+	begin tran t1
 
-	declare @message nvarchar(MAX);	
-	set @message= N'[Ma] bị xóa bạn phải cập nhật các thông tin sau:'+ CHAR(13) +
-				  N'- [NVSuaChua] trong Phiếu Sửa Chữa'+ CHAR(13) + 
-				  N'- [NVQuanLy] trong Chi Nhánh'+ CHAR(13) +
-				  N'- [NVXacNhan] trong Phiếu Xuất Kho'+ CHAR(13) +
-				  N'- [NVQuanLy] trong Kho'+ CHAR(13) +
-				  N'- [NVXacNhan] trong Phiếu Nhập Xe'+ CHAR(13) +
-				  N'- [NhanVienBan] trong HoSoBanXe'+ CHAR(13) +
-				  N'- [NVXacNhan] trong PhieuNhapPhuKien'+ CHAR(13) 
-					;
-	raiserror (@message, 16, 1)
+		update PhieuSuaChua set NVSuaChua=null where NVSuaChua=@Ma
+		update ChiNhanh set NVQuanLy=null where NVQuanLy=@Ma
+		update PhieuXuatKho set NVXacNhan=null where NVXacNhan=@Ma
+		--update CTVanChuyen set NhanVien=null where NhanVien=@Ma
+		delete from CTVanChuyen where NhanVien=@Ma
+		update Kho set NVQuanLy=null where NVQuanLy=@Ma
+		update PhieuNhapXe set NVXacNhan=null where NVXacNhan=@Ma
+		Update HoSoBanXe set NhanVienBan=null where NhanVienBan=@Ma
+		update PhieuNhapPhuKien set NVXacNhan=null where NVXacNhan=@Ma
 
-	delete from NhanVien where Ma=@Ma
+		declare @message nvarchar(MAX);	
+		set @message= N'[Ma] bị xóa bạn phải cập nhật các thông tin sau:'+ CHAR(13) +
+					  N'- [NVSuaChua] trong Phiếu Sửa Chữa'+ CHAR(13) + 
+					  N'- [NVQuanLy] trong Chi Nhánh'+ CHAR(13) +
+					  N'- [NVXacNhan] trong Phiếu Xuất Kho'+ CHAR(13) +
+					  N'- [NVQuanLy] trong Kho'+ CHAR(13) +
+					  N'- [NVXacNhan] trong Phiếu Nhập Xe'+ CHAR(13) +
+					  N'- [NhanVienBan] trong HoSoBanXe'+ CHAR(13) +
+					  N'- [NVXacNhan] trong PhieuNhapPhuKien'+ CHAR(13) 
+						;
+		raiserror (@message, 16, 1)
+
+		delete from NhanVien where Ma=@Ma
+
+	commit tran t1
 end
 go
 
@@ -97,11 +102,13 @@ as
 begin
 	declare @Ma nvarchar(10);
 	select @Ma=Ma from deleted
-	--update ChiTietQuyen set MaQuyen=null where MaQuyen=@Ma
-	delete from CTQuyen where Quyen=@Ma
-	delete from Quyen_Menu where Quyen=@Ma
+	begin tran t1
+		--update ChiTietQuyen set MaQuyen=null where MaQuyen=@Ma
+		delete from CTQuyen where Quyen=@Ma
+		delete from Quyen_Menu where Quyen=@Ma
 
-	delete from Quyen where Ma=@Ma
+		delete from Quyen where Ma=@Ma
+	commit tran t1
 end
 go
 
@@ -130,10 +137,11 @@ as
 begin
 	declare @Ma nvarchar(50);
 	select @Ma=Ma from deleted
+	begin tran t1
+		delete from Quyen_Menu where Menu=@Ma
 
-	delete from Quyen_Menu where Menu=@Ma
-
-	delete from Menu where Ma=@Ma
+		delete from Menu where Ma=@Ma
+	commit tran t1
 end
 go
 
@@ -143,8 +151,10 @@ AS
 BEGIN
 	declare @SoMay nvarchar(50);
 	select @SoMay=SoMay from deleted
-	update HoSoBanXe set Xe=null where Xe=@SoMay
-	delete from Xe where SoMay=@SoMay
+	begin tran t1
+		update HoSoBanXe set Xe=null where Xe=@SoMay
+		delete from Xe where SoMay=@SoMay
+	commit tran t1
 END
 GO
 
@@ -174,12 +184,14 @@ begin
 	declare @Ma nvarchar(10);
 	select @Ma=Ma from deleted
 	--update CTCungCapPhuKien set NCC=null where NCC=@Ma
-	delete from CTCungCapPhuKien where NCC=@Ma
-	delete from CTCungCapXe where NCC=@Ma
-	update PhieuNhapPhuKien set NCC=null where NCC=@Ma
-	update PhieuNhapXe set NCC=null where NCC=@Ma
+	begin tran t1
+		delete from CTCungCapPhuKien where NCC=@Ma
+		delete from CTCungCapXe where NCC=@Ma
+		update PhieuNhapPhuKien set NCC=null where NCC=@Ma
+		update PhieuNhapXe set NCC=null where NCC=@Ma
 
-	delete from NCC where Ma=@Ma
+		delete from NCC where Ma=@Ma
+	commit tran t1
 end
 go
 
@@ -209,11 +221,13 @@ as
 begin
 	declare @MaKho nvarchar(10);
 	select @MaKho=Ma from deleted
-	update PhieuNhapPhuKien set Kho=null where Kho=@MaKho
-	update PhieuXuatKho set Kho=null where Kho=@MaKho
-	update PhieuNhapXe set Kho=null where Kho=@MaKho
+	begin tran t1
+		update PhieuNhapPhuKien set Kho=null where Kho=@MaKho
+		update PhieuXuatKho set Kho=null where Kho=@MaKho
+		update PhieuNhapXe set Kho=null where Kho=@MaKho
 
-	delete from Kho where Ma=@MaKho
+		delete from Kho where Ma=@MaKho
+	commit tran t1
 end
 go
 
@@ -242,9 +256,11 @@ as
 begin
 	declare @Ma nvarchar(10);
 	select @Ma=Ma from deleted
-	update Xe set ChiNhanh=null where ChiNhanh=@Ma
-	update PhieuXuatKHo set ChiNhanh=null where ChiNhanh=@Ma
-	delete from ChiNhanh where Ma=@Ma
+	begin tran t1
+		update Xe set ChiNhanh=null where ChiNhanh=@Ma
+		update PhieuXuatKHo set ChiNhanh=null where ChiNhanh=@Ma
+		delete from ChiNhanh where Ma=@Ma
+	commit tran t1
 end
 go
 
@@ -273,19 +289,21 @@ as
 begin
 	declare @Ma nvarchar(10);
 	select @Ma=Ma from deleted
-	update PhuKien set LoaiPhuKien=null where LoaiPhuKien=@Ma
-	--update CTPhieuXuatPhuKien set LoaiPhuKien=null where LoaiPhuKien=@Ma
-	delete from CTPhieuXuatPhuKien where LoaiPhuKien=@Ma
-	--update CTNhapPhuKien set LoaiPhuKien=null where LoaiPhuKien=@Ma
-	delete from CTNhapPhuKien where LoaiPhuKien=@Ma
-	--update CTCungCapPhuKien set LoaiPhuKien=null where LoaiPhuKien=@Ma
-	delete from CTCungCapPhuKien where LoaiPhuKien=@Ma
+	begin tran t1
+		update PhuKien set LoaiPhuKien=null where LoaiPhuKien=@Ma
+		--update CTPhieuXuatPhuKien set LoaiPhuKien=null where LoaiPhuKien=@Ma
+		delete from CTPhieuXuatPhuKien where LoaiPhuKien=@Ma
+		--update CTNhapPhuKien set LoaiPhuKien=null where LoaiPhuKien=@Ma
+		delete from CTNhapPhuKien where LoaiPhuKien=@Ma
+		--update CTCungCapPhuKien set LoaiPhuKien=null where LoaiPhuKien=@Ma
+		delete from CTCungCapPhuKien where LoaiPhuKien=@Ma
 
-	delete from LoaiPhuKien where Ma=@Ma
+		delete from LoaiPhuKien where Ma=@Ma
+	commit tran t1
 end
 go
 
-alter trigger TG_Them_HSBanXe On HoSoBanXe
+alter trigger tg_HSBanXe_Insert On HoSoBanXe
 for insert
 as
 begin
@@ -306,45 +324,51 @@ begin
 end
 go
 
-alter trigger TG_Xoa_LoaiXe on LoaiXe
+alter trigger tg_LoaiXe_Delete on LoaiXe
 instead of delete
 as
 begin
 	declare @LoaiXe nvarchar(10);
 	select @LoaiXe=Ma from deleted
-	--update Xe set LoaiXe=null where LoaiXe=@LoaiXe
-	delete from CTPhieuXuatXe where LoaiXe=@LoaiXe
-	--update CTPhieuXuatXe set LoaiXe=null where LoaiXe=@LoaiXe
-	delete from CTPhieuXuatXe where LoaiXe=@LoaiXe
-	--update CTPhieuNhapXe set LoaiXe=null where LoaiXe=@LoaiXe
-	delete from CTPhieuNhapXe where LoaiXe=@LoaiXe
-	update CTCungCapXe set LoaiXe=null where LoaiXe=@LoaiXe
+	begin tran t1
+		--update Xe set LoaiXe=null where LoaiXe=@LoaiXe
+		delete from CTPhieuXuatXe where LoaiXe=@LoaiXe
+		--update CTPhieuXuatXe set LoaiXe=null where LoaiXe=@LoaiXe
+		delete from CTPhieuXuatXe where LoaiXe=@LoaiXe
+		--update CTPhieuNhapXe set LoaiXe=null where LoaiXe=@LoaiXe
+		delete from CTPhieuNhapXe where LoaiXe=@LoaiXe
+		update CTCungCapXe set LoaiXe=null where LoaiXe=@LoaiXe
 
-	delete from LoaiXe where Ma=@LoaiXe
+		delete from LoaiXe where Ma=@LoaiXe
+	commit tran t1
 end
 go
 
-alter trigger TG_XoaKH on KhachHang
+alter trigger tg_KhachHang_delete on KhachHang
 instead of delete
 as
 begin
 	declare @Ma nvarchar(10);
 	select @Ma=Ma from deleted
-	update HoSoBanXe set KhachHang=null where KhachHang=@Ma
-	delete from KhachHang where Ma=@Ma
+	begin tran t1
+		update HoSoBanXe set KhachHang=null where KhachHang=@Ma
+		delete from KhachHang where Ma=@Ma
+	commit tran t1
 end
 go
 
-alter trigger TG_Xoa_PhuKien on PhuKien
+alter trigger tg_PhuKien_Delete on PhuKien
 instead of delete
 as
 begin
 	declare @Ma nvarchar(10);
 	select @Ma=Ma from deleted
-	--update CTSuaChua set PhuKien=null where PhuKien=@Ma
-	delete from CTSuaChua where PhuKien=@Ma
+	begin tran t1
+		--update CTSuaChua set PhuKien=null where PhuKien=@Ma
+		delete from CTSuaChua where PhuKien=@Ma
 
-	delete from PhuKien where Ma=@Ma
+		delete from PhuKien where Ma=@Ma
+	commit tran t1
 end
 go
 

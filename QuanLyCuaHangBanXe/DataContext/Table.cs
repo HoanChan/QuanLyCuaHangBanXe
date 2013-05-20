@@ -115,7 +115,7 @@ namespace DataContext
                 else if (pro.PropertyType.Equals(typeof(string)))
                 {
                     var avalue = (string)pro.GetValue(Item);
-                    if(string.IsNullOrWhiteSpace(avalue.Trim()))
+                   if(string.IsNullOrWhiteSpace(avalue))
                         pro.SetValue(Item, null);
                 }
             }

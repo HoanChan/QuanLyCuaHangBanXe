@@ -58,8 +58,11 @@ BEGIN
 	end
 	
 	EXECUTE dbo.sp_ChucVu_KiemTra @Ma, @Ten, @ok output
-	if(@ok <> 0)
-		Insert into ChucVu values(@Ma, @Ten)
+
+	if(@ok = 0)
+		return
+
+	Insert into ChucVu values(@Ma, @Ten)
 END
 go
 
@@ -170,14 +173,12 @@ begin
 		raiserror( N'[DiaChi]Số lượng ký tự không được ít hơn 1 và lớn hơn 50',16,1)
 		set @ok=0
 	end
-
 	
 	if(len(@SoDT)not between 10 and 15 )
 	begin
 		raiserror( N'[SoDT]Số lượng ký tự không được ít hơn 10 và lớn hơn 15',16,1)
 		set @ok=0
 	end
-	
 end
 GO
 
@@ -196,43 +197,19 @@ BEGIN
 	begin
 		raiserror ('N[Ma]Phải được nhập vào',16,1)
 		set @ok=0
-		return
 	end
 	
-	declare @message nvarchar(MAX);	
-	set @message= N'[Ma] Bị trùng';
 	select * from ChiNhanh where Ma=@Ma
 	if(@@ROWCOUNT>0)
 	begin
-		raiserror (@message, 16, 1)
-		set @ok=0
-	end
-
-	if(@NVQuanLy is null)
-	begin
-		EXECUTE  dbo.sp_ChiNhanh_KiemTra @Ma, @Ten, @DiaChi, @SoDT,@NVQuanLy, @ok output
-		if(@ok<>0)
-		begin
-			insert into ChiNhanh values(@Ma, @Ten, @DiaChi, @SoDT, null)
-		end
-	end
-
-	declare @message2 nvarchar(MAX);	
-	set @message2= N'[NVQuanLy]Không tồn tại';
-	select * from NhanVien where Ma=@NVQuanLy
-	if(@@ROWCOUNT=0)
-	begin
-		raiserror (@message2, 16, 1)
+		raiserror (N'[Ma] Bị trùng', 16, 1)
 		set @ok=0
 	end
 
 	EXECUTE  dbo.sp_ChiNhanh_KiemTra @Ma, @Ten, @DiaChi, @SoDT,@NVQuanLy, @ok output
 
-	if(@ok<>0)
-	begin
+	if(@ok <> 0)
 		insert into ChiNhanh values(@Ma, @Ten, @DiaChi, @SoDT, @NVQuanLy)
-		return
-	end	
 END
 GO
 
@@ -282,30 +259,7 @@ begin
 end
 go
 
-alter function ft_KiemTraNhanVien (
-@Ma nvarchar(10),
-@HoTen nvarchar(30),
-@DiaChi nvarchar(50),
-@SoDT nchar(15),
-@GioiTinh bit,
-@Luong money,
-@ChiNhanh nvarchar(10),
-@Kho nvarchar(10),
-@ChucVu nvarchar(10),
-@MatKhau nvarchar(50),
-@NgaySinh datetime
-)
-RETURNS nvarchar(MAX)
-AS 
-begin
-	
-
-	
-	return ''
-end
-go
-
-create procedure sp_NhanVien_KiemTra(
+alter procedure sp_NhanVien_KiemTra(
 @Ma nvarchar(10),
 @HoTen nvarchar(30),
 @DiaChi nvarchar(50),
@@ -322,55 +276,85 @@ as
 begin
 	if(@ChiNhanh is not null and @Kho is not null)
 	begin
-		raiserror( N'[ChiNhanh] không được đồng thời khác null',16,1)
-		raiserror( N'[Kho] không được đồng thời khác null',16,1)
+		raiserror( N'[ChiNhanh]Chi nhánh và kho chỉ được chọn 1',16,1)
+		raiserror( N'[Kho]Chi nhánh và kho chỉ được chọn 1',16,1)
 		set @ok=0
 	end
 
 	if(@ChiNhanh is null and @Kho is null)
 	begin
-		raiserror( N'[ChiNhanh] phải chọn 1 trong 2',16,1)
-		raiserror( N'[Kho] phải chọn 1 trong 2',16,1)
+		raiserror( N'[ChiNhanh]Cần chọn giá trị',16,1)
+		raiserror( N'[Kho]Cần chọn giá trị',16,1)
+		set @ok=0
+	end
+
+	if(@HoTen is null)
+	begin
+		raiserror( N'[HoTen]Không được để trống',16,1)
 		set @ok=0
 	end
 
 	if(len(@HoTen) not between 1 and 30)
 	begin
-		raiserror( N'[HoTen] [1,30]',16,1)
+		raiserror( N'[HoTen][1,30]',16,1)
 		set @ok=0
 	end
 
-	if(len(@DiaChi) not between 1 and 50)
+	if(@DiaChi is null)
 	begin
-		raiserror( N'[DiaChi] [1,50]',16,1)
+		raiserror( N'[DiaChi]Không được để trống',16,1)
 		set @ok=0
 	end
 
+	if(len(@DiaChi) > 50)
+	begin
+		raiserror( N'[DiaChi]Không nhập nhiều quá 50 kí tự',16,1)
+		set @ok=0
+	end
+
+	if(@SoDT is null)
+	begin
+		raiserror( N'[SoDT]Không được để trống',16,1)
+		set @ok=0
+	end
 	
 	if(len(@SoDT)not between 10 and 15 )
 	begin
-		raiserror( N'[SoDT] [10,15]',16,1)
+		raiserror( N'[SoDT]Không ít hơn 10 kí tự và không nhiều quá 15 kí tự',16,1)
 		set @ok=0
 	end
 
 
 	if(@Luong <= 0)
 	begin
-		raiserror( N'[Luong] phải > 0',16,1)
+		raiserror( N'[Luong]Phải > 0',16,1)
+		set @ok=0
+	end
+
+	if(@ChucVu is null)
+	begin
+		raiserror( N'[ChucVu]Cần chọn giá trị',16,1)
+		set @ok=0
+	end
+
+	if(@MatKhau is null)
+	begin
+		raiserror( N'[MatKhau]Không được để trống',16,1)
 		set @ok=0
 	end
 
 	if(len(@MatKhau) not between 3 and 50)
 	begin
-		raiserror( N'[MatKhau] không ít hơn 3 kí tự và không nhiều quá 50 kí tự',16,1)
+		raiserror( N'[MatKhau]Không ít hơn 3 kí tự và không nhiều quá 50 kí tự',16,1)
 		set @ok=0
 	end
 
-	if(year(@NgaySinh)<1950)
+	if(@NgaySinh is null)
 	begin
-		raiserror( N'[NgaySinh] năm lớn hơn 1950',16,1)
+		raiserror( N'[NgaySinh]Phải chọn giá trị',16,1)
 		set @ok=0
 	end
+
 end
 go
 
@@ -393,7 +377,7 @@ BEGIN
 
 	if(@Ma is null)
 	begin
-		raiserror( N'[Ma] nhập vào',16,1)
+		raiserror( N'[Ma]Không được để trống',16,1)
 		set @ok=0
 	end
 
@@ -442,7 +426,7 @@ alter PROCEDURE sp_NhanVien_Update
 AS
 BEGIN
 	declare @message nvarchar(MAX);	
-	set @message = dbo.ft_KiemTraNhanVien(@Ma, @HoTen, @DiaChi, @SoDT,@GioiTinh, @Luong, @ChiNhanh, @Kho, @ChucVu, @MatKhau, @NgaySinh)
+	set @message = dbo.sp_NhanVien_KiemTra(@Ma, @HoTen, @DiaChi, @SoDT,@GioiTinh, @Luong, @ChiNhanh, @Kho, @ChucVu, @MatKhau, @NgaySinh)
 
 	if(@message!='')
 	begin
@@ -453,7 +437,7 @@ BEGIN
 	declare @ok bit;
 	set @ok=1;
 
-	EXECUTE  dbo.sp_KiemTraNhanVien @Ma, @HoTen, @DiaChi, @SoDT,@GioiTinh, @Luong, @ChiNhanh, @Kho, @ChucVu, @MatKhau, @NgaySinh, @ok output
+	EXECUTE  dbo.sp_NhanVien_KiemTra @Ma, @HoTen, @DiaChi, @SoDT,@GioiTinh, @Luong, @ChiNhanh, @Kho, @ChucVu, @MatKhau, @NgaySinh, @ok output
 
 	if(@ok=0)
 		return
