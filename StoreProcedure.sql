@@ -62,7 +62,13 @@ BEGIN
 	if(@ok = 0)
 		return
 
+	exec sp_addrole @Ma 
+
 	Insert into ChucVu values(@Ma, @Ten)
+	if(@@ERROR<>0)
+			raiserror(N'[_Msg]Đã thêm thất bại',16,1)
+		else
+			raiserror(N'[_Msg]Đã thêm thành công',16,1)
 END
 go
 
@@ -70,6 +76,7 @@ alter procedure sp_ChucVu_Delete
 @Ma nvarchar(10)
 AS
 BEGIN
+	exec sp_droprole @Ma
 	DELETE FROM ChucVu WHERE Ma=@Ma
 END
 go
@@ -87,17 +94,20 @@ begin
 		raiserror (N'[Ma]Phải nhập vào',16,1);
 		set @ok=0;
 	end
-	declare @message nvarchar(MAX);	
-	set @message= N'[Ma]Không tồn tại';
 	select * from ChucVu where Ma=@Ma
 	if(@@ROWCOUNT=0)
 	begin
-		raiserror (@message, 16, 1)
+		raiserror (N'[Ma]Không tồn tại', 16, 1)
 		set @ok=0
 	end
 	if(@ok = 0)
 		return
+
 	update ChucVu set Ten=@Ten where Ma=@Ma
+	if(@@ERROR<>0)
+			raiserror(N'[_Msg]Cập nhật thất bại',16,1)
+		else
+			raiserror(N'[_Msg]Đã cập nhật thành công',16,1)
 end
 go
 
@@ -213,7 +223,7 @@ BEGIN
 END
 GO
 
-alter PROCEDURE sp_ChiNhanh_update
+alter PROCEDURE sp_ChiNhanh_Update
 @Ma nvarchar(10),
 @Ten nvarchar(30),
 @DiaChi nvarchar(50),
@@ -324,7 +334,6 @@ begin
 		set @ok=0
 	end
 
-
 	if(@Luong <= 0)
 	begin
 		raiserror( N'[Luong]Phải > 0',16,1)
@@ -397,17 +406,37 @@ BEGIN
 		set @ok=0
 	end
 
-	--if(@ChiNhanh='')
-	--	set @ChiNhanh=null
-	--if(@Kho='')
-		--set @Kho=null
-
 	EXECUTE  dbo.sp_NhanVien_KiemTra @Ma, @HoTen, @DiaChi, @SoDT,@GioiTinh, @Luong, @ChiNhanh, @Kho, @ChucVu, @MatKhau, @NgaySinh, @ok output
 
-	if(@ok=0)
-		return
+	if(@ok=0) return
 	
-	INSERT INTO NhanVien VALUES(@Ma, @HoTen, @DiaChi, @SoDT, @GioiTinh, @Luong, @ChiNhanh, @Kho, @ChucVu, @MatKhau, @NgaySinh)
+	exec @ok = sp_addlogin @Ma, @MatKhau
+	if(@ok=0)
+	begin
+		exec @ok = sp_adduser @Ma, @Ma
+		if(@ok=0)
+		begin
+			exec @ok = sp_addrolemember @ChucVu, @Ma
+			if(@ok<>0)
+			begin
+				exec sp_dropuser @Ma
+				exec sp_droplogin @Ma
+			end
+		end
+		else
+			exec sp_droplogin @Ma
+	end
+	
+	if(@ok<>0)
+		raiserror(N'[_Msg]Đã thêm thất bại',16,1)
+	else
+	begin
+		INSERT INTO NhanVien VALUES(@Ma, @HoTen, @DiaChi, @SoDT, @GioiTinh, @Luong, @ChiNhanh, @Kho, @ChucVu, @MatKhau, @NgaySinh)
+		if(@@ERROR<>0)
+			raiserror(N'[_Msg]Đã thêm thất bại',16,1)
+		else
+			raiserror(N'[_Msg]Đã thêm thành công',16,1)
+	end
 END
 GO
 
@@ -425,15 +454,6 @@ alter PROCEDURE sp_NhanVien_Update
 @NgaySinh datetime
 AS
 BEGIN
-	declare @message nvarchar(MAX);	
-	set @message = dbo.sp_NhanVien_KiemTra(@Ma, @HoTen, @DiaChi, @SoDT,@GioiTinh, @Luong, @ChiNhanh, @Kho, @ChucVu, @MatKhau, @NgaySinh)
-
-	if(@message!='')
-	begin
-		raiserror (@message, 16, 1)
-		return
-	end
-
 	declare @ok bit;
 	set @ok=1;
 
@@ -442,15 +462,40 @@ BEGIN
 	if(@ok=0)
 		return
 
+	declare @ChucVuCu nvarchar(10),	@MatKhauCu nvarchar(50);
+
+	select @MatKhauCu=@MatKhau, @ChucVuCu=ChucVu from NhanVien where Ma=@Ma
+
+	if(@MatKhauCu <> @MatKhau)
+		exec ('alter login ' + @Ma + ' with password = ''' + @MatKhau + '''')
+
+	if(@ChucVuCu <> @ChucVu)
+	begin
+		exec sp_droprolemember @ChucVuCu, @Ma
+		exec sp_addrolemember @ChucVu, @Ma
+	end
+
 	UPDATE NhanVien SET HoTen=@HoTen, DiaChi=@DiaChi, SoDT=@SoDT, GioiTinh=@GioiTinh, Luong=@Luong, ChiNhanh=@ChiNhanh, Kho=@Kho, ChucVu=@ChucVu, NgaySinh=@NgaySinh
-	WHERE Ma=@Ma
+		WHERE Ma=@Ma
+	if(@@ERROR<>0)
+		raiserror(N'[_Msg]Cập nhật thất bại',16,1)
+	else
+		raiserror(N'[_Msg]Đã cập nhật thành công',16,1)
 END
 GO
+
 
 alter PROCEDURE sp_NhanVien_Delete
 @Ma nvarchar(10)
 AS
 BEGIN
+	declare @ChucVu nvarchar(10);
+	select @ChucVu=ChucVu from NhanVien where Ma=@Ma
+
+	exec sp_droprolemember @ChucVu, Ma
+	exec sp_dropuser @Ma
+	exec sp_droplogin @Ma
+
 	DELETE FROM NhanVien WHERE Ma=@Ma
 END
 GO
@@ -469,12 +514,10 @@ alter PROCEDURE sp_KhachHang_Insert
 @SoDT nvarchar(15)
 AS
 BEGIN
-	declare @message nvarchar(MAX);	
-	set @message= N'[Ma] bị trùng';
 	select * from KhachHang where Ma=@Ma
 	if(@@ROWCOUNT>0)
 	begin
-		raiserror (@message, 16, 1)
+		raiserror (N'[Ma] bị trùng', 16, 1)
 		return 
 	end
 
@@ -1257,3 +1300,5 @@ begin
 	delete from Quyen_Menu where Quyen=@Quyen and Menu=@Menu
 end
 go
+
+--grant procedure on table to user | group

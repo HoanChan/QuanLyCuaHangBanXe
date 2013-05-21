@@ -10,7 +10,7 @@ namespace DataContext
 {
     public class Table
     {
-        static Data db = new Data(@"(localdb)\v11.0", "CUAHANG_BANXE");
+        static Data db = new Data(@"(localdb)\v11.0", "CUAHANG_BANXE", "sa", "123123");
         /// <summary>
         /// Lấy danh sách giá trị trong bảng
         /// </summary>

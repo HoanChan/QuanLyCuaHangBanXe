@@ -10,12 +10,10 @@ begin
 
 	select @Ma=Ma, @Ten=Ten from inserted
 	
-	declare @message nvarchar(MAX);	
-	set @message= N'[Ten] đã tồn tại';
 	select * from ChucVu where Ten=@Ten
 	if(@@ROWCOUNT>1)
 	begin
-		raiserror (@message, 16, 1)
+		raiserror ( N'[Ten]Đã tồn tại', 16, 1)
 		rollback transaction
 	end
 end
@@ -32,27 +30,106 @@ begin
 	begin tran t1
 
 		update NhanVien set ChucVu=null where ChucVu=@Ma
-		--update ChiTietQuyen set MaCV=null where MaCV=@Ma
 		delete from CTQuyen  where ChucVu=@Ma
-
 		delete from ChucVu where Ma=@Ma
+		if(@@ERROR<>0)
+			raiserror(N'[_Msg]Xóa thất bại',16,1)
+		else
+			raiserror(N'[_Msg]Đã xóa thành công',16,1)
 	commit tran t1
 end
 go
+
+/*create trigger tg_NhanVien_Insert on NhanVien
+for insert
+as
+begin
+	declare @Ma nvarchar(10),@ChucVu nvarchar(10), @MatKhau nvarchar(50);
+	select @Ma=Ma, @MatKhau=MatKhau, @ChucVu=ChucVu 
+	from inserted
+	--begin tran t1
+		exec sp_addlogin @Ma, @MatKhau
+		--exec ('create login ' + @Ma + ' with password = ''' + @MatKhau + '''')
+		exec sp_adduser @Ma, @Ma
+		--exec ('create user ' + @Ma + ' for '+ @Ma)
+		if(@ChucVu is not null)
+			exec sp_addrolemember @ChucVu, @Ma
+		if(@@ERROR<>0)
+		begin
+			rollback tran
+			raiserror(N'[_Msg]Đã thêm thất bại',16,1)
+			return
+		end
+		else
+			raiserror(N'[_Msg]Đã thêm thành công',16,1)
+	--commit tran t1
+end*/
+go
+
+/*create trigger tg_NhanVien_update on NhanVien
+instead of update
+as
+begin
+	declare @Ma nvarchar(10),
+		@MatKhau nvarchar(50),
+		@ChucVu nvarchar(10),
+		@HoTen nvarchar(30),
+		@DiaChi nvarchar(50),
+		@SoDT nchar(15),
+		@GioiTinh bit,
+		@Luong money,
+		@ChiNhanh nvarchar(10),
+		@Kho nvarchar(10),
+		@NgaySinh datetime,
+		@ChucVuCu nvarchar(10),
+		@MatKhauCu nvarchar(50);
+
+		select @Ma=Ma, @MatKhau=MatKhau, @ChucVu=ChucVu, @HoTen=HoTen, @DiaChi=DiaChi, @SoDT=SoDT,
+				@GioiTinh=GioiTinh, @Luong=Luong, @ChiNhanh=ChiNhanh, @Kho=Kho, @NgaySinh=NgaySinh
+		from inserted
+		select @MatKhauCu=@MatKhau, @ChucVuCu=ChucVu from NhanVien where Ma=@Ma
+
+		if(@MatKhauCu <> @MatKhau)
+		begin
+			begin tran t1
+				exec sp_droprolemember @ChucVuCu, @Ma
+				exec sp_droplogin @Ma
+				exec sp_addlogin @Ma, @MatKhau
+				exec sp_addrolemember @ChucVu, @Ma
+				UPDATE NhanVien SET HoTen=@HoTen, DiaChi=@DiaChi, SoDT=@SoDT, GioiTinh=@GioiTinh, Luong=@Luong, ChiNhanh=@ChiNhanh, Kho=@Kho, ChucVu=@ChucVu, NgaySinh=@NgaySinh
+				WHERE Ma=@Ma
+				raiserror(N'[_Msg]Đã cập nhật thành công',16,1)
+			commit tran t1
+			return
+		end
+		else if(@ChucVuCu <> @ChucVu)
+		begin
+			begin tran t2
+				exec sp_droprolemember @ChucVuCu, @Ma
+				exec sp_addrolemember @ChucVu, @Ma
+				UPDATE NhanVien SET HoTen=@HoTen, DiaChi=@DiaChi, SoDT=@SoDT, GioiTinh=@GioiTinh, Luong=@Luong, ChiNhanh=@ChiNhanh, Kho=@Kho, ChucVu=@ChucVu, NgaySinh=@NgaySinh
+				WHERE Ma=@Ma
+				raiserror(N'[_Msg]Đã cập nhật thành công',16,1)
+			commit tran t2			
+			return
+		end
+		raiserror(N'[_Msg]Cập nhật thất bại',16,1)
+end
+go*/
 
 alter trigger tg_NhanVien_Delete on NhanVien
 instead of delete
 as
 begin
-	declare @Ma nvarchar(10);
-	select @Ma=Ma from deleted
+
+	declare @Ma nvarchar(10), @ChucVu nvarchar(10);
+	select @Ma=Ma, @ChucVu=ChucVu from deleted
 
 	begin tran t1
 
 		update PhieuSuaChua set NVSuaChua=null where NVSuaChua=@Ma
 		update ChiNhanh set NVQuanLy=null where NVQuanLy=@Ma
 		update PhieuXuatKho set NVXacNhan=null where NVXacNhan=@Ma
-		--update CTVanChuyen set NhanVien=null where NhanVien=@Ma
 		delete from CTVanChuyen where NhanVien=@Ma
 		update Kho set NVQuanLy=null where NVQuanLy=@Ma
 		update PhieuNhapXe set NVXacNhan=null where NVXacNhan=@Ma
@@ -70,10 +147,13 @@ begin
 					  N'- [NVXacNhan] trong PhieuNhapPhuKien'+ CHAR(13) 
 						;
 		raiserror (@message, 16, 1)
-
 		delete from NhanVien where Ma=@Ma
-
+		if(@@ERROR<>0)
+			raiserror(N'[_Msg]Xóa thất bại',16,1)
+		else
+			raiserror(N'[_Msg]Đã xóa thành công',16,1)
 	commit tran t1
+	
 end
 go
 
@@ -85,12 +165,10 @@ begin
 	declare @Ten nvarchar(30);
 	select @Ma=Ma, @Ten=Ten from inserted
 	
-	declare @message nvarchar(MAX);	
-	set @message= N'[Ten] đã tồn tại';
-	select * from ChucVu where Ten=@Ten
+	select * from Quyen where Ten=@Ten
 	if(@@ROWCOUNT>1)
 	begin
-		raiserror (@message, 16, 1)
+		raiserror (N'[Ten]Đã tồn tại', 16, 1)
 		rollback transaction
 	end
 end
@@ -103,7 +181,6 @@ begin
 	declare @Ma nvarchar(10);
 	select @Ma=Ma from deleted
 	begin tran t1
-		--update ChiTietQuyen set MaQuyen=null where MaQuyen=@Ma
 		delete from CTQuyen where Quyen=@Ma
 		delete from Quyen_Menu where Quyen=@Ma
 
@@ -120,12 +197,10 @@ begin
 	declare @Ten nvarchar(30);
 	select @Ma=Ma, @Ten=Ten from inserted
 	
-	declare @message nvarchar(MAX);	
-	set @message= N'[Ten] đã tồn tại';
 	select * from ChucVu where Ten=@Ten
 	if(@@ROWCOUNT>1)
 	begin
-		raiserror (@message, 16, 1)
+		raiserror (N'[Ten]Đã tồn tại', 16, 1)
 		rollback transaction
 	end
 end
@@ -166,12 +241,10 @@ begin
 	declare @Ten nvarchar(30);
 	select @Ma=Ma, @Ten=Ten from inserted
 	
-	declare @message nvarchar(MAX);	
-	set @message= N'[Ten] đã tồn tại';
 	select * from ChucVu where Ten=@Ten
 	if(@@ROWCOUNT>1)
 	begin
-		raiserror (@message, 16, 1)
+		raiserror (N'[Ten]Đã tồn tại', 16, 1)
 		rollback transaction
 	end
 end
@@ -183,7 +256,6 @@ as
 begin
 	declare @Ma nvarchar(10);
 	select @Ma=Ma from deleted
-	--update CTCungCapPhuKien set NCC=null where NCC=@Ma
 	begin tran t1
 		delete from CTCungCapPhuKien where NCC=@Ma
 		delete from CTCungCapXe where NCC=@Ma
@@ -204,12 +276,10 @@ begin
 	declare @Ten nvarchar(30);
 	select @Ma=Ma, @Ten=Ten from inserted
 	
-	declare @message nvarchar(MAX);	
-	set @message= N'[Ten] đã tồn tại';
 	select * from ChucVu where Ten=@Ten
 	if(@@ROWCOUNT>1)
 	begin
-		raiserror (@message, 16, 1)
+		raiserror (N'[Ten]Đã tồn tại', 16, 1)
 		rollback transaction
 	end
 end
@@ -239,12 +309,10 @@ begin
 	declare @Ten nvarchar(30);
 	select @Ma=Ma, @Ten=Ten from inserted
 	
-	declare @message nvarchar(MAX);	
-	set @message= N'[Ten] đã tồn tại';
 	select * from ChucVu where Ten=@Ten
 	if(@@ROWCOUNT>1)
 	begin
-		raiserror (@message, 16, 1)
+		raiserror (N'[Ten]Đã tồn tại', 16, 1)
 		rollback transaction
 	end
 end
@@ -261,6 +329,7 @@ begin
 		update PhieuXuatKHo set ChiNhanh=null where ChiNhanh=@Ma
 		delete from ChiNhanh where Ma=@Ma
 	commit tran t1
+
 end
 go
 
@@ -272,12 +341,10 @@ begin
 	declare @Ten nvarchar(30);
 	select @Ma=Ma, @Ten=Ten from inserted
 	
-	declare @message nvarchar(MAX);	
-	set @message= N'[Ten] đã tồn tại';
 	select * from ChucVu where Ten=@Ten
 	if(@@ROWCOUNT>1)
 	begin
-		raiserror (@message, 16, 1)
+		raiserror (N'[Ten]Đã tồn tại', 16, 1)
 		rollback transaction
 	end
 end
@@ -291,11 +358,8 @@ begin
 	select @Ma=Ma from deleted
 	begin tran t1
 		update PhuKien set LoaiPhuKien=null where LoaiPhuKien=@Ma
-		--update CTPhieuXuatPhuKien set LoaiPhuKien=null where LoaiPhuKien=@Ma
 		delete from CTPhieuXuatPhuKien where LoaiPhuKien=@Ma
-		--update CTNhapPhuKien set LoaiPhuKien=null where LoaiPhuKien=@Ma
 		delete from CTNhapPhuKien where LoaiPhuKien=@Ma
-		--update CTCungCapPhuKien set LoaiPhuKien=null where LoaiPhuKien=@Ma
 		delete from CTCungCapPhuKien where LoaiPhuKien=@Ma
 
 		delete from LoaiPhuKien where Ma=@Ma
@@ -331,11 +395,8 @@ begin
 	declare @LoaiXe nvarchar(10);
 	select @LoaiXe=Ma from deleted
 	begin tran t1
-		--update Xe set LoaiXe=null where LoaiXe=@LoaiXe
 		delete from CTPhieuXuatXe where LoaiXe=@LoaiXe
-		--update CTPhieuXuatXe set LoaiXe=null where LoaiXe=@LoaiXe
 		delete from CTPhieuXuatXe where LoaiXe=@LoaiXe
-		--update CTPhieuNhapXe set LoaiXe=null where LoaiXe=@LoaiXe
 		delete from CTPhieuNhapXe where LoaiXe=@LoaiXe
 		update CTCungCapXe set LoaiXe=null where LoaiXe=@LoaiXe
 
@@ -364,12 +425,9 @@ begin
 	declare @Ma nvarchar(10);
 	select @Ma=Ma from deleted
 	begin tran t1
-		--update CTSuaChua set PhuKien=null where PhuKien=@Ma
 		delete from CTSuaChua where PhuKien=@Ma
 
 		delete from PhuKien where Ma=@Ma
 	commit tran t1
 end
 go
-
-

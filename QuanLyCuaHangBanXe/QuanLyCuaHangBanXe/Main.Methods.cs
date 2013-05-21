@@ -249,9 +249,10 @@ namespace QuanLyCuaHangBanXe
                 return null;
             };
 
-            Action<Exception> ValidateEntity = delegate(Exception e)
+            Func<Exception, bool> ValidateEntity = delegate(Exception e)
             {
                 dxErrorProvider.ClearErrors();
+                bool isOk = false;
                 if (e is SqlException)
                 {
                     var dbEx = e as SqlException;
@@ -261,7 +262,15 @@ namespace QuanLyCuaHangBanXe
                         {
                             var PropertyName = validationError.Message.Substring(validationError.Message.IndexOf("[") + 1, validationError.Message.IndexOf("]")-1);
                             var ErrorMessage = validationError.Message.Substring(validationError.Message.IndexOf("]") + 1);
-                            dxErrorProvider.SetError(GetControlByName(PropertyName), ErrorMessage, ErrorType.Default);
+                            if (PropertyName.Equals("_Msg"))
+                            {
+                                MessageBox.Show(ErrorMessage);
+                                isOk = true;
+                            }
+                            else
+                            {
+                                dxErrorProvider.SetError(GetControlByName(PropertyName), ErrorMessage, ErrorType.Default);
+                            }
                         }
                         
                     }
@@ -270,6 +279,7 @@ namespace QuanLyCuaHangBanXe
                 {
                     ShowError(e);                    
                 }
+                return isOk;
             };
 
             Action<bool> SetReadOnly = delegate(bool IsReadOnly)
@@ -345,20 +355,24 @@ namespace QuanLyCuaHangBanXe
                         NewElement.SetPropertyValue(control.Name, (control as BaseEdit).EditValue);
                     }
                 }
+                bool isOk = false;
                 try
                 {
                     Table.Update(NewElement);
-                    dxErrorProvider.ClearErrors();
-                    MessageBox.Show("Cập nhật thành công!");
-                    DefaultButtonDisplay();
-                    SetReadOnly(true);
-                    DataGridView.Enabled = true;
                 }
                 catch (Exception ex)
                 {
-                    ValidateEntity(ex);
-                    //db.Unchanges();
-                    //btnCancelEdit.PerformClick();
+                    isOk = ValidateEntity(ex);
+                }
+                finally
+                {
+                    if (isOk)
+                    {
+                        dxErrorProvider.ClearErrors();
+                        DefaultButtonDisplay();
+                        SetReadOnly(true);
+                        DataGridView.Enabled = true;
+                    }
                 }
             });
 
@@ -390,20 +404,24 @@ namespace QuanLyCuaHangBanXe
                         NewElement.SetPropertyValue(control.Name, (control as BaseEdit).EditValue);
                     }
                 }
+                bool isOk = false;
                 try
                 {
                     Table.Insert(NewElement);
-                    dxErrorProvider.ClearErrors();
-                    MessageBox.Show("Thêm mới thành công!");
-                    DefaultButtonDisplay();
-                    SetReadOnly(true);
-                    DataGridView.Enabled = true;
                 }
-                catch (System.Exception ex)
+                catch (Exception ex)
                 {
-                    ValidateEntity(ex);
-                    //db.Unchanges();
-                    //btnCancelNew.PerformClick();
+                    isOk = ValidateEntity(ex);
+                }
+                finally
+                {
+                    if (isOk)
+                    {
+                        dxErrorProvider.ClearErrors();
+                        DefaultButtonDisplay();
+                        SetReadOnly(true);
+                        DataGridView.Enabled = true;
+                    }
                 }
             });
 
@@ -426,7 +444,6 @@ namespace QuanLyCuaHangBanXe
                 catch (System.Exception ex)
                 {
                     ValidateEntity(ex);
-                    //MessageBox.Show("Lỗi: " + ex.Message);
                 }
             });
             #endregion
