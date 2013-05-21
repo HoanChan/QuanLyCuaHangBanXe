@@ -76,6 +76,19 @@ alter procedure sp_ChucVu_Delete
 @Ma nvarchar(10)
 AS
 BEGIN
+	declare nv cursor for select Ma from NhanVien where ChucVu=@Ma
+	open nv
+	declare @MaNV nvarchar(10);
+	fetch next from nv into @MaNV
+	while (@@FETCH_STATUS=0)
+	begin
+		exec sp_droprolemember @Ma, @MaNV
+
+		fetch next from nv into @MaNV
+	end
+	close nv;
+	deallocate nv
+
 	exec sp_droprole @Ma
 	DELETE FROM ChucVu WHERE Ma=@Ma
 END
@@ -433,7 +446,10 @@ BEGIN
 	begin
 		INSERT INTO NhanVien VALUES(@Ma, @HoTen, @DiaChi, @SoDT, @GioiTinh, @Luong, @ChiNhanh, @Kho, @ChucVu, @MatKhau, @NgaySinh)
 		if(@@ERROR<>0)
+		begin
 			raiserror(N'[_Msg]Đã thêm thất bại',16,1)
+			rollback tran
+		end
 		else
 			raiserror(N'[_Msg]Đã thêm thành công',16,1)
 	end
@@ -462,18 +478,11 @@ BEGIN
 	if(@ok=0)
 		return
 
-	declare @ChucVuCu nvarchar(10),	@MatKhauCu nvarchar(50);
-
-	select @MatKhauCu=@MatKhau, @ChucVuCu=ChucVu from NhanVien where Ma=@Ma
-
-	if(@MatKhauCu <> @MatKhau)
-		exec ('alter login ' + @Ma + ' with password = ''' + @MatKhau + '''')
-
-	if(@ChucVuCu <> @ChucVu)
-	begin
-		exec sp_droprolemember @ChucVuCu, @Ma
-		exec sp_addrolemember @ChucVu, @Ma
-	end
+	exec sp_dropuser @Ma
+	exec sp_droplogin @Ma
+	exec sp_addlogin @Ma, @MatKhau
+	exec sp_adduser @Ma, @Ma
+	exec sp_addrolemember @ChucVu, @Ma
 
 	UPDATE NhanVien SET HoTen=@HoTen, DiaChi=@DiaChi, SoDT=@SoDT, GioiTinh=@GioiTinh, Luong=@Luong, ChiNhanh=@ChiNhanh, Kho=@Kho, ChucVu=@ChucVu, NgaySinh=@NgaySinh
 		WHERE Ma=@Ma
@@ -483,7 +492,6 @@ BEGIN
 		raiserror(N'[_Msg]Đã cập nhật thành công',16,1)
 END
 GO
-
 
 alter PROCEDURE sp_NhanVien_Delete
 @Ma nvarchar(10)
