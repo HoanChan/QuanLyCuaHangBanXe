@@ -439,7 +439,6 @@ namespace QuanLyCuaHangBanXe
                 {
                     gridView.DeleteSelectedRows();
                     Table.Delete(AElement);
-                    MessageBox.Show("Xoá thành công!");
                 }
                 catch (System.Exception ex)
                 {
@@ -468,7 +467,15 @@ namespace QuanLyCuaHangBanXe
                 aButton.Click += new EventHandler(delegate(object sender, EventArgs e)
                 {
                     var ColumnName = CurrentMDI.GetType().Name;
-                    var KeyValue = CurrentMDI.GetKeyValue();
+                    var AElement = EntityType.CreateNew();
+                    foreach (Control control in splitContainerControl.Panel2.Controls)
+                    {
+                        if (control is BaseEdit)
+                        {
+                            AElement.SetPropertyValue(control.Name, (control as BaseEdit).EditValue);
+                        }
+                    }
+                    var KeyValue = (AElement as MasterDetailInfo).GetKeyValue();
                     CurrentMDI = MDI;
                     UpdateGridView();
                     gridView.Columns[0].FilterInfo = new ColumnFilterInfo(gridView.Columns[ColumnName], KeyValue);

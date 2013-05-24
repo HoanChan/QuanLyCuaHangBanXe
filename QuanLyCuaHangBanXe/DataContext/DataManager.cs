@@ -44,7 +44,7 @@ namespace DataContext
         {
             foreach (var pro in this.GetType().GetProperties())
             {
-                if (!this.IsPrimaryKey(pro.Name))
+                if (this.IsPrimaryKey(pro.Name))
                 {
                     return pro.GetValue(this);
                 }

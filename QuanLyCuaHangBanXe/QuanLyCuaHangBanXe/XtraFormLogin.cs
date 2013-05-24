@@ -7,32 +7,32 @@ using System.Text;
 using System.Windows.Forms;
 using DevExpress.XtraEditors;
 using System;
+using DataContext;
+using DataProvider;
 
 namespace QuanLyCuaHangBanXe
 {
     public partial class XtraFormLogin : DevExpress.XtraEditors.XtraForm
     {
-        //List<NguoiDung> dsNguoiDung = null;
-        //public XtraFormLogin(List<NguoiDung> dsNguoiDung)
-        //{
-        //    this.dsNguoiDung = dsNguoiDung;
-        //    InitializeComponent();
-        //}
+
+        public XtraFormLogin()
+        {
+            
+            InitializeComponent();
+        }
 
         private void btnDangNhap_Click(object sender, EventArgs e)
         {
-            //NguoiDung = dsNguoiDung.FirstOrDefault(m => m.TenDangNhap == txtTenDangNhap.Text && m.MatKhau == txtMatKhau.Text);
-            //if (NguoiDung != null) 
-            //{
-            //    DialogResult = DialogResult.OK;
-            //    this.Close();
-            //}
-            //else
-            //{
-            //    MessageBox.Show("Thông tin đăng nhập sai!");
-            //}
+            try
+            {
+                Table.db = new Data(@"(localdb)\v11.0", "CUAHANG_BANXE", txtTenDangNhap.Text, txtMatKhau.Text);
+                DialogResult = DialogResult.OK;
+                this.Close();
+            }
+            catch
+            {
+                MessageBox.Show("Thông tin đăng nhập sai!");
+            }
         }
-
-        //public NguoiDung NguoiDung { get; set; }
     }
 }

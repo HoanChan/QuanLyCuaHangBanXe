@@ -10,7 +10,7 @@ namespace DataContext
 {
     public class Table
     {
-        static Data db = new Data(@"(localdb)\v11.0", "CUAHANG_BANXE", "sa", "123123");
+        public static Data db = new Data(@"(localdb)\v11.0", "CUAHANG_BANXE");
         /// <summary>
         /// Lấy danh sách giá trị trong bảng
         /// </summary>
@@ -58,7 +58,9 @@ namespace DataContext
                         var aName = pro.GetName().ToBeauty().Replace(" ", string.Empty);
                         var aValue = Row[pro.Name] == DBNull.Value ? null : Row[pro.Name];
                         Item.SetPropertyValue(aName, aValue);
-                        if (pro.Name == Name)
+                        if (aValue == null)
+                            IsOk = false;
+                        else if (pro.Name == Name) 
                         {
                             IsOk = aValue.Equals(Value);
                         }

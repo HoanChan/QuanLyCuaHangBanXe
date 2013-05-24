@@ -17,6 +17,8 @@ namespace DataProvider
             string ConnStr = string.Format("Data Source = '{0}';Integrated Security = SSPI; Database = '{1}'", @"(localdb)\v11.0", @"NORTHWND");
             conn = new SqlConnection(ConnStr);
             comm = conn.CreateCommand();
+            conn.Open();
+            conn.Close();
         }
 
         /// <summary>
@@ -29,6 +31,8 @@ namespace DataProvider
             string ConnStr = string.Format("Data Source = '{0}';Integrated Security = SSPI; Database = '{1}'", Server, Database);
             conn = new SqlConnection(ConnStr);
             comm = conn.CreateCommand();
+            conn.Open();
+            conn.Close();
         }
 
         public Data(string Server, string Database, string UserName, string Password)
@@ -36,6 +40,8 @@ namespace DataProvider
             string ConnStr = string.Format("Server={0};Database={1};User Id={2};Password={3};", Server, Database, UserName, Password);
             conn = new SqlConnection(ConnStr);
             comm = conn.CreateCommand();
+            conn.Open();
+            conn.Close();
         }
         /// <summary>
         /// Gọi 1 StoredPorcedure

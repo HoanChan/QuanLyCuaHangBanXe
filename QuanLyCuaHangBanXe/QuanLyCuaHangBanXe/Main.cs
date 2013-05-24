@@ -16,7 +16,7 @@ namespace QuanLyCuaHangBanXe
         //NguoiDung NguoiDung = null;
         public Main()
         {
-            //XtraFormLogin Login = new XtraFormLogin(db.NguoiDung.ToList());
+            //XtraFormLogin Login = new XtraFormLogin();
             //if (Login.ShowDialog() == DialogResult.Cancel) Environment.Exit(0);
             //NguoiDung = Login.NguoiDung;
             InitializeComponent();
