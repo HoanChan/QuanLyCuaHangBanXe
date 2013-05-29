@@ -20,7 +20,7 @@ namespace DataContext
         /// <returns>Danh sách</returns>
         public static IList GetList(Type ItemType, string Name = null, object Value = null)
         {
-            var aData = GetData(ItemType);
+            var aData = GetData(ItemType, Name, Value);
             if (string.IsNullOrEmpty(Name))
             {
                 var aList = (IList)(typeof(List<>).MakeGenericType(ItemType).CreateNew());
@@ -74,9 +74,15 @@ namespace DataContext
             }
         }
 
-        public static DataSet GetData(Type ItemType)
+        public static DataSet GetData(Type ItemType, string Name = null, object Value = null)
         {
-            return db.ExecuteQueryDataSet("sp_" + ItemType.Name + "_Select", CommandType.StoredProcedure);
+            if (string.IsNullOrEmpty(Name))
+                return db.RunReturnStoredProcedure("sp_Select", new { TenBang = ItemType.Name, DieuKien = DBNull.Value });
+            else
+            {
+                var Dk = Name + "='" + Value + "'";
+                return db.RunReturnStoredProcedure("sp_Select", new { TenBang = ItemType.Name, DieuKien = Dk });
+            }
         }
 
         public static void Insert(object Item)
