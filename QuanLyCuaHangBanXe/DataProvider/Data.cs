@@ -68,6 +68,32 @@ namespace DataProvider
             ExecuteNonQuery(StoredProcedureName, CommandType.StoredProcedure, paramList.ToArray());
         }
 
+        /// <summary>
+        /// Gọi 1 StoredPorcedure
+        /// </summary>
+        /// <param name="StoredProcedureName">Tên StoredProcedure</param>
+        /// <param name="param">dạng new{ id="my id", name="my name" }</param>
+        /// <returns>Dữ liệu</returns>
+        public DataSet RunReturnStoredProcedure(string StoredProcedureName, object param)
+        {
+            List<SqlParameter> paramList = new List<SqlParameter>();
+            foreach (var pro in param.GetType().GetProperties())
+            {
+                var value = pro.GetValue(param);
+                value = value == null ? DBNull.Value : value;
+                if (pro.PropertyType.Equals(typeof(DateTime)))
+                {
+                    if (((DateTime)value).Year < 1753)
+                        paramList.Add(new SqlParameter("@" + pro.Name, DBNull.Value));
+                    else
+                        paramList.Add(new SqlParameter("@" + pro.Name, value));
+                }
+                else
+                    paramList.Add(new SqlParameter("@" + pro.Name, value));
+            }
+            return ExecuteQueryDataSet(StoredProcedureName, CommandType.StoredProcedure, paramList.ToArray());
+        }
+
         public DataSet ExecuteQueryDataSet(string strSQL, CommandType ct, params SqlParameter[] param)
         {
             if (conn.State == ConnectionState.Open)

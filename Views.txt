@@ -1,0 +1,22 @@
+﻿
+-View = các báo cáo
+	+ Hồ sơ bán xe (tất cả thông tin cần in ra của 1 hồ sơ bán xe)
+	+ Báo cáo tồn kho, gồm các cột
+		- Kho
+		- loại xe
+		- số lượng loại xe đó trong kho đó
+	+ Báo cáo tồn tại cửa hàng, tương tự như bên kho
+	+ Báo cáo doanh thu 
+		- cửa hàng
+		- tháng cần tính
+		- năm cần tính
+		- số lượng xe đã bán
+		- tổng tiền thu về
+		- lợi nhuận
+	+ Báo cáo lịch sử khách hàng
+		- Khách hàng
+		- xe
+		- ngày mua
+		- số lần bảo hành
+	
+		
