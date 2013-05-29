@@ -2187,7 +2187,8 @@ GO
 
 alter procedure sp_CTQuyen_Insert
 @ChucVu nvarchar(10),
-@Quyen nvarchar(10)
+@Quyen int,
+@Menu nvarchar(100)
 as
 begin
 	declare @ok bit;
@@ -2205,7 +2206,13 @@ begin
 		set @ok=0;
 	end
 
-	select * from CTQuyen where ChucVu=@ChucVu and Quyen=@Quyen
+	if (@Menu is null)
+	begin
+		raiserror (N'[Menu]Phải được nhập vào', 16, 1)
+		set @ok=0;
+	end
+
+	select * from CTQuyen where ChucVu=@ChucVu and Quyen=@Quyen and Menu=@Menu
 	if(@@ROWCOUNT>0)
 	begin
 		raiserror (N'[ChucVu]bị trùng', 16, 1)
@@ -2214,13 +2221,24 @@ begin
 	end
 	
 	if(@ok<>0)
-		insert into CTQuyen values(@ChucVu, @Quyen)
+	begin
+		insert into CTQuyen values(@ChucVu, @Quyen,@Menu)
+		if(@Quyen = 1)
+			--grant sp_Select on  to @ChucVu
+			exec ('grant sp_Select on ' + @Menu + ' to ' + @ChucVu)
+		else
+		begin
+			exec ('grant sp_'+@Menu+'_Insert on ' + @Menu + ' to ' + @ChucVu)
+			exec ('grant sp_'+@Menu+'_Update on ' + @Menu + ' to ' + @ChucVu)
+			exec ('grant sp_'+@Menu+'_Delete on ' + @Menu + ' to ' + @ChucVu)
+		end
+	end
 end
 go
 
 alter procedure sp_CTQuyen_Update
 @ChucVu nvarchar(10),
-@Quyen nvarchar(10)
+@Quyen int
 as
 begin
 	declare @ok bit;
@@ -2253,10 +2271,20 @@ go
 
 alter procedure sp_CTQuyen_Delete
 @ChucVu nvarchar(10),
-@MaQuyen nvarchar(10)
+@Quyen int,
+@Menu nvarchar(100)
 as
 begin
-	delete from CTQuyen where ChucVu=@ChucVu and Quyen=@MaQuyen
+	if(@Quyen=1)
+		--Revoke select on sinhvien to u1 cascade
+		exec ('Revoke sp_Select on ' + @Menu + ' to ' + @ChucVu + ' cascade')
+	else
+	begin
+		exec ('Revoke sp_'+@Menu+'_Insert on ' + @Menu + ' to ' + @ChucVu + ' cascade')
+		exec ('Revoke sp_'+@Menu+'_Update on ' + @Menu + ' to ' + @ChucVu + ' cascade')
+		exec ('Revoke sp_'+@Menu+'_Delete on ' + @Menu + ' to ' + @ChucVu + ' cascade')
+	end
+	delete from CTQuyen where ChucVu=@ChucVu and Quyen=@Quyen and Menu=@Menu
 end
 go
 
@@ -2646,9 +2674,9 @@ alter procedure sp_Select
 as
 begin
 	if(@DieuKien is null)
-		exec ('select * from  ''' + @TenBang + '''')
+		exec ('select * from  ' + @TenBang)
 	else
-		exec ('select * from  ''' + @TenBang + ''' where ''' + @DieuKien + '''')
+		exec ('select * from  ' + @TenBang + ' where ' + @DieuKien)
 end
 go
 
