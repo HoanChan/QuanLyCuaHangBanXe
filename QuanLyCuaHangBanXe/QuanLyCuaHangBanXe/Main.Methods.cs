@@ -18,8 +18,9 @@ namespace QuanLyCuaHangBanXe
     public partial class Main
     {
 
-        private void UpdateGridView()
+        private void UpdateGridView(MasterDetailInfo MDI)
         {
+            CurrentMDI = MDI;
             DataGridView.BeginUpdate();
             DataGridView.DataSource = null;
             gridView.Columns.Clear();
@@ -476,8 +477,7 @@ namespace QuanLyCuaHangBanXe
                         }
                     }
                     var KeyValue = (AElement as MasterDetailInfo).GetKeyValue();
-                    CurrentMDI = MDI;
-                    UpdateGridView();
+                    UpdateGridView(MDI);
                     gridView.Columns[0].FilterInfo = new ColumnFilterInfo(gridView.Columns[ColumnName], KeyValue);
                 });
                 splitContainerControl.Panel2.Controls.Add(aButton);

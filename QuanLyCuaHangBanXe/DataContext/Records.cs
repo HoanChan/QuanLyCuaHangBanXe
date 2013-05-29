@@ -125,7 +125,7 @@ namespace DataContext
         public string Ma { get; set; }
         [Display(Name = "Ngày mua")]
         public DateTime NgayMua { get; set; }
-        [ForeignKey("KhacHang_Ma"), Display(Name = "Khách hàng")]
+        [ForeignKey("KhachHang_Ma"), Display(Name = "Khách hàng")]
         public string KhachHang { get; set; }
         [ForeignKey("NhanVien_Ma"), Display(Name = "Nhân viên bán")]
         public string NhanVienBan { get; set; }

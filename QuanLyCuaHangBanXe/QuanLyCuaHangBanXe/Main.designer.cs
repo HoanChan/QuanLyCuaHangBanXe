@@ -46,17 +46,18 @@
             this.iCenterTextAlign = new DevExpress.XtraBars.BarButtonItem();
             this.iRightTextAlign = new DevExpress.XtraBars.BarButtonItem();
             this.rgbiSkins = new DevExpress.XtraBars.RibbonGalleryBarItem();
-            this.iQuanLyNgoiDung = new DevExpress.XtraBars.BarButtonItem();
-            this.iQuanLyQuyen = new DevExpress.XtraBars.BarButtonItem();
-            this.iQuanLyPhanQuyen = new DevExpress.XtraBars.BarButtonItem();
+            this.iQuanLyKhachHang = new DevExpress.XtraBars.BarButtonItem();
+            this.iQuanLyHoSoBanXe = new DevExpress.XtraBars.BarButtonItem();
+            this.iQuanLyPhuKien = new DevExpress.XtraBars.BarButtonItem();
             this.iBaoCao = new DevExpress.XtraBars.BarButtonItem();
             this.barStaticItem1 = new DevExpress.XtraBars.BarStaticItem();
             this.iQuanLyChucVu = new DevExpress.XtraBars.BarButtonItem();
             this.iQuanLyChiNhanh = new DevExpress.XtraBars.BarButtonItem();
             this.iQuanLyNhanVien = new DevExpress.XtraBars.BarButtonItem();
-            this.iQuanLyMenu = new DevExpress.XtraBars.BarButtonItem();
-            this.iQuanLyQuyenMenu = new DevExpress.XtraBars.BarButtonItem();
+            this.iQuanLyLoaiPhuKien = new DevExpress.XtraBars.BarButtonItem();
+            this.iQuanLyXe = new DevExpress.XtraBars.BarButtonItem();
             this.iQuanLyKho = new DevExpress.XtraBars.BarButtonItem();
+            this.iQuanLyLoaiXe = new DevExpress.XtraBars.BarButtonItem();
             this.ribbonImageCollectionLarge = new DevExpress.Utils.ImageCollection(this.components);
             this.homeRibbonPage = new DevExpress.XtraBars.Ribbon.RibbonPage();
             this.fileRibbonPageGroup = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
@@ -70,6 +71,11 @@
             this.ribbonStatusBar = new DevExpress.XtraBars.Ribbon.RibbonStatusBar();
             this.splitContainerControl = new DevExpress.XtraEditors.SplitContainerControl();
             this.dxErrorProvider = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider(this.components);
+            this.iQuanLyNCC = new DevExpress.XtraBars.BarButtonItem();
+            this.iQuanLyPhieuNhapPhuKien = new DevExpress.XtraBars.BarButtonItem();
+            this.iQuanLyPhieuNhapXe = new DevExpress.XtraBars.BarButtonItem();
+            this.iQuanLyPhieuSuaChua = new DevExpress.XtraBars.BarButtonItem();
+            this.iQuanLyPhieuXuatKho = new DevExpress.XtraBars.BarButtonItem();
             ((System.ComponentModel.ISupportInitialize)(this.cardView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.DataGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView)).BeginInit();
@@ -130,20 +136,26 @@
             this.iCenterTextAlign,
             this.iRightTextAlign,
             this.rgbiSkins,
-            this.iQuanLyNgoiDung,
-            this.iQuanLyQuyen,
-            this.iQuanLyPhanQuyen,
+            this.iQuanLyKhachHang,
+            this.iQuanLyHoSoBanXe,
+            this.iQuanLyPhuKien,
             this.iBaoCao,
             this.barStaticItem1,
             this.iQuanLyChucVu,
             this.iQuanLyChiNhanh,
             this.iQuanLyNhanVien,
-            this.iQuanLyMenu,
-            this.iQuanLyQuyenMenu,
-            this.iQuanLyKho});
+            this.iQuanLyLoaiPhuKien,
+            this.iQuanLyXe,
+            this.iQuanLyKho,
+            this.iQuanLyLoaiXe,
+            this.iQuanLyNCC,
+            this.iQuanLyPhieuNhapPhuKien,
+            this.iQuanLyPhieuNhapXe,
+            this.iQuanLyPhieuSuaChua,
+            this.iQuanLyPhieuXuatKho});
             this.ribbonControl.LargeImages = this.ribbonImageCollectionLarge;
             this.ribbonControl.Location = new System.Drawing.Point(0, 0);
-            this.ribbonControl.MaxItemId = 91;
+            this.ribbonControl.MaxItemId = 97;
             this.ribbonControl.Name = "ribbonControl";
             this.ribbonControl.Pages.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPage[] {
             this.homeRibbonPage,
@@ -259,31 +271,31 @@
             this.rgbiSkins.Id = 60;
             this.rgbiSkins.Name = "rgbiSkins";
             // 
-            // iQuanLyNgoiDung
+            // iQuanLyKhachHang
             // 
-            this.iQuanLyNgoiDung.Caption = "Người Dùng";
-            this.iQuanLyNgoiDung.Id = 71;
-            this.iQuanLyNgoiDung.LargeImageIndex = 15;
-            this.iQuanLyNgoiDung.Name = "iQuanLyNgoiDung";
-            this.iQuanLyNgoiDung.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.iQuanLyNgoiDung_ItemClick);
+            this.iQuanLyKhachHang.Caption = "Khách Hàng";
+            this.iQuanLyKhachHang.Id = 71;
+            this.iQuanLyKhachHang.LargeImageIndex = 15;
+            this.iQuanLyKhachHang.Name = "iQuanLyKhachHang";
+            this.iQuanLyKhachHang.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.iQuanLyKhachHang_ItemClick);
             // 
-            // iQuanLyQuyen
+            // iQuanLyHoSoBanXe
             // 
-            this.iQuanLyQuyen.Caption = "Quyền";
-            this.iQuanLyQuyen.Id = 72;
-            this.iQuanLyQuyen.LargeImageIndex = 16;
-            this.iQuanLyQuyen.Name = "iQuanLyQuyen";
-            this.iQuanLyQuyen.RibbonStyle = DevExpress.XtraBars.Ribbon.RibbonItemStyles.Large;
-            this.iQuanLyQuyen.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.iQuanLyQuyen_ItemClick);
+            this.iQuanLyHoSoBanXe.Caption = "Hồ Sơ Bán Xe";
+            this.iQuanLyHoSoBanXe.Id = 72;
+            this.iQuanLyHoSoBanXe.LargeImageIndex = 16;
+            this.iQuanLyHoSoBanXe.Name = "iQuanLyHoSoBanXe";
+            this.iQuanLyHoSoBanXe.RibbonStyle = DevExpress.XtraBars.Ribbon.RibbonItemStyles.Large;
+            this.iQuanLyHoSoBanXe.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.iQuanLyHoSoBanXe_ItemClick);
             // 
-            // iQuanLyPhanQuyen
+            // iQuanLyPhuKien
             // 
-            this.iQuanLyPhanQuyen.Caption = "Phân Quyền";
-            this.iQuanLyPhanQuyen.Id = 73;
-            this.iQuanLyPhanQuyen.LargeImageIndex = 17;
-            this.iQuanLyPhanQuyen.Name = "iQuanLyPhanQuyen";
-            this.iQuanLyPhanQuyen.RibbonStyle = DevExpress.XtraBars.Ribbon.RibbonItemStyles.Large;
-            this.iQuanLyPhanQuyen.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.iQuanLyPhanQuyen_ItemClick);
+            this.iQuanLyPhuKien.Caption = "Phụ Kiện";
+            this.iQuanLyPhuKien.Id = 73;
+            this.iQuanLyPhuKien.LargeImageIndex = 17;
+            this.iQuanLyPhuKien.Name = "iQuanLyPhuKien";
+            this.iQuanLyPhuKien.RibbonStyle = DevExpress.XtraBars.Ribbon.RibbonItemStyles.Large;
+            this.iQuanLyPhuKien.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.iQuanLyPhuKien_ItemClick);
             // 
             // iBaoCao
             // 
@@ -324,21 +336,21 @@
             this.iQuanLyNhanVien.Name = "iQuanLyNhanVien";
             this.iQuanLyNhanVien.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.iQuanLyNhanVien_ItemClick);
             // 
-            // iQuanLyMenu
+            // iQuanLyLoaiPhuKien
             // 
-            this.iQuanLyMenu.Caption = "Menu";
-            this.iQuanLyMenu.Id = 88;
-            this.iQuanLyMenu.LargeImageIndex = 0;
-            this.iQuanLyMenu.Name = "iQuanLyMenu";
-            this.iQuanLyMenu.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.iQuanLyMenu_ItemClick);
+            this.iQuanLyLoaiPhuKien.Caption = "Loại Phụ Kiện";
+            this.iQuanLyLoaiPhuKien.Id = 88;
+            this.iQuanLyLoaiPhuKien.LargeImageIndex = 0;
+            this.iQuanLyLoaiPhuKien.Name = "iQuanLyLoaiPhuKien";
+            this.iQuanLyLoaiPhuKien.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.iQuanLyLoaiPhuKien_ItemClick);
             // 
-            // iQuanLyQuyenMenu
+            // iQuanLyXe
             // 
-            this.iQuanLyQuyenMenu.Caption = "Phân quyền cho menu";
-            this.iQuanLyQuyenMenu.Id = 89;
-            this.iQuanLyQuyenMenu.LargeImageIndex = 3;
-            this.iQuanLyQuyenMenu.Name = "iQuanLyQuyenMenu";
-            this.iQuanLyQuyenMenu.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.iQuanLyQuyenMenu_ItemClick);
+            this.iQuanLyXe.Caption = "Xe";
+            this.iQuanLyXe.Id = 89;
+            this.iQuanLyXe.LargeImageIndex = 3;
+            this.iQuanLyXe.Name = "iQuanLyXe";
+            this.iQuanLyXe.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.iQuanLyXe_ItemClick);
             // 
             // iQuanLyKho
             // 
@@ -347,6 +359,14 @@
             this.iQuanLyKho.LargeImageIndex = 11;
             this.iQuanLyKho.Name = "iQuanLyKho";
             this.iQuanLyKho.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.iQuanLyKho_ItemClick);
+            // 
+            // iQuanLyLoaiXe
+            // 
+            this.iQuanLyLoaiXe.Caption = "Loại Xe";
+            this.iQuanLyLoaiXe.Id = 91;
+            this.iQuanLyLoaiXe.LargeImageIndex = 14;
+            this.iQuanLyLoaiXe.Name = "iQuanLyLoaiXe";
+            this.iQuanLyLoaiXe.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.iQuanLyLoaiXe_ItemClick);
             // 
             // ribbonImageCollectionLarge
             // 
@@ -402,15 +422,21 @@
             // 
             // RPGNguoiDung
             // 
-            this.RPGNguoiDung.ItemLinks.Add(this.iQuanLyNgoiDung);
-            this.RPGNguoiDung.ItemLinks.Add(this.iQuanLyQuyen);
-            this.RPGNguoiDung.ItemLinks.Add(this.iQuanLyPhanQuyen);
-            this.RPGNguoiDung.ItemLinks.Add(this.iQuanLyChucVu);
             this.RPGNguoiDung.ItemLinks.Add(this.iQuanLyChiNhanh);
-            this.RPGNguoiDung.ItemLinks.Add(this.iQuanLyNhanVien);
-            this.RPGNguoiDung.ItemLinks.Add(this.iQuanLyMenu);
-            this.RPGNguoiDung.ItemLinks.Add(this.iQuanLyQuyenMenu);
+            this.RPGNguoiDung.ItemLinks.Add(this.iQuanLyChucVu);
+            this.RPGNguoiDung.ItemLinks.Add(this.iQuanLyHoSoBanXe);
+            this.RPGNguoiDung.ItemLinks.Add(this.iQuanLyKhachHang);
             this.RPGNguoiDung.ItemLinks.Add(this.iQuanLyKho);
+            this.RPGNguoiDung.ItemLinks.Add(this.iQuanLyLoaiPhuKien);
+            this.RPGNguoiDung.ItemLinks.Add(this.iQuanLyLoaiXe);
+            this.RPGNguoiDung.ItemLinks.Add(this.iQuanLyNCC);
+            this.RPGNguoiDung.ItemLinks.Add(this.iQuanLyNhanVien);
+            this.RPGNguoiDung.ItemLinks.Add(this.iQuanLyXe);
+            this.RPGNguoiDung.ItemLinks.Add(this.iQuanLyPhieuNhapPhuKien);
+            this.RPGNguoiDung.ItemLinks.Add(this.iQuanLyPhieuNhapXe);
+            this.RPGNguoiDung.ItemLinks.Add(this.iQuanLyPhieuSuaChua);
+            this.RPGNguoiDung.ItemLinks.Add(this.iQuanLyPhieuXuatKho);
+            this.RPGNguoiDung.ItemLinks.Add(this.iQuanLyPhuKien);
             this.RPGNguoiDung.Name = "RPGNguoiDung";
             this.RPGNguoiDung.Text = "Người Dùng";
             // 
@@ -459,6 +485,45 @@
             // dxErrorProvider
             // 
             this.dxErrorProvider.ContainerControl = this;
+            // 
+            // iQuanLyNCC
+            // 
+            this.iQuanLyNCC.Caption = "Nhà Cung Cấp";
+            this.iQuanLyNCC.Id = 92;
+            this.iQuanLyNCC.LargeImageIndex = 4;
+            this.iQuanLyNCC.Name = "iQuanLyNCC";
+            // 
+            // iQuanLyPhieuNhapPhuKien
+            // 
+            this.iQuanLyPhieuNhapPhuKien.Caption = "Phiếu Nhập Phụ Kiện";
+            this.iQuanLyPhieuNhapPhuKien.Id = 93;
+            this.iQuanLyPhieuNhapPhuKien.LargeImageIndex = 1;
+            this.iQuanLyPhieuNhapPhuKien.Name = "iQuanLyPhieuNhapPhuKien";
+            this.iQuanLyPhieuNhapPhuKien.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.iQuanLyPhieuNhapPhuKien_ItemClick);
+            // 
+            // iQuanLyPhieuNhapXe
+            // 
+            this.iQuanLyPhieuNhapXe.Caption = "Phiếu Nhập Xe";
+            this.iQuanLyPhieuNhapXe.Id = 94;
+            this.iQuanLyPhieuNhapXe.LargeImageIndex = 6;
+            this.iQuanLyPhieuNhapXe.Name = "iQuanLyPhieuNhapXe";
+            this.iQuanLyPhieuNhapXe.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.iQuanLyPhieuNhapXe_ItemClick);
+            // 
+            // iQuanLyPhieuSuaChua
+            // 
+            this.iQuanLyPhieuSuaChua.Caption = "Phiếu Sửa Chữa";
+            this.iQuanLyPhieuSuaChua.Id = 95;
+            this.iQuanLyPhieuSuaChua.LargeImageIndex = 12;
+            this.iQuanLyPhieuSuaChua.Name = "iQuanLyPhieuSuaChua";
+            this.iQuanLyPhieuSuaChua.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.iQuanLyPhieuSuaChua_ItemClick);
+            // 
+            // iQuanLyPhieuXuatKho
+            // 
+            this.iQuanLyPhieuXuatKho.Caption = "Phiếu Xuất Kho";
+            this.iQuanLyPhieuXuatKho.Id = 96;
+            this.iQuanLyPhieuXuatKho.LargeImageIndex = 13;
+            this.iQuanLyPhieuXuatKho.Name = "iQuanLyPhieuXuatKho";
+            this.iQuanLyPhieuXuatKho.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.iQuanLyPhieuXuatKho_ItemClick);
             // 
             // Main
             // 
@@ -512,9 +577,9 @@
         private DevExpress.Utils.ImageCollection ribbonImageCollectionLarge;
         private DevExpress.XtraBars.Ribbon.RibbonPageGroup RPGNguoiDung;
 
-        private DevExpress.XtraBars.BarButtonItem iQuanLyNgoiDung;
-        private DevExpress.XtraBars.BarButtonItem iQuanLyQuyen;
-        private DevExpress.XtraBars.BarButtonItem iQuanLyPhanQuyen;
+        private DevExpress.XtraBars.BarButtonItem iQuanLyKhachHang;
+        private DevExpress.XtraBars.BarButtonItem iQuanLyHoSoBanXe;
+        private DevExpress.XtraBars.BarButtonItem iQuanLyPhuKien;
 
         private DevExpress.XtraBars.Ribbon.RibbonPage BaoCaoRibbonPage;
         private DevExpress.XtraBars.Ribbon.RibbonPageGroup ribbonPageGroup1;
@@ -530,9 +595,15 @@
         private DevExpress.XtraBars.BarButtonItem iQuanLyChucVu;
         private DevExpress.XtraBars.BarButtonItem iQuanLyChiNhanh;
         private DevExpress.XtraBars.BarButtonItem iQuanLyNhanVien;
-        private DevExpress.XtraBars.BarButtonItem iQuanLyMenu;
-        private DevExpress.XtraBars.BarButtonItem iQuanLyQuyenMenu;
+        private DevExpress.XtraBars.BarButtonItem iQuanLyLoaiPhuKien;
+        private DevExpress.XtraBars.BarButtonItem iQuanLyXe;
         private DevExpress.XtraBars.BarButtonItem iQuanLyKho;
+        private DevExpress.XtraBars.BarButtonItem iQuanLyLoaiXe;
+        private DevExpress.XtraBars.BarButtonItem iQuanLyNCC;
+        private DevExpress.XtraBars.BarButtonItem iQuanLyPhieuNhapPhuKien;
+        private DevExpress.XtraBars.BarButtonItem iQuanLyPhieuNhapXe;
+        private DevExpress.XtraBars.BarButtonItem iQuanLyPhieuSuaChua;
+        private DevExpress.XtraBars.BarButtonItem iQuanLyPhieuXuatKho;
 
     }
 }

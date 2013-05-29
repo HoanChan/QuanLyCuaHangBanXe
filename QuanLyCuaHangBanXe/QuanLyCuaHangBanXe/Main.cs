@@ -18,13 +18,7 @@ namespace QuanLyCuaHangBanXe
         {
             //XtraFormLogin Login = new XtraFormLogin();
             //if (Login.ShowDialog() == DialogResult.Cancel) Environment.Exit(0);
-            //NguoiDung = Login.NguoiDung;
             InitializeComponent();
-            //NguoiDungRibbonPageGroup.Visible = NguoiDung.dsPhanQuyen.Count(m => m.Quyen.Ma == "001") > 0; // admin
-            //PhongRibbonPageGroup.Visible = NguoiDung.dsPhanQuyen.Count(m => m.Quyen.Ma == "002") > 0; // quan ly
-            //DichVuRibbonPageGroup.Visible = NguoiDung.dsPhanQuyen.Count(m => m.Quyen.Ma == "003") > 0; // tiep tan
-            //ThuePhongRibbonPageGroup.Visible = PhongRibbonPageGroup.Visible || DichVuRibbonPageGroup.Visible;
-            //iQuanLyDichVu.Visibility = PhongRibbonPageGroup.Visible ? BarItemVisibility.Always : BarItemVisibility.Never;
             InitSkinGallery();
             InitGrid();
         }
@@ -83,24 +77,6 @@ namespace QuanLyCuaHangBanXe
             e.RelationName = CurrentMDI.GetRelationName(e.RelationIndex);
         }
 
-        private void iQuanLyNgoiDung_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
-        {
-            //CurrentMDI = new NhanVien();
-            //UpdateGridView();
-        }
-
-        private void iQuanLyQuyen_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
-        {
-            CurrentMDI = new Quyen();
-            UpdateGridView();
-        }
-
-        private void iQuanLyPhanQuyen_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
-        {
-            //CurrentMDI = new CV_q();
-            //UpdateGridView();
-        }
-
         private void iBaoCao_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
             XtraReport r = new XtraReport();
@@ -116,38 +92,72 @@ namespace QuanLyCuaHangBanXe
 
         private void iQuanLyChucVu_ItemClick(object sender, ItemClickEventArgs e)
         {
-            CurrentMDI = new ChucVu();
-            UpdateGridView();
+            UpdateGridView(new ChucVu());
         }
 
         private void iQuanLyChiNhanh_ItemClick(object sender, ItemClickEventArgs e)
         {
-            CurrentMDI = new ChiNhanh();
-            UpdateGridView();
+            UpdateGridView(new ChiNhanh());
         }
 
         private void iQuanLyNhanVien_ItemClick(object sender, ItemClickEventArgs e)
         {
-            CurrentMDI = new NhanVien();
-            UpdateGridView();
-        }
-
-        private void iQuanLyMenu_ItemClick(object sender, ItemClickEventArgs e)
-        {
-            CurrentMDI = new DataContext.Menu();
-            UpdateGridView();
-        }
-
-        private void iQuanLyQuyenMenu_ItemClick(object sender, ItemClickEventArgs e)
-        {
-            CurrentMDI = new Quyen_Menu();
-            UpdateGridView();
+            UpdateGridView(new NhanVien());
         }
 
         private void iQuanLyKho_ItemClick(object sender, ItemClickEventArgs e)
         {
-            CurrentMDI = new Kho();
-            UpdateGridView();
+            UpdateGridView(new Kho());
+        }
+
+        private void iQuanLyKhachHang_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            UpdateGridView(new KhachHang());
+        }
+
+        private void iQuanLyHoSoBanXe_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            UpdateGridView(new HoSoBanXe());
+        }
+
+        private void iQuanLyPhuKien_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            UpdateGridView(new PhuKien());
+        }
+
+        private void iQuanLyLoaiPhuKien_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            UpdateGridView(new LoaiPhuKien());
+        }
+
+        private void iQuanLyXe_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            UpdateGridView(new Xe());
+        }
+
+        private void iQuanLyLoaiXe_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            UpdateGridView(new LoaiXe());
+        }
+
+        private void iQuanLyPhieuNhapPhuKien_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            UpdateGridView(new PhieuNhapPhuKien());
+        }
+
+        private void iQuanLyPhieuNhapXe_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            UpdateGridView(new PhieuNhapXe());
+        }
+
+        private void iQuanLyPhieuSuaChua_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            UpdateGridView(new PhieuSuaChua());
+        }
+
+        private void iQuanLyPhieuXuatKho_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            UpdateGridView(new PhieuXuatKho());
         }
 
     }
