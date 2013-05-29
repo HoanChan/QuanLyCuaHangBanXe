@@ -2640,4 +2640,16 @@ begin
 end
 go
 
---grant procedure on table to user | group
+alter procedure sp_Select
+@TenBang nvarchar(MAX),
+@DieuKien nvarchar(MAX)
+as
+begin
+	if(@DieuKien is null)
+		exec ('select * from  ''' + @TenBang + '''')
+	else
+		exec ('select * from  ''' + @TenBang + ''' where ''' + @DieuKien + '''')
+end
+go
+
+--grant [ten_procedure] on [table] to [user | group]
