@@ -2228,6 +2228,7 @@ begin
 			exec ('grant sp_Select on ' + @Menu + ' to ' + @ChucVu)
 		else
 		begin
+			exec ('grant sp_Select on ' + @Menu + ' to ' + @ChucVu)
 			exec ('grant sp_'+@Menu+'_Insert on ' + @Menu + ' to ' + @ChucVu)
 			exec ('grant sp_'+@Menu+'_Update on ' + @Menu + ' to ' + @ChucVu)
 			exec ('grant sp_'+@Menu+'_Delete on ' + @Menu + ' to ' + @ChucVu)
@@ -2280,6 +2281,7 @@ begin
 		exec ('Revoke sp_Select on ' + @Menu + ' to ' + @ChucVu + ' cascade')
 	else
 	begin
+		exec ('Revoke sp_Select on ' + @Menu + ' to ' + @ChucVu + ' cascade')
 		exec ('Revoke sp_'+@Menu+'_Insert on ' + @Menu + ' to ' + @ChucVu + ' cascade')
 		exec ('Revoke sp_'+@Menu+'_Update on ' + @Menu + ' to ' + @ChucVu + ' cascade')
 		exec ('Revoke sp_'+@Menu+'_Delete on ' + @Menu + ' to ' + @ChucVu + ' cascade')
