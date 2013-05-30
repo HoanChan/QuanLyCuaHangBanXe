@@ -96,38 +96,14 @@ namespace QuanLyCuaHangBanXe
                     label.Text = DisplayName;
                     label.Font = new Font(label.Font, CurrentMDI.IsKey(Pro.Name) ? FontStyle.Underline | FontStyle.Bold : FontStyle.Regular);
                     BaseEdit textbox = new TextEdit();
-                    //set Repository
-                    if (Pro.PropertyType == typeof(DateTime))
-                    {
-                        var rDate = new DateEdit();
-                        var rTime = new TimeEdit();
-
-                        rDate.Properties.MinValue = new DateTime(1753, 1, 1); // SQL min value
-                        if (Pro.Name.Substring(0, 3) == "Gio")
-                            textbox = rTime;
-                        else
-                            textbox = rDate;
-
-                        DataBindingsType = "EditValue";
-
-                    }
-                    else if (Pro.PropertyType == typeof(bool))
-                    {
-                        textbox = new CheckEdit();
-                        DataBindingsType = "EditValue";
-                    }
-                    else if (Pro.PropertyType == typeof(int) || Pro.PropertyType == typeof(decimal))
-                    {
-                        textbox = new CalcEdit();
-                        DataBindingsType = "EditValue";
-                    }
-                    else if(EntityType.IsForeignKey(Pro.Name))
+                    if(EntityType.IsForeignKey(Pro.Name))
                     {
                         var ForeignInfo = Pro.GetForeignKeyTargetName();
                         var TableName = ForeignInfo.Substring(0, ForeignInfo.IndexOf("_"));
                         var KeyName = ForeignInfo.Substring(ForeignInfo.IndexOf("_") + 1);
                         var x = Global.GetType(TableName);
-                        var aList = x.Equals(typeof(DataContext.Menu)) ? GetMenuList() : Table.GetList(x);
+                        var aList = x.Equals(typeof(DataContext.Menu)) ? GetMenuList() :
+                                   (x.Equals(typeof(Quyen)) ? GetQuyenList() : Table.GetList(x));
                         if (aList != null)
                         {
                             var Ri = new LookUpEdit();
@@ -166,6 +142,30 @@ namespace QuanLyCuaHangBanXe
                             textbox = Ri;
                             DataBindingsType = "EditValue";
                         }
+                    }
+                    else if (Pro.PropertyType == typeof(DateTime))
+                    {
+                        var rDate = new DateEdit();
+                        var rTime = new TimeEdit();
+
+                        rDate.Properties.MinValue = new DateTime(1753, 1, 1); // SQL min value
+                        if (Pro.Name.Substring(0, 3) == "Gio")
+                            textbox = rTime;
+                        else
+                            textbox = rDate;
+
+                        DataBindingsType = "EditValue";
+
+                    }
+                    else if (Pro.PropertyType == typeof(bool))
+                    {
+                        textbox = new CheckEdit();
+                        DataBindingsType = "EditValue";
+                    }
+                    else if (Pro.PropertyType == typeof(int) || Pro.PropertyType == typeof(decimal))
+                    {
+                        textbox = new CalcEdit();
+                        DataBindingsType = "EditValue";
                     }
                     textbox.Location = new Point(120, 50 + 30 * index);
                     textbox.Width = 200;
@@ -511,5 +511,10 @@ namespace QuanLyCuaHangBanXe
             return result;
         }
 
+        private List<Quyen> GetQuyenList()
+        {
+            return new List<Quyen>(){new Quyen(){ Ma=1, Ten="Xem", GhiChu="Chỉ Xem được nội dung bảng" },
+                                     new Quyen(){ Ma=2, Ten="Toàn Quyền", GhiChu="Xem, Thêm mới, xoá, sửa đổi nội dung bảng"}};
+        }
     }
 }
