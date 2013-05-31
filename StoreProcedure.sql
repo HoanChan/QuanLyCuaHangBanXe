@@ -2232,7 +2232,8 @@ begin
 		begin
 			exec ('grant EXECUTE on schema ::dbo to '+ @ChucVu)
 			exec ('grant select on  ' + @Menu + ' to ' + @ChucVu)
-			execute dbo.sp_CTQuyen_FK @ChucVu, @Menu
+			set @ok = 1
+			execute dbo.sp_CTQuyen_FK @ChucVu, @Menu, @ok
 		end
 		else
 		begin
@@ -2241,7 +2242,8 @@ begin
 			exec ('grant insert on  ' + @Menu + ' to ' + @ChucVu)
 			exec ('grant update on  ' + @Menu + ' to ' + @ChucVu)
 			exec ('grant delete on  ' + @Menu + ' to ' + @ChucVu)
-			execute dbo.sp_CTQuyen_FK @ChucVu, @Menu
+			set @ok = 1
+			execute dbo.sp_CTQuyen_FK @ChucVu, @Menu, @ok
 		end
 	end
 end
@@ -2249,7 +2251,8 @@ go
 
 alter procedure sp_CTQuyen_FK
 @ChucVu nvarchar(10),
-@Menu nvarchar(100)
+@Menu nvarchar(100),
+@Ok bit
 as
 begin
 	declare @Table varchar(100)
@@ -2273,7 +2276,10 @@ begin
 			fetch next from cur into @Table
 			while @@FETCH_STATUS=0
 			begin
-				exec ('grant select on  ' + @Table + ' to ' + @ChucVu)
+				if(@Ok=1)
+					exec ('grant select on  ' + @Table + ' to ' + @ChucVu)
+				else
+					exec ('Revoke select on  ' + @Table + ' to ' + @ChucVu)	
 				fetch next from cur into @Table
 			end
 		end
@@ -2319,11 +2325,18 @@ alter procedure sp_CTQuyen_Delete
 @Menu nvarchar(100)
 as
 begin
+	declare @ok bit;
 	exec ('Revoke EXECUTE on schema ::dbo to ' + @ChucVu + ' cascade')
 	if(@Quyen=1)
+	begin
+		set @ok=0
+		execute dbo.sp_CTQuyen_FK @ChucVu, @Menu, @ok
 		exec ('Revoke select on ' + @Menu + ' to ' + @ChucVu + ' cascade')
+	end
 	else
 	begin
+		set @ok=0
+		execute dbo.sp_CTQuyen_FK @ChucVu, @Menu, @ok
 		exec ('Revoke select on ' + @Menu + ' to ' + @ChucVu + ' cascade')
 		exec ('Revoke insert on ' + @Menu + ' to ' + @ChucVu + ' cascade')
 		exec ('Revoke update on ' + @Menu + ' to ' + @ChucVu + ' cascade')
