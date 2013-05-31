@@ -2232,6 +2232,7 @@ begin
 		begin
 			exec ('grant EXECUTE on schema ::dbo to '+ @ChucVu)
 			exec ('grant select on  ' + @Menu + ' to ' + @ChucVu)
+			execute dbo.sp_CTQuyen_FK @ChucVu, @Menu
 		end
 		else
 		begin
@@ -2240,8 +2241,42 @@ begin
 			exec ('grant insert on  ' + @Menu + ' to ' + @ChucVu)
 			exec ('grant update on  ' + @Menu + ' to ' + @ChucVu)
 			exec ('grant delete on  ' + @Menu + ' to ' + @ChucVu)
+			execute dbo.sp_CTQuyen_FK @ChucVu, @Menu
 		end
 	end
+end
+go
+
+alter procedure sp_CTQuyen_FK
+@ChucVu nvarchar(10),
+@Menu nvarchar(100)
+as
+begin
+	declare @Table varchar(100)
+	declare cur cursor for 	SELECT  target.name
+	FROM
+		sysobjects t
+		-- source column
+		INNER JOIN syscolumns c ON t.id = c.id
+		-- general constraint
+		INNER JOIN sysconstraints co ON t.id = co.id AND co.colid = c.colid
+		-- foreign key constraint
+		INNER JOIN sysforeignkeys fk ON co.constid = fk.constid
+		-- target table
+		INNER JOIN sysobjects target ON fk.rkeyid = target.id
+		-- target column
+		INNER JOIN syscolumns targetc ON fk.rkey = targetc.colid AND fk.rkeyid = targetc.id
+	WHERE
+		t.name = @Menu
+		begin
+			open cur
+			fetch next from cur into @Table
+			while @@FETCH_STATUS=0
+			begin
+				exec ('grant select on  ' + @Table + ' to ' + @ChucVu)
+				fetch next from cur into @Table
+			end
+		end
 end
 go
 
