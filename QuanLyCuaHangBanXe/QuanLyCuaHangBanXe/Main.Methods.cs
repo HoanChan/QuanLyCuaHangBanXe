@@ -13,13 +13,29 @@ using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraEditors.DXErrorProvider;
 using DevExpress.XtraGrid;
 using DevExpress.XtraGrid.Columns;
+using DevExpress.XtraGrid.Views.Grid;
 namespace QuanLyCuaHangBanXe
 {
     public partial class Main
     {
-
+        /// <summary>
+        /// Cập nhật Gridview, xoá những gì đang hiển thị, hiển thị dữ liệu mới
+        /// Dữ liệu hiểu thị được lấy lên từ CSDL dựa kiểu dữ liệu của MDI
+        /// Dữ liệu có thể được lọc bằng tên 1 cột và giá trị cần lọc
+        /// </summary>
+        /// <param name="MDI">Kiểu dữ liệu cần hiển thị</param>
+        /// <param name="Name">Tên cột cần lọc</param>
+        /// <param name="Value">Giá trị cần lọc</param>
         private void UpdateGridView(MasterDetailInfo MDI, String Name = null, object Value = null)
         {
+            if (string.IsNullOrEmpty(Name))
+            {
+                siStatus.Caption = MDI.GetName();
+            }
+            else
+            {
+                siStatus.Caption = CurrentMDI.GetName() + "[" + Name + " = " + Value.ToString() + "] / " + MDI.GetName();
+            }
             CurrentMDI = MDI;
             DataGridView.BeginUpdate();
             DataGridView.DataSource = null;
@@ -60,9 +76,10 @@ namespace QuanLyCuaHangBanXe
             }
             DataGridView.EndUpdate();
             DataGridView.RefreshDataSource();
-            CreateDetail(CurrentMDI.GetType());
+            CreateDetail(CurrentMDI.GetType(), Name, Value);
             ribbonControl.SelectedPage = homeRibbonPage;
         }
+
         private void ShowError(Exception e)
         {
             if (e.InnerException != null)
@@ -77,7 +94,8 @@ namespace QuanLyCuaHangBanXe
                 MessageBox.Show("Lỗi: " + e.Message);
             }
         }
-        private void CreateDetail(Type EntityType)
+
+        private void CreateDetail(Type EntityType, String Name = null, object Value = null)
         {
             #region Label + textbox
             splitContainerControl.Panel2.Controls.Clear();
@@ -241,10 +259,10 @@ namespace QuanLyCuaHangBanXe
             #region Func
             var Element = EntityType.CreateNew();
 
-            Func<string, Control> GetControlByName = delegate(string Name)
+            Func<string, Control> GetControlByName = delegate(string ControlName)
             {
                 foreach(Control c in splitContainerControl.Panel2.Controls)
-                    if(c.Name == Name)
+                    if(c.Name == ControlName)
                         return c;
 
                 return null;
@@ -297,6 +315,10 @@ namespace QuanLyCuaHangBanXe
                         if (control.Tag != null)
                         {
                             (control.Tag as Control).Enabled = !IsReadOnly;
+                        }
+                        if (control.Name == Name)
+                        {
+                            (control as BaseEdit).Properties.ReadOnly = true;
                         }
                     }
                 }
@@ -387,6 +409,7 @@ namespace QuanLyCuaHangBanXe
             btnCreateNew.Click += new EventHandler(delegate(object sender, EventArgs e)
             {
                 gridView.AddNewRow();
+                (GetControlByName(Name) as BaseEdit).EditValue = Value;
                 DefaultButtonDisplay();
                 btnCancelNew.Visible = btnAddNew.Enabled = true;
                 btnCreateNew.Visible = btnEdit.Enabled = btnDelete.Enabled = false;

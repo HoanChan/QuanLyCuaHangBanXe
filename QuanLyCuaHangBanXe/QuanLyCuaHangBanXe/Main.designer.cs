@@ -58,6 +58,11 @@
             this.iQuanLyXe = new DevExpress.XtraBars.BarButtonItem();
             this.iQuanLyKho = new DevExpress.XtraBars.BarButtonItem();
             this.iQuanLyLoaiXe = new DevExpress.XtraBars.BarButtonItem();
+            this.iQuanLyNCC = new DevExpress.XtraBars.BarButtonItem();
+            this.iQuanLyPhieuNhapPhuKien = new DevExpress.XtraBars.BarButtonItem();
+            this.iQuanLyPhieuNhapXe = new DevExpress.XtraBars.BarButtonItem();
+            this.iQuanLyPhieuSuaChua = new DevExpress.XtraBars.BarButtonItem();
+            this.iQuanLyPhieuXuatKho = new DevExpress.XtraBars.BarButtonItem();
             this.ribbonImageCollectionLarge = new DevExpress.Utils.ImageCollection(this.components);
             this.homeRibbonPage = new DevExpress.XtraBars.Ribbon.RibbonPage();
             this.fileRibbonPageGroup = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
@@ -71,11 +76,6 @@
             this.ribbonStatusBar = new DevExpress.XtraBars.Ribbon.RibbonStatusBar();
             this.splitContainerControl = new DevExpress.XtraEditors.SplitContainerControl();
             this.dxErrorProvider = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider(this.components);
-            this.iQuanLyNCC = new DevExpress.XtraBars.BarButtonItem();
-            this.iQuanLyPhieuNhapPhuKien = new DevExpress.XtraBars.BarButtonItem();
-            this.iQuanLyPhieuNhapXe = new DevExpress.XtraBars.BarButtonItem();
-            this.iQuanLyPhieuSuaChua = new DevExpress.XtraBars.BarButtonItem();
-            this.iQuanLyPhieuXuatKho = new DevExpress.XtraBars.BarButtonItem();
             ((System.ComponentModel.ISupportInitialize)(this.cardView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.DataGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView)).BeginInit();
@@ -368,6 +368,45 @@
             this.iQuanLyLoaiXe.Name = "iQuanLyLoaiXe";
             this.iQuanLyLoaiXe.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.iQuanLyLoaiXe_ItemClick);
             // 
+            // iQuanLyNCC
+            // 
+            this.iQuanLyNCC.Caption = "Nhà Cung Cấp";
+            this.iQuanLyNCC.Id = 92;
+            this.iQuanLyNCC.LargeImageIndex = 4;
+            this.iQuanLyNCC.Name = "iQuanLyNCC";
+            // 
+            // iQuanLyPhieuNhapPhuKien
+            // 
+            this.iQuanLyPhieuNhapPhuKien.Caption = "Phiếu Nhập Phụ Kiện";
+            this.iQuanLyPhieuNhapPhuKien.Id = 93;
+            this.iQuanLyPhieuNhapPhuKien.LargeImageIndex = 1;
+            this.iQuanLyPhieuNhapPhuKien.Name = "iQuanLyPhieuNhapPhuKien";
+            this.iQuanLyPhieuNhapPhuKien.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.iQuanLyPhieuNhapPhuKien_ItemClick);
+            // 
+            // iQuanLyPhieuNhapXe
+            // 
+            this.iQuanLyPhieuNhapXe.Caption = "Phiếu Nhập Xe";
+            this.iQuanLyPhieuNhapXe.Id = 94;
+            this.iQuanLyPhieuNhapXe.LargeImageIndex = 6;
+            this.iQuanLyPhieuNhapXe.Name = "iQuanLyPhieuNhapXe";
+            this.iQuanLyPhieuNhapXe.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.iQuanLyPhieuNhapXe_ItemClick);
+            // 
+            // iQuanLyPhieuSuaChua
+            // 
+            this.iQuanLyPhieuSuaChua.Caption = "Phiếu Sửa Chữa";
+            this.iQuanLyPhieuSuaChua.Id = 95;
+            this.iQuanLyPhieuSuaChua.LargeImageIndex = 12;
+            this.iQuanLyPhieuSuaChua.Name = "iQuanLyPhieuSuaChua";
+            this.iQuanLyPhieuSuaChua.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.iQuanLyPhieuSuaChua_ItemClick);
+            // 
+            // iQuanLyPhieuXuatKho
+            // 
+            this.iQuanLyPhieuXuatKho.Caption = "Phiếu Xuất Kho";
+            this.iQuanLyPhieuXuatKho.Id = 96;
+            this.iQuanLyPhieuXuatKho.LargeImageIndex = 13;
+            this.iQuanLyPhieuXuatKho.Name = "iQuanLyPhieuXuatKho";
+            this.iQuanLyPhieuXuatKho.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.iQuanLyPhieuXuatKho_ItemClick);
+            // 
             // ribbonImageCollectionLarge
             // 
             this.ribbonImageCollectionLarge.ImageSize = new System.Drawing.Size(32, 32);
@@ -486,45 +525,6 @@
             // 
             this.dxErrorProvider.ContainerControl = this;
             // 
-            // iQuanLyNCC
-            // 
-            this.iQuanLyNCC.Caption = "Nhà Cung Cấp";
-            this.iQuanLyNCC.Id = 92;
-            this.iQuanLyNCC.LargeImageIndex = 4;
-            this.iQuanLyNCC.Name = "iQuanLyNCC";
-            // 
-            // iQuanLyPhieuNhapPhuKien
-            // 
-            this.iQuanLyPhieuNhapPhuKien.Caption = "Phiếu Nhập Phụ Kiện";
-            this.iQuanLyPhieuNhapPhuKien.Id = 93;
-            this.iQuanLyPhieuNhapPhuKien.LargeImageIndex = 1;
-            this.iQuanLyPhieuNhapPhuKien.Name = "iQuanLyPhieuNhapPhuKien";
-            this.iQuanLyPhieuNhapPhuKien.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.iQuanLyPhieuNhapPhuKien_ItemClick);
-            // 
-            // iQuanLyPhieuNhapXe
-            // 
-            this.iQuanLyPhieuNhapXe.Caption = "Phiếu Nhập Xe";
-            this.iQuanLyPhieuNhapXe.Id = 94;
-            this.iQuanLyPhieuNhapXe.LargeImageIndex = 6;
-            this.iQuanLyPhieuNhapXe.Name = "iQuanLyPhieuNhapXe";
-            this.iQuanLyPhieuNhapXe.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.iQuanLyPhieuNhapXe_ItemClick);
-            // 
-            // iQuanLyPhieuSuaChua
-            // 
-            this.iQuanLyPhieuSuaChua.Caption = "Phiếu Sửa Chữa";
-            this.iQuanLyPhieuSuaChua.Id = 95;
-            this.iQuanLyPhieuSuaChua.LargeImageIndex = 12;
-            this.iQuanLyPhieuSuaChua.Name = "iQuanLyPhieuSuaChua";
-            this.iQuanLyPhieuSuaChua.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.iQuanLyPhieuSuaChua_ItemClick);
-            // 
-            // iQuanLyPhieuXuatKho
-            // 
-            this.iQuanLyPhieuXuatKho.Caption = "Phiếu Xuất Kho";
-            this.iQuanLyPhieuXuatKho.Id = 96;
-            this.iQuanLyPhieuXuatKho.LargeImageIndex = 13;
-            this.iQuanLyPhieuXuatKho.Name = "iQuanLyPhieuXuatKho";
-            this.iQuanLyPhieuXuatKho.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.iQuanLyPhieuXuatKho_ItemClick);
-            // 
             // Main
             // 
             this.AllowFormGlass = DevExpress.Utils.DefaultBoolean.False;
@@ -538,7 +538,7 @@
             this.Name = "Main";
             this.Ribbon = this.ribbonControl;
             this.StatusBar = this.ribbonStatusBar;
-            this.Text = "Quản Lý Khách Sạn";
+            this.Text = "Quản Lý Cửa Hàng Bán Xe";
             ((System.ComponentModel.ISupportInitialize)(this.cardView1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.DataGridView)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView)).EndInit();

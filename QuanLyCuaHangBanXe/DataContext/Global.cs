@@ -11,17 +11,30 @@ namespace DataContext
 {
     public static class Global
     {
-
+        /// <summary>
+        /// Chuyển chuỗi bất kỳ thành chuỗi có dạng chữ hoa đầu từ
+        /// VD: "LE hoan cHan" ==> "Le Hoan Chan"
+        /// </summary>
+        /// <param name="str">Chuỗi ban đầu</param>
+        /// <returns>Chuỗi có các từ bắt đầu bằng chữ hoa</returns>
         public static string ToBeauty(this string str)
         {
             return System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(str.ToLower());
         }
-
+        /// <summary>
+        /// Lấy kiểu dữ liệu thông qua tên của nó
+        /// Hàm này hỗ trợ lấy các Type trong Namespace DataContext
+        /// </summary>
+        /// <param name="Name">Tên kiểu dữ liệu</param>
+        /// <returns>Kiểu dữ liệu tìm được, là null nếu không thấy</returns>
         public static Type GetType(string Name)
         {
             return Type.GetType("DataContext." + Name);
         }
-
+        /// <summary>
+        /// Lấy tên của 1 kiểu dữ liệu thông qua Metadata của nó.
+        /// </summary>
+        /// <returns>Đọc từ Metadata TypeDisplay, nếu không có thì lấy tên nó luôn</returns>
         public static string GetName(this Type X)
         {
             try
@@ -33,7 +46,11 @@ namespace DataContext
                 return X.Name;
             }
         }
-
+        /// <summary>
+        /// Lấy tên của một thuộc tính
+        /// </summary>
+        /// <param name="X"></param>
+        /// <returns>Đọc từ Metadata Display, nếu không có thì lấy tên nó luôn</returns>
         public static string GetName(this PropertyInfo X)
         {
             try
@@ -45,7 +62,10 @@ namespace DataContext
                 return X.Name;
             }
         }
-
+        /// <summary>
+        /// Lấy khoá ngoại của một thuộc tính
+        /// </summary>
+        /// <returns>Nếu thuộc tính ko chứa khoá ngoại thì null</returns>
         public static string GetForeignKeyTargetName(this PropertyInfo X)
         {
             try
@@ -58,7 +78,12 @@ namespace DataContext
             }
 
         }
-
+        /// <summary>
+        /// Kiểm tra thuộc tính có phải là một khoá ngoại không
+        /// (Là khoá ngoại nếu có chứa thẻ metadata là ForeignKey)
+        /// </summary>
+        /// <param name="aType">Kiểu dữ liệu</param>
+        /// <param name="propertyName">Tên thuộc tính</param>
         public static bool IsForeignKey(this Type aType, String propertyName)
         {
             try
@@ -70,7 +95,12 @@ namespace DataContext
                 return false;
             }
         }
-
+        /// <summary>
+        /// Kiểm tra thuộc tính có phải là một khoá ngoại không
+        /// (Là khoá ngoại nếu có chứa thẻ metadata là ForeignKey)
+        /// </summary>
+        /// <param name="objName">Biến bất kỳ</param>
+        /// <param name="propertyName">Tên thuộc tính</param>
         public static bool IsForeignKey(this object objName, String propertyName)
         {
             try
@@ -82,7 +112,11 @@ namespace DataContext
                 return false;
             }
         }
-
+        /// <summary>
+        /// Kiểm tra thuộc tính có là khoá chính hay không
+        /// (Là khoá chính nếu có chứa thẻ metadata là Key)
+        /// </summary>
+        /// <param name="propertyName">Tên thuộc tính</param>
         public static bool IsPrimaryKey(this object objName, String propertyName)
         {
             try
@@ -94,7 +128,10 @@ namespace DataContext
                 return false;
             }
         }
-
+        /// <summary>
+        /// Kiểm tra thuộc tính có là khoá hay không (khoá chính/khoá ngoại)
+        /// </summary>
+        /// <param name="propertyName">Tên thuộc tính</param>
         public static bool IsKey(this object objName, String propertyName)
         {
             try
@@ -115,7 +152,11 @@ namespace DataContext
                 return false;
             }
         }
-
+        /// <summary>
+        /// Tìm tên cột là khoá ngoại tham chiếu tới 1 bảng cho trước
+        /// </summary>
+        /// <param name="Table">Bảng được tham chiếu</param>
+        /// <returns>null nếu tìm không thấy</returns>
         public static string GetForeignKeyColumn(this object objName, string Table)
         {
             foreach (var Pro in objName.GetType().GetProperties())
@@ -131,17 +172,29 @@ namespace DataContext
             }
             return null;
         }
-
+        /// <summary>
+        /// Gán dữ liệu vào thuộc tính
+        /// </summary>
+        /// <param name="propertyName">Tên của thuộc tính</param>
+        /// <param name="value">Dữ liệu cần gán</param>
         public static void SetPropertyValue(this object objName, string propertyName, object value)
         {
             objName.GetType().GetProperty(propertyName).SetValue(objName, (value is DBNull) ? null : value); 
         }
-
+        /// <summary>
+        /// Lấy dữ liệu của một thuộc tính
+        /// </summary>
+        /// <param name="propertyName">Tên thuộc tính</param>
+        /// <returns>Dữ liệu lấy được</returns>
         public static object GetPropertyValue(this object objName, string propertyName)
         {
             return objName.GetType().GetProperty(propertyName).GetValue(objName);
         }
-
+        /// <summary>
+        /// Gán dữ liệu từ các thuộc tính tương ứng của một obj này cho obj kia
+        /// </summary>
+        /// <param name="objName">obj đích</param>
+        /// <param name="value">obj nguồn</param>
         public static void SetPropertiesValue(this object objName, object value)
         {
             foreach (var Pro in objName.GetType().GetProperties())
@@ -152,13 +205,18 @@ namespace DataContext
                 }
             }
         }
-
+        /// <summary>
+        /// Tạo một phiên bản thực tế từ một kiểu dữ liệu cho trước
+        /// </summary>
         public static object CreateNew(this Type T)
         {
             return Activator.CreateInstance(T);
         }
-
-
+        /// <summary>
+        /// Tạo một kiểu dữ liệu động
+        /// </summary>
+        /// <param name="Names">Danh sách tên các thuộc tính</param>
+        /// <param name="Types">Danh sách kiểu dữ liệu của từng thuộc tính tương ứng</param>
         public static Type CreateDynamicType(List<String> Names, List<Type> Types)
         {
             // create a dynamic assembly and module

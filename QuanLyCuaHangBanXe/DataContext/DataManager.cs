@@ -5,6 +5,9 @@ using System.Data;
 using System.Linq;
 namespace DataContext
 {
+    /// <summary>
+    /// Hiển thị các mối liên hệ của các table với nhau
+    /// </summary>
     public class MasterDetailInfo
     {
         public virtual bool IsEmpty(int RelationIndex) { return GetChildList(RelationIndex).Count == 0; }
@@ -34,12 +37,10 @@ namespace DataContext
             }
             return false;
         }
-
         public virtual bool EnabledAddNew()
         {
             return true;
         }
-
         public virtual object GetKeyValue()
         {
             foreach (var pro in this.GetType().GetProperties())
