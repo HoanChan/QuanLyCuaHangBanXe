@@ -199,57 +199,57 @@ namespace QuanLyCuaHangBanXe
             
             #region Button
             int bWidth = 60;
-            int bY = 0;
+            int bX = 0;
             var btnEdit = new SimpleButton()
             {
                 Text = "Chỉnh sửa",
-                Location = new Point(5 + 5*bY + bWidth * bY, 50 + 30 * index),
+                Location = new Point(5 + 5 * bX + bWidth * bX, 50 + 30 * index),
                 Width = bWidth,
                 Enabled = CurrentMDI.EnabledEdit() && gridView.SelectedRowsCount > 0
             };
             var btnCancelEdit = new SimpleButton()
             {
                 Text = "Dừng sửa",
-                Location = new Point(5 + 5 * bY + bWidth * bY, 50 + 30 * index),
+                Location = new Point(5 + 5 * bX + bWidth * bX, 50 + 30 * index),
                 Width = 60,
                 Visible = false
             };
-            bY++;
+            bX++;
             var btnUpdate = new SimpleButton()
             {
                 Text = "Cập nhật",
-                Location = new Point(5 + 5*bY + bWidth * bY, 50 + 30 * index),
+                Location = new Point(5 + 5*bX + bWidth * bX, 50 + 30 * index),
                 Width = 60,
                 Enabled = false
             };
-            bY++;
+            bX++;
             var btnCreateNew = new SimpleButton()
             {
                 Text = "Tạo mới",
-                Location = new Point(5 + 5 * bY + bWidth * bY, 50 + 30 * index),
+                Location = new Point(5 + 5 * bX + bWidth * bX, 50 + 30 * index),
                 Width = 60,
                 Enabled = CurrentMDI.EnabledAddNew()
             };
             var btnCancelNew = new SimpleButton()
             {
                 Text = "Dừng thêm",
-                Location = new Point(5 + 5 * bY + bWidth * bY, 50 + 30 * index),
+                Location = new Point(5 + 5 * bX + bWidth * bX, 50 + 30 * index),
                 Width = 60,
                 Visible = false
             };
-            bY++;
+            bX++;
             var btnAddNew = new SimpleButton()
             {
                 Text = "Thêm mới",
-                Location = new Point(5 + 5 * bY + bWidth * bY, 50 + 30 * index),
+                Location = new Point(5 + 5 * bX + bWidth * bX, 50 + 30 * index),
                 Width = 60,
                 Enabled = false
             };
-            bY++;
+            bX++;
             var btnDelete = new SimpleButton()
             {
                 Text = "Xoá",
-                Location = new Point(5 + 5 * bY + bWidth * bY, 50 + 30 * index),
+                Location = new Point(5 + 5 * bX + bWidth * bX, 50 + 30 * index),
                 Width = 60,
                 Enabled = gridView.SelectedRowsCount > 0
             };
@@ -470,15 +470,15 @@ namespace QuanLyCuaHangBanXe
             #region Relation
             var Count = CurrentMDI.GetRelationCount();
             index += 1;
-            bY = 0;
-            bWidth = 105;
+            bX = 0;
+            bWidth = 160;
             for (int i = 0; i < Count; i++)
             {
                 var MDI = (MasterDetailInfo)CurrentMDI.GetRelationType(i).CreateNew();
                 var aButton = new SimpleButton()
                 {
                     Text = MDI.GetName(),
-                    Location = new Point(5 + 5 * bY + bWidth * bY, 50 + 30 * index),
+                    Location = new Point(5 + 5 * bX + bWidth * bX, 50 + 30 * index),
                     Width = bWidth
                 };
 
@@ -492,8 +492,8 @@ namespace QuanLyCuaHangBanXe
                     //gridView.Columns[0].FilterInfo = new ColumnFilterInfo(gridView.Columns[ColumnName], KeyValue);
                 });
                 splitContainerControl.Panel2.Controls.Add(aButton);
-                index = bY > 1 ? index + 1 : index;
-                bY = bY > 1 ? 0 : bY + 1;
+                index = bX > 0 ? index + 1 : index;
+                bX = bX > 0 ? 0 : bX + 1;
             }
             #endregion
         }

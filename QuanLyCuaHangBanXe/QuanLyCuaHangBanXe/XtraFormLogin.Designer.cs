@@ -45,6 +45,7 @@
             this.txtMatKhau.Properties.PasswordChar = 'X';
             this.txtMatKhau.Size = new System.Drawing.Size(203, 20);
             this.txtMatKhau.TabIndex = 2;
+            this.txtMatKhau.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtMatKhau_KeyDown);
             // 
             // txtTenDangNhap
             // 
@@ -92,7 +93,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnThoat;
-            this.ClientSize = new System.Drawing.Size(311, 96);
+            this.ClientSize = new System.Drawing.Size(307, 92);
             this.ControlBox = false;
             this.Controls.Add(this.btnThoat);
             this.Controls.Add(this.btnDangNhap);

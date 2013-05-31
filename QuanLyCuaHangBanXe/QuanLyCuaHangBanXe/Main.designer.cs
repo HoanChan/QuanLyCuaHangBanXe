@@ -107,7 +107,7 @@
             this.DataGridView.Location = new System.Drawing.Point(0, 0);
             this.DataGridView.MainView = this.gridView;
             this.DataGridView.Name = "DataGridView";
-            this.DataGridView.Size = new System.Drawing.Size(755, 525);
+            this.DataGridView.Size = new System.Drawing.Size(754, 541);
             this.DataGridView.TabIndex = 9;
             this.DataGridView.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridView,
@@ -503,7 +503,7 @@
             // ribbonStatusBar
             // 
             this.ribbonStatusBar.ItemLinks.Add(this.siStatus);
-            this.ribbonStatusBar.Location = new System.Drawing.Point(0, 669);
+            this.ribbonStatusBar.Location = new System.Drawing.Point(0, 685);
             this.ribbonStatusBar.Name = "ribbonStatusBar";
             this.ribbonStatusBar.Ribbon = this.ribbonControl;
             this.ribbonStatusBar.Size = new System.Drawing.Size(1100, 31);
@@ -516,8 +516,8 @@
             this.splitContainerControl.Panel1.Controls.Add(this.DataGridView);
             this.splitContainerControl.Panel1.Text = "Panel1";
             this.splitContainerControl.Panel2.Text = "Panel2";
-            this.splitContainerControl.Size = new System.Drawing.Size(1100, 525);
-            this.splitContainerControl.SplitterPosition = 755;
+            this.splitContainerControl.Size = new System.Drawing.Size(1100, 541);
+            this.splitContainerControl.SplitterPosition = 754;
             this.splitContainerControl.TabIndex = 12;
             this.splitContainerControl.Text = "splitContainerControl1";
             // 
@@ -530,7 +530,7 @@
             this.AllowFormGlass = DevExpress.Utils.DefaultBoolean.False;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1100, 700);
+            this.ClientSize = new System.Drawing.Size(1100, 716);
             this.Controls.Add(this.splitContainerControl);
             this.Controls.Add(this.ribbonControl);
             this.Controls.Add(this.ribbonStatusBar);

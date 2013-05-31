@@ -412,7 +412,7 @@ namespace DataContext
         }
     }
 
-    [TypeDisplay(Name = "phiếu xuất kho")]
+    [TypeDisplay(Name = "Phiếu xuất kho")]
     public partial class PhieuXuatKho : MasterDetailInfo
     {
         public override int GetRelationCount() { return 3; }

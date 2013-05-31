@@ -35,5 +35,13 @@ namespace QuanLyCuaHangBanXe
                 MessageBox.Show("Thông tin đăng nhập sai!");
             }
         }
+
+        private void txtMatKhau_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                btnDangNhap.PerformClick();
+            }
+        }
     }
 }
