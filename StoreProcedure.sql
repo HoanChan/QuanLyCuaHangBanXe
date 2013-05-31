@@ -64,13 +64,18 @@ BEGIN
 	if(@ok = 0)
 		return
 
-	exec sp_addrole @Ma 
+	exec @ok = sp_addrole @Ma 
 
+	if(@ok<>0)
+		raiserror(N'[_Msg]Thêm thất bại',16,1)
+	else
+	begin
 	Insert into ChucVu values(@Ma, @Ten)
-	if(@@ERROR<>0)
-			raiserror(N'[_Msg]Đã thêm thất bại',16,1)
-		else
-			raiserror(N'[_Msg]Đã thêm thành công',16,1)
+		if(@@ERROR<>0)
+				raiserror(N'[_Msg]Thêm thất bại',16,1)
+			else
+				raiserror(N'[_Msg]Đã thêm thành công',16,1)
+	end
 END
 go
 
@@ -2224,16 +2229,54 @@ begin
 	begin
 		insert into CTQuyen values(@ChucVu, @Quyen,@Menu)
 		if(@Quyen = 1)
-			--grant sp_Select on  to @ChucVu
-			exec ('grant sp_Select on ' + @Menu + ' to ' + @ChucVu)
+		begin
+			exec ('grant EXECUTE on schema ::dbo to '+ @ChucVu)
+			exec ('grant select on  ' + @Menu + ' to ' + @ChucVu)
+			execute dbo.sp_CTQuyen_FK @ChucVu, @Menu
+		end
 		else
 		begin
-			exec ('grant sp_Select on ' + @Menu + ' to ' + @ChucVu)
-			exec ('grant sp_'+@Menu+'_Insert on ' + @Menu + ' to ' + @ChucVu)
-			exec ('grant sp_'+@Menu+'_Update on ' + @Menu + ' to ' + @ChucVu)
-			exec ('grant sp_'+@Menu+'_Delete on ' + @Menu + ' to ' + @ChucVu)
+			exec ('grant EXECUTE on schema ::dbo to '+ @ChucVu)
+			exec ('grant select on  ' + @Menu + ' to ' + @ChucVu)
+			exec ('grant insert on  ' + @Menu + ' to ' + @ChucVu)
+			exec ('grant update on  ' + @Menu + ' to ' + @ChucVu)
+			exec ('grant delete on  ' + @Menu + ' to ' + @ChucVu)
+			execute dbo.sp_CTQuyen_FK @ChucVu, @Menu
 		end
 	end
+end
+go
+
+alter procedure sp_CTQuyen_FK
+@ChucVu nvarchar(10),
+@Menu nvarchar(100)
+as
+begin
+	declare @Table varchar(100)
+	declare cur cursor for 	SELECT  target.name
+	FROM
+		sysobjects t
+		-- source column
+		INNER JOIN syscolumns c ON t.id = c.id
+		-- general constraint
+		INNER JOIN sysconstraints co ON t.id = co.id AND co.colid = c.colid
+		-- foreign key constraint
+		INNER JOIN sysforeignkeys fk ON co.constid = fk.constid
+		-- target table
+		INNER JOIN sysobjects target ON fk.rkeyid = target.id
+		-- target column
+		INNER JOIN syscolumns targetc ON fk.rkey = targetc.colid AND fk.rkeyid = targetc.id
+	WHERE
+		t.name = @Menu
+		begin
+			open cur
+			fetch next from cur into @Table
+			while @@FETCH_STATUS=0
+			begin
+				exec ('grant select on  ' + @Table + ' to ' + @ChucVu)
+				fetch next from cur into @Table
+			end
+		end
 end
 go
 
@@ -2276,15 +2319,15 @@ alter procedure sp_CTQuyen_Delete
 @Menu nvarchar(100)
 as
 begin
+	exec ('Revoke EXECUTE on schema ::dbo to ' + @ChucVu + ' cascade')
 	if(@Quyen=1)
-		--Revoke select on sinhvien to u1 cascade
-		exec ('Revoke sp_Select on ' + @Menu + ' to ' + @ChucVu + ' cascade')
+		exec ('Revoke select on ' + @Menu + ' to ' + @ChucVu + ' cascade')
 	else
 	begin
-		exec ('Revoke sp_Select on ' + @Menu + ' to ' + @ChucVu + ' cascade')
-		exec ('Revoke sp_'+@Menu+'_Insert on ' + @Menu + ' to ' + @ChucVu + ' cascade')
-		exec ('Revoke sp_'+@Menu+'_Update on ' + @Menu + ' to ' + @ChucVu + ' cascade')
-		exec ('Revoke sp_'+@Menu+'_Delete on ' + @Menu + ' to ' + @ChucVu + ' cascade')
+		exec ('Revoke select on ' + @Menu + ' to ' + @ChucVu + ' cascade')
+		exec ('Revoke insert on ' + @Menu + ' to ' + @ChucVu + ' cascade')
+		exec ('Revoke update on ' + @Menu + ' to ' + @ChucVu + ' cascade')
+		exec ('Revoke delete on ' + @Menu + ' to ' + @ChucVu + ' cascade')
 	end
 	delete from CTQuyen where ChucVu=@ChucVu and Quyen=@Quyen and Menu=@Menu
 end
