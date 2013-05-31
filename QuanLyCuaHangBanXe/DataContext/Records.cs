@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DataContext
@@ -85,7 +82,7 @@ namespace DataContext
 
     public partial class CTPhieuXuatXe
     {
-        [Key, ForeignKey("PhieuXuatXe_Ma"), Display(Name = "Phiếu xuất xe")]
+        [Key, ForeignKey("PhieuXuatKho_Ma"), Display(Name = "Phiếu xuất kho")]
         public string PhieuXuatKho { get; set; }
         [Key, ForeignKey("LoaiXe_Ma"), Display(Name = "Loại xe")]
         public string LoaiXe { get; set; }

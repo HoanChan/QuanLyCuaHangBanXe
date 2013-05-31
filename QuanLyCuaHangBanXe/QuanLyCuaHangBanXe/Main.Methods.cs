@@ -18,13 +18,13 @@ namespace QuanLyCuaHangBanXe
     public partial class Main
     {
 
-        private void UpdateGridView(MasterDetailInfo MDI)
+        private void UpdateGridView(MasterDetailInfo MDI, String Name = null, object Value = null)
         {
             CurrentMDI = MDI;
             DataGridView.BeginUpdate();
             DataGridView.DataSource = null;
             gridView.Columns.Clear();
-            DataGridView.DataSource = new BindingSource(Table.GetList(CurrentMDI.GetType()), "");
+            DataGridView.DataSource = new BindingSource(Table.GetList(CurrentMDI.GetType(), Name, Value, false), "");
             //DataGridView.DataSource = new BindingSource(EntityQuery.Local, "");
             var EntityProperties = CurrentMDI.GetType().GetProperties();
             int index = 0;
@@ -313,6 +313,19 @@ namespace QuanLyCuaHangBanXe
                 btnDelete.Enabled = true;
             };
 
+            Func<MasterDetailInfo> GetCurrentRecord = delegate()
+            {
+                var AElement = EntityType.CreateNew();
+                foreach (Control control in splitContainerControl.Panel2.Controls)
+                {
+                    if (control is BaseEdit)
+                    {
+                        AElement.SetPropertyValue(control.Name, (control as BaseEdit).EditValue);
+                    }
+                }
+                return (AElement as MasterDetailInfo);
+            };
+
             #endregion
             
             #region Button Events
@@ -348,14 +361,7 @@ namespace QuanLyCuaHangBanXe
             });
             btnUpdate.Click += new EventHandler(delegate(object sender, EventArgs e)
             {
-                var NewElement = EntityType.CreateNew();
-                foreach (Control control in splitContainerControl.Panel2.Controls)
-                {
-                    if (control is BaseEdit)
-                    {
-                        NewElement.SetPropertyValue(control.Name, (control as BaseEdit).EditValue);
-                    }
-                }
+                var NewElement = GetCurrentRecord();
                 bool isOk = false;
                 try
                 {
@@ -397,14 +403,7 @@ namespace QuanLyCuaHangBanXe
 
             btnAddNew.Click += new EventHandler(delegate(object sender, EventArgs e)
             {
-                var NewElement = EntityType.CreateNew();
-                foreach (Control control in splitContainerControl.Panel2.Controls)
-                {
-                    if (control is BaseEdit)
-                    {
-                        NewElement.SetPropertyValue(control.Name, (control as BaseEdit).EditValue);
-                    }
-                }
+                var NewElement = GetCurrentRecord();
                 bool isOk = false;
                 try
                 {
@@ -428,14 +427,7 @@ namespace QuanLyCuaHangBanXe
 
             btnDelete.Click += new EventHandler(delegate(object sender, EventArgs e)
             {
-                var AElement = EntityType.CreateNew();
-                foreach (Control control in splitContainerControl.Panel2.Controls)
-                {
-                    if (control is BaseEdit)
-                    {
-                        AElement.SetPropertyValue(control.Name, (control as BaseEdit).EditValue);
-                    }
-                }
+                var AElement = GetCurrentRecord();
                 try
                 {
                     gridView.DeleteSelectedRows();
@@ -467,18 +459,12 @@ namespace QuanLyCuaHangBanXe
 
                 aButton.Click += new EventHandler(delegate(object sender, EventArgs e)
                 {
-                    var ColumnName = CurrentMDI.GetType().Name;
-                    var AElement = EntityType.CreateNew();
-                    foreach (Control control in splitContainerControl.Panel2.Controls)
-                    {
-                        if (control is BaseEdit)
-                        {
-                            AElement.SetPropertyValue(control.Name, (control as BaseEdit).EditValue);
-                        }
-                    }
-                    var KeyValue = (AElement as MasterDetailInfo).GetKeyValue();
-                    UpdateGridView(MDI);
-                    gridView.Columns[0].FilterInfo = new ColumnFilterInfo(gridView.Columns[ColumnName], KeyValue);
+                    var TableName = CurrentMDI.GetType().Name;
+                    var ColumnName = MDI.GetForeignKeyColumn(TableName);
+
+                    var KeyValue = GetCurrentRecord().GetKeyValue();
+                    UpdateGridView(MDI, ColumnName, KeyValue);
+                    //gridView.Columns[0].FilterInfo = new ColumnFilterInfo(gridView.Columns[ColumnName], KeyValue);
                 });
                 splitContainerControl.Panel2.Controls.Add(aButton);
                 index = bY > 1 ? index + 1 : index;

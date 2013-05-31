@@ -116,7 +116,21 @@ namespace DataContext
             }
         }
 
-
+        public static string GetForeignKeyColumn(this object objName, string Table)
+        {
+            foreach (var Pro in objName.GetType().GetProperties())
+            {
+                if (objName.IsForeignKey(Pro.Name))
+                {
+                    var ForeignInfo = Pro.GetForeignKeyTargetName();
+                    var TableName = ForeignInfo.Substring(0, ForeignInfo.IndexOf("_"));
+                    var KeyName = ForeignInfo.Substring(ForeignInfo.IndexOf("_") + 1);
+                    if(TableName == Table)
+                        return Pro.Name;
+                }
+            }
+            return null;
+        }
 
         public static void SetPropertyValue(this object objName, string propertyName, object value)
         {
