@@ -9,6 +9,7 @@ using DevExpress.XtraEditors;
 using System;
 using DataContext;
 using DataProvider;
+using System.Configuration;
 
 namespace QuanLyCuaHangBanXe
 {
@@ -25,7 +26,7 @@ namespace QuanLyCuaHangBanXe
         {
             try
             {
-                Table.db = new Data(@"(localdb)\v11.0", "CUAHANG_BANXE", txtTenDangNhap.Text, txtMatKhau.Text);
+                Table.db = new Data(ConfigurationManager.AppSettings["DatabaseServer"], ConfigurationManager.AppSettings["DatabaseName"], txtTenDangNhap.Text, txtMatKhau.Text);
                 DialogResult = DialogResult.OK;
                 this.Close();
             }
