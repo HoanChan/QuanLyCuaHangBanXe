@@ -103,7 +103,7 @@ namespace QuanLyCuaHangBanXe
                         var KeyName = ForeignInfo.Substring(ForeignInfo.IndexOf("_") + 1);
                         var x = Global.GetType(TableName);
                         var aList = x.Equals(typeof(DataContext.Menu)) ? GetMenuList() :
-                                   (x.Equals(typeof(Quyen)) ? GetQuyenList() : Table.GetList(x));
+                                   (x.Equals(typeof(Quyen)) ? GetQuyenList() : Table.GetList(x, null, null, false));
                         if (aList != null)
                         {
                             var Ri = new LookUpEdit();
@@ -304,13 +304,14 @@ namespace QuanLyCuaHangBanXe
 
             Action DefaultButtonDisplay = delegate()
             {
-                btnEdit.Enabled = btnEdit.Visible = true;
+                btnEdit.Enabled = CurrentMDI.EnabledEdit() && gridView.SelectedRowsCount > 0;
+                btnEdit.Visible = true;
                 btnCancelEdit.Visible = false;
                 btnUpdate.Enabled = false;
                 btnCreateNew.Enabled = btnCreateNew.Visible = true;
                 btnCancelNew.Visible = false;
                 btnAddNew.Enabled = false;
-                btnDelete.Enabled = true;
+                btnDelete.Enabled = gridView.SelectedRowsCount > 0;
             };
 
             Func<MasterDetailInfo> GetCurrentRecord = delegate()
@@ -396,6 +397,7 @@ namespace QuanLyCuaHangBanXe
             btnCancelNew.Click += new EventHandler(delegate(object sender, EventArgs e){
                 gridView.DeleteSelectedRows();
                 DefaultButtonDisplay();
+                SetReadOnly(true);
                 DataGridView.Enabled = true;
                 dxErrorProvider.ClearErrors();
             });

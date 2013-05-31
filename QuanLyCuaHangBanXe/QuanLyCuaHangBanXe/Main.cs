@@ -83,7 +83,7 @@ namespace QuanLyCuaHangBanXe
             r.Landscape = true;
             
             ReportBuilderHelper rbh = new ReportBuilderHelper();
-            IList aList = Table.GetList(CurrentMDI.GetType());
+            IList aList = Table.GetList(CurrentMDI.GetType(), null, null, false);
             if(aList == null) { MessageBox.Show("Chọn danh sách đã!"); return; }
             rbh.Header = CurrentMDI.GetName();
             rbh.GenerateReport(r, aList, CurrentMDI.GetType());
