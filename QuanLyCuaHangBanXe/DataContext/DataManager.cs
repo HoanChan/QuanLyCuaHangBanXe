@@ -274,28 +274,6 @@ namespace DataContext
         }
     }
 
-    [TypeDisplay(Name = "Menu")]
-    public partial class Menu : MasterDetailInfo
-    {
-        public override int GetRelationCount() { return 1; }
-        public override Type GetRelationType(int RelationIndex)
-        {
-            return typeof(Quyen_Menu);
-        }
-        public override IList GetChildList(int RelationIndex)
-        {
-            return Table.GetList(typeof(Quyen_Menu), this.GetType().Name, Ma);
-        }
-
-        public override bool EnabledAddNew() { return false; }
-        public override bool EnabledEdit() { return false; }
-
-        public override string ToString()
-        {
-            return "(" + Ma + ") " + Ten;
-        }
-    }
-
     [TypeDisplay(Name = "Nhà cung cấp")]
     public partial class NCC : MasterDetailInfo
     {
@@ -364,6 +342,14 @@ namespace DataContext
         }
     }
 
+    [TypeDisplay(Name = "Menu")]
+    public partial class Menu : MasterDetailInfo
+    {
+        public override string ToString()
+        {
+            return "(" + Ma + ") " + Ten;
+        }
+    }
 
     [TypeDisplay(Name = "Phiếu nhập phụ kiện")]
     public partial class PhieuNhapPhuKien : MasterDetailInfo
@@ -471,32 +457,9 @@ namespace DataContext
         }
     }
 
-    [TypeDisplay(Name = "Phân quyền cho menu")]
-    public partial class Quyen_Menu : MasterDetailInfo
-    {
-
-    }
-
     [TypeDisplay(Name = "Quyền")]
     public partial class Quyen : MasterDetailInfo
     {
-        public override int GetRelationCount() { return 2; }
-        public override Type GetRelationType(int RelationIndex)
-        {
-            switch(RelationIndex)
-            {
-                case 0: return typeof(CTQuyen);
-                default: return typeof(Quyen_Menu);
-            }           
-        }
-        public override IList GetChildList(int RelationIndex)
-        {
-            switch (RelationIndex)
-            {
-                case 0: return Table.GetList(typeof(CTQuyen), this.GetType().Name, Ma);
-                default: return Table.GetList(typeof(Quyen_Menu), this.GetType().Name, Ma);
-            } 
-        }
         public override string ToString()
         {
             return "(" + Ma + ") " + Ten;

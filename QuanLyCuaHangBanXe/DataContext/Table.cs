@@ -18,25 +18,10 @@ namespace DataContext
         /// <param name="Name">Tên cột cần lọc, mặc định = null sẽ lấy hết không lọc</param>
         /// <param name="Value">Giá trị sẽ lọc</param>
         /// <returns>Danh sách</returns>
-        public static IList GetList(Type ItemType, string Name = null, object Value = null)
+        public static IList GetList(Type ItemType, string Name = null, object Value = null, bool isMasterDetail = true)
         {
             var aData = GetData(ItemType, Name, Value);
-            if (string.IsNullOrEmpty(Name))
-            {
-                var aList = (IList)(typeof(List<>).MakeGenericType(ItemType).CreateNew());
-                foreach (DataRow Row in aData.Tables[0].Rows) 
-                {
-                    var Item = ItemType.CreateNew();
-                    foreach (var pro in ItemType.GetProperties())
-                    {
-                        var aValue = Row[pro.Name] == DBNull.Value ? null : Row[pro.Name];
-                        Item.SetPropertyValue(pro.Name, aValue);
-                    }
-                    aList.Add(Item);
-                }
-                return aList;
-            }
-            else
+            if (isMasterDetail)
             {
                 var Names = new List<string>();
                 var Types = new List<Type>();
@@ -60,7 +45,7 @@ namespace DataContext
                         Item.SetPropertyValue(aName, aValue);
                         if (aValue == null)
                             IsOk = false;
-                        else if (pro.Name == Name) 
+                        else if (pro.Name == Name)
                         {
                             IsOk = aValue.Equals(Value);
                         }
@@ -69,6 +54,21 @@ namespace DataContext
                     {
                         aList.Add(Item);
                     }
+                }
+                return aList;
+            }
+            else
+            {
+                var aList = (IList)(typeof(List<>).MakeGenericType(ItemType).CreateNew());
+                foreach (DataRow Row in aData.Tables[0].Rows)
+                {
+                    var Item = ItemType.CreateNew();
+                    foreach (var pro in ItemType.GetProperties())
+                    {
+                        var aValue = Row[pro.Name] == DBNull.Value ? null : Row[pro.Name];
+                        Item.SetPropertyValue(pro.Name, aValue);
+                    }
+                    aList.Add(Item);
                 }
                 return aList;
             }

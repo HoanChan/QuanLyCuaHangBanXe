@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DataContext
@@ -85,7 +82,7 @@ namespace DataContext
 
     public partial class CTPhieuXuatXe
     {
-        [Key, ForeignKey("PhieuXuatXe_Ma"), Display(Name = "Phiếu xuất xe")]
+        [Key, ForeignKey("PhieuXuatKho_Ma"), Display(Name = "Phiếu xuất kho")]
         public string PhieuXuatKho { get; set; }
         [Key, ForeignKey("LoaiXe_Ma"), Display(Name = "Loại xe")]
         public string LoaiXe { get; set; }
@@ -98,7 +95,9 @@ namespace DataContext
         [Key, ForeignKey("ChucVu_Ma"), Display(Name = "Chức vụ")]
         public string ChucVu { get; set; }
         [Key, ForeignKey("Quyen_Ma"), Display(Name = "Quyền")]
-        public string Quyen { get; set; }
+        public int Quyen { get; set; }
+        [Key, ForeignKey("Menu_Ma"), Display(Name = "Menu")]
+        public string Menu { get; set; }
     }
 
     public partial class CTSuaChua
@@ -198,11 +197,11 @@ namespace DataContext
 
     public partial class Menu
     {
-        [Key, Display(Name="Mã")]
+        [Key, Display(Name = "Mã")]
         public string Ma { get; set; }
-        [Display(Name="Tên")]
+        [Display(Name = "Tên")]
         public string Ten { get; set; }
-        [Display(Name="Ghi chú")]
+        [Display(Name = "Ghi chú")]
         public string GhiChu { get; set; }
     }
 
@@ -312,19 +311,11 @@ namespace DataContext
     public partial class Quyen
     {
         [Key, Display(Name = "Mã")]
-        public string Ma { get; set; }
+        public int Ma { get; set; }
         [Display(Name = "Tên")]
         public string Ten { get; set; }
         [Display(Name = "Ghi chú")]
         public string GhiChu { get; set; }
-    }
-
-    public partial class Quyen_Menu
-    {
-        [Key, ForeignKey("Quyen_Ma"), Display(Name = "Quyền")]
-        public string Quyen { get; set; }
-        [Key, ForeignKey("Menu_Ma"), Display(Name = "Menu")]
-        public string Menu { get; set; }
     }
 
     public partial class Xe
