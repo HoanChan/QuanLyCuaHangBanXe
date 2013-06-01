@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Globalization;
@@ -10,7 +11,7 @@ namespace DataContext
 {
     public class Table
     {
-        public static Data db = new Data(@"(localdb)\v11.0", "CUAHANG_BANXE");
+        public static Data db = new Data(ConfigurationManager.AppSettings["DatabaseServer"], ConfigurationManager.AppSettings["DatabaseName"]);
         /// <summary>
         /// Lấy danh sách giá trị trong bảng
         /// </summary>

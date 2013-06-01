@@ -1,30 +1,44 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.SqlClient;
-using System.Drawing;
-using System.Linq;
-using System.Windows.Forms;
-using DataContext;
+﻿using DataContext;
 using DevExpress.Utils;
 using DevExpress.XtraBars;
 using DevExpress.XtraBars.Ribbon;
 using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraEditors.DXErrorProvider;
-using DevExpress.XtraGrid;
-using DevExpress.XtraGrid.Columns;
+using System;
+using System.Collections.Generic;
+using System.Data.SqlClient;
+using System.Drawing;
+using System.Linq;
+using System.Windows.Forms;
 namespace QuanLyCuaHangBanXe
 {
     public partial class Main
     {
-
+        /// <summary>
+        /// Cập nhật Gridview, xoá những gì đang hiển thị, hiển thị dữ liệu mới
+        /// Dữ liệu hiểu thị được lấy lên từ CSDL dựa kiểu dữ liệu của MDI
+        /// Dữ liệu có thể được lọc bằng tên 1 cột và giá trị cần lọc
+        /// </summary>
+        /// <param name="MDI">Kiểu dữ liệu cần hiển thị</param>
+        /// <param name="Name">Tên cột cần lọc</param>
+        /// <param name="Value">Giá trị cần lọc</param>
         private void UpdateGridView(MasterDetailInfo MDI, String Name = null, object Value = null)
         {
+            if (string.IsNullOrEmpty(Name))
+            {
+                siStatus.Caption = MDI.GetName();
+            }
+            else
+            {
+                siStatus.Caption = CurrentMDI.GetName()+" / " + MDI.GetName() + "[" + Name + " = " + Value.ToString() + "]";
+            }
             CurrentMDI = MDI;
             DataGridView.BeginUpdate();
             DataGridView.DataSource = null;
             gridView.Columns.Clear();
-            DataGridView.DataSource = new BindingSource(Table.GetList(CurrentMDI.GetType(), Name, Value, false), "");
+            ReportList = Table.GetList(CurrentMDI.GetType(), Name, Value, false);
+            DataGridView.DataSource = new BindingSource(ReportList, "");
             //DataGridView.DataSource = new BindingSource(EntityQuery.Local, "");
             var EntityProperties = CurrentMDI.GetType().GetProperties();
             int index = 0;
@@ -60,9 +74,10 @@ namespace QuanLyCuaHangBanXe
             }
             DataGridView.EndUpdate();
             DataGridView.RefreshDataSource();
-            CreateDetail(CurrentMDI.GetType());
+            CreateDetail(CurrentMDI.GetType(), Name, Value);
             ribbonControl.SelectedPage = homeRibbonPage;
         }
+
         private void ShowError(Exception e)
         {
             if (e.InnerException != null)
@@ -77,7 +92,8 @@ namespace QuanLyCuaHangBanXe
                 MessageBox.Show("Lỗi: " + e.Message);
             }
         }
-        private void CreateDetail(Type EntityType)
+
+        private void CreateDetail(Type EntityType, String Name = null, object Value = null)
         {
             #region Label + textbox
             splitContainerControl.Panel2.Controls.Clear();
@@ -181,70 +197,70 @@ namespace QuanLyCuaHangBanXe
             
             #region Button
             int bWidth = 60;
-            int bY = 0;
+            int bX = 0;
             var btnEdit = new SimpleButton()
             {
                 Text = "Chỉnh sửa",
-                Location = new Point(5 + 5*bY + bWidth * bY, 50 + 30 * index),
+                Location = new Point(5 + 5 * bX + bWidth * bX, 50 + 30 * index),
                 Width = bWidth,
-                Enabled = CurrentMDI.EnabledEdit() && gridView.SelectedRowsCount > 0
+                Enabled = CurrentMDI.EnabledModify() && CurrentMDI.EnabledEdit() && gridView.SelectedRowsCount > 0
             };
             var btnCancelEdit = new SimpleButton()
             {
                 Text = "Dừng sửa",
-                Location = new Point(5 + 5 * bY + bWidth * bY, 50 + 30 * index),
+                Location = new Point(5 + 5 * bX + bWidth * bX, 50 + 30 * index),
                 Width = 60,
                 Visible = false
             };
-            bY++;
+            bX++;
             var btnUpdate = new SimpleButton()
             {
                 Text = "Cập nhật",
-                Location = new Point(5 + 5*bY + bWidth * bY, 50 + 30 * index),
+                Location = new Point(5 + 5*bX + bWidth * bX, 50 + 30 * index),
                 Width = 60,
                 Enabled = false
             };
-            bY++;
+            bX++;
             var btnCreateNew = new SimpleButton()
             {
                 Text = "Tạo mới",
-                Location = new Point(5 + 5 * bY + bWidth * bY, 50 + 30 * index),
+                Location = new Point(5 + 5 * bX + bWidth * bX, 50 + 30 * index),
                 Width = 60,
-                Enabled = CurrentMDI.EnabledAddNew()
+                Enabled = CurrentMDI.EnabledModify()
             };
             var btnCancelNew = new SimpleButton()
             {
                 Text = "Dừng thêm",
-                Location = new Point(5 + 5 * bY + bWidth * bY, 50 + 30 * index),
+                Location = new Point(5 + 5 * bX + bWidth * bX, 50 + 30 * index),
                 Width = 60,
                 Visible = false
             };
-            bY++;
+            bX++;
             var btnAddNew = new SimpleButton()
             {
                 Text = "Thêm mới",
-                Location = new Point(5 + 5 * bY + bWidth * bY, 50 + 30 * index),
+                Location = new Point(5 + 5 * bX + bWidth * bX, 50 + 30 * index),
                 Width = 60,
                 Enabled = false
             };
-            bY++;
+            bX++;
             var btnDelete = new SimpleButton()
             {
                 Text = "Xoá",
-                Location = new Point(5 + 5 * bY + bWidth * bY, 50 + 30 * index),
+                Location = new Point(5 + 5 * bX + bWidth * bX, 50 + 30 * index),
                 Width = 60,
-                Enabled = gridView.SelectedRowsCount > 0
+                Enabled = CurrentMDI.EnabledModify() && gridView.SelectedRowsCount > 0
             };
-
+            index++;
             #endregion
             
             #region Func
             var Element = EntityType.CreateNew();
 
-            Func<string, Control> GetControlByName = delegate(string Name)
+            Func<string, Control> GetControlByName = delegate(string ControlName)
             {
                 foreach(Control c in splitContainerControl.Panel2.Controls)
-                    if(c.Name == Name)
+                    if(c.Name == ControlName)
                         return c;
 
                 return null;
@@ -298,6 +314,10 @@ namespace QuanLyCuaHangBanXe
                         {
                             (control.Tag as Control).Enabled = !IsReadOnly;
                         }
+                        if (control.Name == Name)
+                        {
+                            (control as BaseEdit).Properties.ReadOnly = true;
+                        }
                     }
                 }
             };
@@ -345,6 +365,7 @@ namespace QuanLyCuaHangBanXe
                     SetReadOnly(false);
                     DataGridView.Enabled = false;
                 });
+
             btnCancelEdit.Click += new EventHandler(delegate(object sender, EventArgs e)
             {
                 foreach (Control control in splitContainerControl.Panel2.Controls)
@@ -360,6 +381,7 @@ namespace QuanLyCuaHangBanXe
                 dxErrorProvider.ClearErrors();
 
             });
+
             btnUpdate.Click += new EventHandler(delegate(object sender, EventArgs e)
             {
                 var NewElement = GetCurrentRecord();
@@ -387,6 +409,7 @@ namespace QuanLyCuaHangBanXe
             btnCreateNew.Click += new EventHandler(delegate(object sender, EventArgs e)
             {
                 gridView.AddNewRow();
+                (GetControlByName(Name) as BaseEdit).EditValue = Value;
                 DefaultButtonDisplay();
                 btnCancelNew.Visible = btnAddNew.Enabled = true;
                 btnCreateNew.Visible = btnEdit.Enabled = btnDelete.Enabled = false;
@@ -401,7 +424,6 @@ namespace QuanLyCuaHangBanXe
                 DataGridView.Enabled = true;
                 dxErrorProvider.ClearErrors();
             });
-
 
             btnAddNew.Click += new EventHandler(delegate(object sender, EventArgs e)
             {
@@ -446,19 +468,17 @@ namespace QuanLyCuaHangBanXe
 
             #region Relation
             var Count = CurrentMDI.GetRelationCount();
-            index += 1;
-            bY = 0;
-            bWidth = 105;
+            bX = 0;
+            bWidth = 160;
             for (int i = 0; i < Count; i++)
             {
                 var MDI = (MasterDetailInfo)CurrentMDI.GetRelationType(i).CreateNew();
                 var aButton = new SimpleButton()
                 {
                     Text = MDI.GetName(),
-                    Location = new Point(5 + 5 * bY + bWidth * bY, 50 + 30 * index),
+                    Location = new Point(5 + 5 * bX + bWidth * bX, 50 + 30 * index),
                     Width = bWidth
                 };
-
                 aButton.Click += new EventHandler(delegate(object sender, EventArgs e)
                 {
                     var TableName = CurrentMDI.GetType().Name;
@@ -469,8 +489,8 @@ namespace QuanLyCuaHangBanXe
                     //gridView.Columns[0].FilterInfo = new ColumnFilterInfo(gridView.Columns[ColumnName], KeyValue);
                 });
                 splitContainerControl.Panel2.Controls.Add(aButton);
-                index = bY > 1 ? index + 1 : index;
-                bY = bY > 1 ? 0 : bY + 1;
+                index = bX > 0 ? index + 1 : index;
+                bX = bX > 0 ? 0 : bX + 1;
             }
             #endregion
         }

@@ -13,6 +13,7 @@ namespace QuanLyCuaHangBanXe
     public partial class Main : RibbonForm
     {
         MasterDetailInfo CurrentMDI = new MasterDetailInfo();
+        IList ReportList = null;
         //NguoiDung NguoiDung = null;
         public Main()
         {
@@ -83,10 +84,9 @@ namespace QuanLyCuaHangBanXe
             r.Landscape = true;
             
             ReportBuilderHelper rbh = new ReportBuilderHelper();
-            IList aList = Table.GetList(CurrentMDI.GetType(), null, null, false);
-            if(aList == null) { MessageBox.Show("Chọn danh sách đã!"); return; }
-            rbh.Header = CurrentMDI.GetName();
-            rbh.GenerateReport(r, aList, CurrentMDI.GetType());
+            if(ReportList == null) { MessageBox.Show("Chọn danh sách đã!"); return; }
+            rbh.Header = "Danh sách " + CurrentMDI.GetName();
+            rbh.GenerateReport(r, ReportList, CurrentMDI.GetType());
             r.ShowPreviewDialog();
         }
 
@@ -158,6 +158,11 @@ namespace QuanLyCuaHangBanXe
         private void iQuanLyPhieuXuatKho_ItemClick(object sender, ItemClickEventArgs e)
         {
             UpdateGridView(new PhieuXuatKho());
+        }
+
+        private void iExit_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            Environment.Exit(0);
         }
 
     }
