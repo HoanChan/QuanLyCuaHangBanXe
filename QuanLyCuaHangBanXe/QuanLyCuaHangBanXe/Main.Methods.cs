@@ -409,8 +409,12 @@ namespace QuanLyCuaHangBanXe
             btnCreateNew.Click += new EventHandler(delegate(object sender, EventArgs e)
             {
                 gridView.AddNewRow();
-                if(!string.IsNullOrEmpty(Name))
-                    (GetControlByName(Name) as BaseEdit).EditValue = Value;
+                if (!string.IsNullOrEmpty(Name))
+                {
+                    var txt = (GetControlByName(Name) as BaseEdit);
+                    txt.EditValue = Value;
+                    txt.BindingManager.EndCurrentEdit();
+                }
                 DefaultButtonDisplay();
                 btnCancelNew.Visible = btnAddNew.Enabled = true;
                 btnCreateNew.Visible = btnEdit.Enabled = btnDelete.Enabled = false;
