@@ -15,6 +15,8 @@ begin
 end
 go
 
+
+
 alter procedure sp_ChucVu_Select
 as
 begin
@@ -2190,6 +2192,32 @@ begin
 end
 GO
 
+alter procedure sp_KiemTraQuyen(
+@ChucVu nvarchar(10), 
+@Menu nvarchar(100), 
+@Quyen nvarchar(10),
+@Ok bit output)
+as
+begin
+	set @ok=0
+	SELECT	USER_NAME(dppriper.grantee_principal_id) AS [UserName],
+	dppri.type_desc AS principal_type_desc,
+	dppriper.class_desc,
+	OBJECT_NAME(dppriper.major_id) AS object_name,
+	dppriper.permission_name,
+	dppriper.state_desc AS permission_state_desc
+	FROM    sys.database_permissions dppriper
+	INNER JOIN sys.database_principals dppri
+	ON dppriper.grantee_principal_id = dppri.principal_id
+	where USER_NAME(dppriper.grantee_principal_id)=@ChucVu 
+	and OBJECT_NAME(dppriper.major_id)=@Menu
+	and dppriper.permission_name=@Quyen
+
+	if(@@ROWCOUNT=0)
+		set  @Ok=1;
+end
+go
+
 alter procedure sp_CTQuyen_Insert
 @ChucVu nvarchar(10),
 @Quyen int,
@@ -2223,27 +2251,31 @@ begin
 	begin
 		raiserror (N'[ChucVu]bị trùng', 16, 1)
 		raiserror (N'[Quyen]bị trùng', 16, 1)
+		raiserror (N'[Menu]bị trùng', 16, 1)
 		set @ok=0;
 	end
 	
 	if(@ok<>0)
 	begin
-		insert into CTQuyen values(@ChucVu, @Quyen,@Menu)
+		insert into CTQuyen values(@ChucVu, @Quyen, @Menu)
 
 		set @Menu = RIGHT(@Menu, LEN(@Menu) - 7)
+
 		if(@Quyen = 1)
 		begin
-			exec ('grant EXECUTE on schema ::dbo to '+ @ChucVu)
-			exec ('grant select on  ' + @Menu + ' to ' + @ChucVu)
+			exec ('grant EXECUTE on sp_select to  [' +  @ChucVu + ']')
+			exec ('grant EXECUTE on sp_CTQuyen_FK to  [' +  @ChucVu + ']')
+			exec ('grant EXECUTE on sp_KiemTraQuyen to  [' +  @ChucVu + ']')
+			exec ('grant select on  ' + @Menu + ' to  [' +  @ChucVu + ']')
 			execute dbo.sp_CTQuyen_FK @ChucVu, @Menu, @ok
 		end
 		else
 		begin
-			exec ('grant EXECUTE on schema ::dbo to '+ @ChucVu)
-			exec ('grant select on  ' + @Menu + ' to ' + @ChucVu)
-			exec ('grant insert on  ' + @Menu + ' to ' + @ChucVu)
-			exec ('grant update on  ' + @Menu + ' to ' + @ChucVu)
-			exec ('grant delete on  ' + @Menu + ' to ' + @ChucVu)
+			exec ('grant EXECUTE on schema ::dbo to  [' +  @ChucVu + ']')
+			exec ('grant select on  ' + @Menu + ' to [' +  @ChucVu + ']')
+			exec ('grant insert on  ' + @Menu + ' to [' +  @ChucVu + ']')
+			exec ('grant update on  ' + @Menu + ' to [' +  @ChucVu + ']')
+			exec ('grant delete on  ' + @Menu + ' to [' +  @ChucVu + ']')
 			execute dbo.sp_CTQuyen_FK @ChucVu, @Menu, @ok
 		end
 	end
@@ -2257,6 +2289,7 @@ alter procedure sp_CTQuyen_FK
 as
 begin
 	declare @Table varchar(100)
+	declare @Kiemtra bit
 	declare cur cursor for 	SELECT  target.name
 	FROM
 		sysobjects t
@@ -2278,16 +2311,20 @@ begin
 			while @@FETCH_STATUS=0
 			begin
 				if(@Ok=1)
-					exec ('grant select on  ' + @Table + ' to ' + @ChucVu)
+					begin
+						execute dbo.sp_KiemTraQuyen @ChucVu,@Table, 'SELECT' ,  @KiemTra output
+						if(@Kiemtra = 1)
+							exec ('grant select on  ' + @Table + ' to [' +  @ChucVu + ']')
+					end
 				else
-					exec ('Revoke select on  ' + @Table + ' to ' + @ChucVu)	
+					exec ('Revoke select on  ' + @Table + ' to [' +  @ChucVu + ']')	
 				fetch next from cur into @Table
 			end
 		end
 	Close cur;
-	Deallocate cur
+	Deallocate cur;
 
-	declare cur cursor for
+	declare cur1 cursor for
 	SELECT
     rcu.TABLE_NAME
 	FROM
@@ -2302,18 +2339,22 @@ begin
 			 AND rc.UNIQUE_CONSTRAINT_NAME = rcu1.CONSTRAINT_NAME
 	where rcu1.TABLE_NAME = @Menu
 	begin
-			open cur
-			fetch next from cur into @Table
+			open cur1
+			fetch next from cur1 into @Table
 			while @@FETCH_STATUS=0
 			begin
 				if(@Ok = 1)
-					exec ('grant select on  ' + @Table + ' to ' + @ChucVu)
+				begin
+					execute dbo.sp_KiemTraQuyen @ChucVu, @Table, 'SELECT' , @KiemTra output
+						if(@Kiemtra = 1)
+							exec ('grant select on  ' + @Table + ' to [' +  @ChucVu + ']')
+				end
 				else
-					exec ('Revoke select on  ' + @Table + ' to ' + @ChucVu)	
-				fetch next from cur into @Table
+					exec ('Revoke select on  ' + @Table + ' to [' +  @ChucVu + ']')
+				fetch next from cur1 into @Table
 			end
-		end
-		Close cur; Deallocate cur
+	end
+	Close cur1; Deallocate cur1
 end
 go
 
@@ -2358,24 +2399,31 @@ as
 begin
 	delete from CTQuyen where ChucVu=@ChucVu and Quyen=@Quyen and Menu=@Menu
 	declare @ok bit;
-	exec ('Revoke EXECUTE on schema ::dbo to ' + @ChucVu + ' cascade')
+	
 	select @Menu = RIGHT(@Menu,LEN(@Menu)-7)
 	if(@Quyen=1)
 	begin
 		set @ok=0
 		execute dbo.sp_CTQuyen_FK @ChucVu, @Menu, @ok
-		exec ('Revoke select on ' + @Menu + ' to ' + @ChucVu + ' cascade')
+		
+		exec ('Revoke select on ' + @Menu + ' to [' + @ChucVu + '] cascade')
+		exec ('Revoke EXECUTE on sp_select to [' + @ChucVu + '] cascade')
+		exec ('Revoke EXECUTE on sp_CTQuyen_FK to  [' +  @ChucVu +'] cascade')
+		exec ('Revoke EXECUTE on sp_KiemTraQuyen to  [' +  @ChucVu + '] cascade')
 	end
 	else
 	begin
 		set @ok=0
 		execute dbo.sp_CTQuyen_FK @ChucVu, @Menu, @ok
-		exec ('Revoke select on ' + @Menu + ' to ' + @ChucVu + ' cascade')
-		exec ('Revoke insert on ' + @Menu + ' to ' + @ChucVu + ' cascade')
-		exec ('Revoke update on ' + @Menu + ' to ' + @ChucVu + ' cascade')
-		exec ('Revoke delete on ' + @Menu + ' to ' + @ChucVu + ' cascade')
+		exec ('Revoke select on ' + @Menu + ' to [' + @ChucVu + '] cascade')
+		exec ('Revoke insert on ' + @Menu + ' to [' + @ChucVu + '] cascade')
+		exec ('Revoke update on ' + @Menu + ' to [' + @ChucVu + '] cascade')
+		exec ('Revoke delete on ' + @Menu + ' to [' + @ChucVu + '] cascade')
+
+		exec ('Revoke EXECUTE on sp_select to [' + @ChucVu + '] cascade')
+		exec ('Revoke EXECUTE on sp_CTQuyen_FK to  [' +  @ChucVu +'] cascade')
+		exec ('Revoke EXECUTE on sp_KiemTraQuyen to  [' +  @ChucVu + '] cascade')
 	end
-	
 end
 go
 
