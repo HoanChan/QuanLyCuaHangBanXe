@@ -318,6 +318,18 @@ namespace QuanLyCuaHangBanXe
                         {
                             (control as BaseEdit).Properties.ReadOnly = true;
                         }
+
+                        if (control is LookUpEdit && (control as BaseEdit).Properties.ReadOnly == false)
+                        {
+                            if (EntityType.IsFKContained(control.Name))
+                            {
+                                var A = EntityType.Name;
+                                var MDI = (MasterDetailInfo)(control as LookUpEdit).Properties.DataSource.GetType().GenericTypeArguments[0].CreateNew();
+                                var V = (GetControlByName(CurrentMDI.GetKeyName()) as BaseEdit).EditValue;
+                                var aList = Table.GetList(MDI.GetType(), A, V, false);
+                                (control as LookUpEdit).Properties.DataSource = aList;
+                            }
+                        }
                     }
                 }
             };

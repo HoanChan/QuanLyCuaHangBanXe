@@ -4,6 +4,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DataContext
 {
+    [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
+    public class FKContained : Attribute { }
+
     public partial class ChiNhanh
     {
         [Key, Display(Name = "Mã")]
@@ -14,7 +17,7 @@ namespace DataContext
         public string DiaChi { get; set; }
         [Display(Name = "Số điện thoại")]
         public string SoDT { get; set; }
-        [ForeignKey("NhanVien_Ma"), Display(Name = "Nhân viên quản lý")]
+        [ForeignKey("NhanVien_Ma"), FKContained, Display(Name = "Nhân viên quản lý")]
         public string NVQuanLy { get; set; }
     }
 
@@ -153,7 +156,7 @@ namespace DataContext
         public string DiaChi { get; set; }
         [Display(Name = "Số điện thoại")]
         public string SoDT { get; set; }
-        [ForeignKey("NhanVien_Ma"), Display(Name = "Người quản lý")]
+        [ForeignKey("NhanVien_Ma"), FKContained, Display(Name = "Người quản lý")]
         public string NVQuanLy { get; set; }
     }
 

@@ -52,6 +52,28 @@ namespace DataContext
             }
             return null;
         }
+        public virtual string GetKeyName()
+        {
+            foreach (var pro in this.GetType().GetProperties())
+            {
+                if (this.IsPrimaryKey(pro.Name))
+                {
+                    return pro.Name;
+                }
+            }
+            return null;
+        }
+        //public virtual bool IsHasFKContained()
+        //{
+        //    foreach (var pro in this.GetType().GetProperties())
+        //    {
+        //        if (this.IsFKContained(pro.Name))
+        //        {
+        //            return true;
+        //        }
+        //    }
+        //    return false;
+        //}
     }
 
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]

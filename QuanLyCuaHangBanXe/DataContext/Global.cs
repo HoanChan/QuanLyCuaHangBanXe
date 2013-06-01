@@ -103,15 +103,26 @@ namespace DataContext
         /// <param name="propertyName">Tên thuộc tính</param>
         public static bool IsForeignKey(this object objName, String propertyName)
         {
+            return IsForeignKey(objName.GetType(), propertyName);
+        }
+
+        public static bool IsFKContained(this Type aType, String propertyName)
+        {
             try
             {
-                return objName.GetType().GetProperty(propertyName).GetCustomAttributes(typeof(ForeignKeyAttribute), false).Count() > 0;
+                return aType.GetProperty(propertyName).GetCustomAttributes(typeof(FKContained), false).Count() > 0;
             }
             catch (Exception)
             {
                 return false;
             }
         }
+
+        public static bool IsFKContained(this object objName, String propertyName)
+        {
+            return IsFKContained(objName.GetType(), propertyName);
+        }
+
         /// <summary>
         /// Kiểm tra thuộc tính có là khoá chính hay không
         /// (Là khoá chính nếu có chứa thẻ metadata là Key)
