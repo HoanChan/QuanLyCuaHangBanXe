@@ -178,7 +178,7 @@ namespace QuanLyCuaHangBanXe
                         textbox = new CheckEdit();
                         DataBindingsType = "EditValue";
                     }
-                    else if (Pro.PropertyType == typeof(int) || Pro.PropertyType == typeof(decimal))
+                    else if (Pro.PropertyType == typeof(int) || Pro.PropertyType == typeof(decimal) || Pro.PropertyType == typeof(double))
                     {
                         textbox = new CalcEdit();
                         DataBindingsType = "EditValue";
