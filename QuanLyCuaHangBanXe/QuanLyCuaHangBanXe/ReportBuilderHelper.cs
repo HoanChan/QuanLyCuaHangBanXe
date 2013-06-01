@@ -9,8 +9,9 @@ using System.Reflection;
 
 namespace QuanLyCuaHangBanXe {
     public class ReportBuilderHelper {
-        public Font TableHeaderFont = new Font(FontFamily.GenericSansSerif, 10, FontStyle.Bold);
-        public Font HeaderFont = new Font(FontFamily.GenericSansSerif, 13, FontStyle.Bold);
+        public Font lblFont = new Font(FontFamily.GenericSansSerif, 13, FontStyle.Bold);
+        public Font txtFont = new Font(FontFamily.GenericSansSerif, 13);
+        public Font HeaderFont = new Font(FontFamily.GenericSansSerif, 16, FontStyle.Bold);
         public string Header = "";
         List<DataSourceDefinition> dsd;
 
@@ -41,32 +42,23 @@ namespace QuanLyCuaHangBanXe {
             labelc.TextAlignment = TextAlignment.MiddleCenter;
             rep.Bands[BandKind.PageHeader].Controls.Add(labelc);
             int colCount = dsd.Count;
-            int totalf=0;
-            for(int i = 0; i < dsd.Count; i++) 
-                totalf += dsd[i].Factor;
-            int fWidth = (rep.PageWidth - (rep.Margins.Left + rep.Margins.Right)) / totalf;
-            int incShift = 0;
+            int fWidth = (rep.PageWidth - (rep.Margins.Left + rep.Margins.Right));
             for(int i = 0; i < colCount; i++) {
-                XRLabel labelh = CreateLabel(fWidth * dsd[i].Factor, incShift, 50);
+                XRLabel labelh = CreateLabel(180, 0, i * 20);
                 labelh.Text = dsd[i].CaptionName;
-                labelh.Font = TableHeaderFont;
-                XRLabel labeld = CreateLabel(fWidth * dsd[i].Factor, incShift);
+                labelh.Font = lblFont;
+                labelh.TextAlignment = TextAlignment.MiddleRight;
+                XRLabel labeld = CreateLabel(fWidth - 200, 200, i * 20);
                 labeld.DataBindings.Add("Text", null, dsd[i].Fieldname);
-
-                if(i > 0) {
-                    labelh.Borders = BorderSide.Right | BorderSide.Top | BorderSide.Bottom;
-                    labeld.Borders = BorderSide.Right | BorderSide.Bottom;
-   
-                }
-                else {
-                    labelh.Borders = BorderSide.All;
-                    labeld.Borders = BorderSide.Left | BorderSide.Right | BorderSide.Bottom;
-                }
-                incShift += fWidth * dsd[i].Factor;
-
-                rep.Bands[BandKind.PageHeader].Controls.Add(labelh);
+                labeld.Font = txtFont;
+                labeld.TextAlignment = TextAlignment.MiddleLeft;
+                if (dsd[i].FieldType.Equals(typeof(DateTime)))
+                    labeld.DataBindings["Text"].FormatString = "{0:dd/MM/yyyy}";
+                rep.Bands[BandKind.Detail].Controls.Add(labelh);
                 rep.Bands[BandKind.Detail].Controls.Add(labeld);
+                rep.Bands[BandKind.Detail].HeightF += 20;
             }
+            rep.Bands[BandKind.Detail].Controls.Add(new XRLine() { WidthF = fWidth, BorderWidth = 1, TopF = colCount * 20 });
         }
 
         private static XRLabel CreateLabel(int fWidth, int incShift, int Y = 0) {
@@ -85,14 +77,7 @@ namespace QuanLyCuaHangBanXe {
                     DataSourceDefinition dsd = new DataSourceDefinition();
                     dsd.CaptionName  = r[0].Name == null ? pi[i].Name :  r[0].Name;
                     dsd.Fieldname = pi[i].Name;
-                    try
-                    {
-                        dsd.Factor = r[0].Order == 0 ? 1 : r[0].Order;
-                    }
-                    catch (Exception)
-                    {
-                        dsd.Factor = 1;
-                    }
+                    dsd.FieldType = pi[i].PropertyType;
                     dsdl.Add(dsd);
                 }
             }
@@ -111,24 +96,8 @@ namespace QuanLyCuaHangBanXe {
         }
     }
     public class DataSourceDefinition {
-        string fieldname;
-
-        public string Fieldname {
-            get { return fieldname; }
-            set { fieldname = value; }
-        }
-        string captionName;
-
-        public string CaptionName {
-            get { return captionName; }
-            set { captionName = value; }
-        }
-        int factor;
-
-        public int Factor {
-            get { return factor; }
-            set { factor = value; }
-        }
-    
+        public string Fieldname { get; set; }
+        public string CaptionName { get; set; }
+        public Type FieldType { get; set; }
     }
 }
