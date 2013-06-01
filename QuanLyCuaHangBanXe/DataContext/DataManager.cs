@@ -37,7 +37,7 @@ namespace DataContext
             }
             return false;
         }
-        public virtual bool EnabledAddNew()
+        public virtual bool EnabledModify()
         {
             return true;
         }

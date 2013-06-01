@@ -280,10 +280,12 @@ namespace DataContext
         public string Ma { get; set; }
         [Display(Name = "Ngày sửa chữa")]
         public DateTime NgaySuaChua { get; set; }
-        [Display(Name = "Ghi chú")]
-        public string GhiChu { get; set; }
+        [ForeignKey("Xe_Ma"), Display(Name = "Xe")]
+        public string Xe { get; set; }
         [ForeignKey("NhanVien_Ma"), Display(Name = "Nhân viên sửa chữa")]
         public string NVSuaChua { get; set; }
+        [Display(Name = "Ghi chú")]
+        public string GhiChu { get; set; }
     }
     public partial class PhieuXuatKho
     {

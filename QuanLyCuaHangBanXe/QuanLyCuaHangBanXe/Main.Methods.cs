@@ -1,19 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.SqlClient;
-using System.Drawing;
-using System.Linq;
-using System.Windows.Forms;
-using DataContext;
+﻿using DataContext;
 using DevExpress.Utils;
 using DevExpress.XtraBars;
 using DevExpress.XtraBars.Ribbon;
 using DevExpress.XtraEditors;
 using DevExpress.XtraEditors.Controls;
 using DevExpress.XtraEditors.DXErrorProvider;
-using DevExpress.XtraGrid;
-using DevExpress.XtraGrid.Columns;
-using DevExpress.XtraGrid.Views.Grid;
+using System;
+using System.Collections.Generic;
+using System.Data.SqlClient;
+using System.Drawing;
+using System.Linq;
+using System.Windows.Forms;
 namespace QuanLyCuaHangBanXe
 {
     public partial class Main
@@ -34,13 +31,14 @@ namespace QuanLyCuaHangBanXe
             }
             else
             {
-                siStatus.Caption = CurrentMDI.GetName() + "[" + Name + " = " + Value.ToString() + "] / " + MDI.GetName();
+                siStatus.Caption = CurrentMDI.GetName()+" / " + MDI.GetName() + "[" + Name + " = " + Value.ToString() + "]";
             }
             CurrentMDI = MDI;
             DataGridView.BeginUpdate();
             DataGridView.DataSource = null;
             gridView.Columns.Clear();
-            DataGridView.DataSource = new BindingSource(Table.GetList(CurrentMDI.GetType(), Name, Value, false), "");
+            ReportList = Table.GetList(CurrentMDI.GetType(), Name, Value, false);
+            DataGridView.DataSource = new BindingSource(ReportList, "");
             //DataGridView.DataSource = new BindingSource(EntityQuery.Local, "");
             var EntityProperties = CurrentMDI.GetType().GetProperties();
             int index = 0;
@@ -205,7 +203,7 @@ namespace QuanLyCuaHangBanXe
                 Text = "Chỉnh sửa",
                 Location = new Point(5 + 5 * bX + bWidth * bX, 50 + 30 * index),
                 Width = bWidth,
-                Enabled = CurrentMDI.EnabledEdit() && gridView.SelectedRowsCount > 0
+                Enabled = CurrentMDI.EnabledModify() && CurrentMDI.EnabledEdit() && gridView.SelectedRowsCount > 0
             };
             var btnCancelEdit = new SimpleButton()
             {
@@ -228,7 +226,7 @@ namespace QuanLyCuaHangBanXe
                 Text = "Tạo mới",
                 Location = new Point(5 + 5 * bX + bWidth * bX, 50 + 30 * index),
                 Width = 60,
-                Enabled = CurrentMDI.EnabledAddNew()
+                Enabled = CurrentMDI.EnabledModify()
             };
             var btnCancelNew = new SimpleButton()
             {
@@ -251,9 +249,9 @@ namespace QuanLyCuaHangBanXe
                 Text = "Xoá",
                 Location = new Point(5 + 5 * bX + bWidth * bX, 50 + 30 * index),
                 Width = 60,
-                Enabled = gridView.SelectedRowsCount > 0
+                Enabled = CurrentMDI.EnabledModify() && gridView.SelectedRowsCount > 0
             };
-
+            index++;
             #endregion
             
             #region Func
@@ -367,6 +365,7 @@ namespace QuanLyCuaHangBanXe
                     SetReadOnly(false);
                     DataGridView.Enabled = false;
                 });
+
             btnCancelEdit.Click += new EventHandler(delegate(object sender, EventArgs e)
             {
                 foreach (Control control in splitContainerControl.Panel2.Controls)
@@ -382,6 +381,7 @@ namespace QuanLyCuaHangBanXe
                 dxErrorProvider.ClearErrors();
 
             });
+
             btnUpdate.Click += new EventHandler(delegate(object sender, EventArgs e)
             {
                 var NewElement = GetCurrentRecord();
@@ -424,7 +424,6 @@ namespace QuanLyCuaHangBanXe
                 DataGridView.Enabled = true;
                 dxErrorProvider.ClearErrors();
             });
-
 
             btnAddNew.Click += new EventHandler(delegate(object sender, EventArgs e)
             {
@@ -469,7 +468,6 @@ namespace QuanLyCuaHangBanXe
 
             #region Relation
             var Count = CurrentMDI.GetRelationCount();
-            index += 1;
             bX = 0;
             bWidth = 160;
             for (int i = 0; i < Count; i++)
@@ -481,7 +479,6 @@ namespace QuanLyCuaHangBanXe
                     Location = new Point(5 + 5 * bX + bWidth * bX, 50 + 30 * index),
                     Width = bWidth
                 };
-
                 aButton.Click += new EventHandler(delegate(object sender, EventArgs e)
                 {
                     var TableName = CurrentMDI.GetType().Name;
