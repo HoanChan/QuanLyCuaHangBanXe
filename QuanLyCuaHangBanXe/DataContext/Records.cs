@@ -94,7 +94,7 @@ namespace DataContext
     {
         [Key, ForeignKey("ChucVu_Ma"), Display(Name = "Chức vụ")]
         public string ChucVu { get; set; }
-        [Key, ForeignKey("Quyen_Ma"), Display(Name = "Quyền")]
+        [ForeignKey("Quyen_Ma"), Display(Name = "Quyền")]
         public int Quyen { get; set; }
         [Key, ForeignKey("Menu_Ma"), Display(Name = "Menu")]
         public string Menu { get; set; }
