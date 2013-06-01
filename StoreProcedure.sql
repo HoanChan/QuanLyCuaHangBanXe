@@ -330,9 +330,9 @@ BEGIN
 	begin
 		update ChiNhanh set Ten=@Ten, DiaChi=@DiaChi, SoDT=@SoDT, NVQuanLy=@NVQuanLy where Ma=@Ma
 		if(@@ERROR <> 0)
-			raiserror(N'[_Msg]Thêm thất bại',16,1)
+			raiserror(N'[_Msg]Cập nhật thất bại',16,1)
 		else
-			raiserror(N'[_Msg]Ðã thêm thành công',16,1)
+			raiserror(N'[_Msg]Ðã cập nhật thành công',16,1)
 	end
 END
 GO
