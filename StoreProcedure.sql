@@ -2216,6 +2216,7 @@ begin
 		raiserror (N'[Menu]Phải được nhập vào', 16, 1)
 		set @ok=0;
 	end
+	
 
 	select * from CTQuyen where ChucVu=@ChucVu and Quyen=@Quyen and Menu=@Menu
 	if(@@ROWCOUNT>0)
@@ -2228,11 +2229,12 @@ begin
 	if(@ok<>0)
 	begin
 		insert into CTQuyen values(@ChucVu, @Quyen,@Menu)
+
+		set @Menu = RIGHT(@Menu, LEN(@Menu) - 7)
 		if(@Quyen = 1)
 		begin
 			exec ('grant EXECUTE on schema ::dbo to '+ @ChucVu)
 			exec ('grant select on  ' + @Menu + ' to ' + @ChucVu)
-			set @ok = 1
 			execute dbo.sp_CTQuyen_FK @ChucVu, @Menu, @ok
 		end
 		else
@@ -2242,7 +2244,6 @@ begin
 			exec ('grant insert on  ' + @Menu + ' to ' + @ChucVu)
 			exec ('grant update on  ' + @Menu + ' to ' + @ChucVu)
 			exec ('grant delete on  ' + @Menu + ' to ' + @ChucVu)
-			set @ok = 1
 			execute dbo.sp_CTQuyen_FK @ChucVu, @Menu, @ok
 		end
 	end
@@ -2283,6 +2284,36 @@ begin
 				fetch next from cur into @Table
 			end
 		end
+	Close cur;
+	Deallocate cur
+
+	declare cur cursor for
+	SELECT
+    rcu.TABLE_NAME
+	FROM
+		INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS rc
+		INNER JOIN 
+		INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE rcu 
+		  ON rc.CONSTRAINT_CATALOG = rcu.CONSTRAINT_CATALOG 
+			 AND rc.CONSTRAINT_NAME = rcu.CONSTRAINT_NAME
+		INNER JOIN 
+		INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE rcu1 
+		  ON rc.UNIQUE_CONSTRAINT_CATALOG = rcu1.CONSTRAINT_CATALOG 
+			 AND rc.UNIQUE_CONSTRAINT_NAME = rcu1.CONSTRAINT_NAME
+	where rcu1.TABLE_NAME = @Menu
+	begin
+			open cur
+			fetch next from cur into @Table
+			while @@FETCH_STATUS=0
+			begin
+				if(@Ok = 1)
+					exec ('grant select on  ' + @Table + ' to ' + @ChucVu)
+				else
+					exec ('Revoke select on  ' + @Table + ' to ' + @ChucVu)	
+				fetch next from cur into @Table
+			end
+		end
+		Close cur; Deallocate cur
 end
 go
 
@@ -2325,8 +2356,10 @@ alter procedure sp_CTQuyen_Delete
 @Menu nvarchar(100)
 as
 begin
+	delete from CTQuyen where ChucVu=@ChucVu and Quyen=@Quyen and Menu=@Menu
 	declare @ok bit;
 	exec ('Revoke EXECUTE on schema ::dbo to ' + @ChucVu + ' cascade')
+	select @Menu = RIGHT(@Menu,LEN(@Menu)-7)
 	if(@Quyen=1)
 	begin
 		set @ok=0
@@ -2342,7 +2375,7 @@ begin
 		exec ('Revoke update on ' + @Menu + ' to ' + @ChucVu + ' cascade')
 		exec ('Revoke delete on ' + @Menu + ' to ' + @ChucVu + ' cascade')
 	end
-	delete from CTQuyen where ChucVu=@ChucVu and Quyen=@Quyen and Menu=@Menu
+	
 end
 go
 

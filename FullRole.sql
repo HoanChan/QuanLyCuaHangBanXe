@@ -6,6 +6,8 @@ Revoke EXECUTE on sp_Select to admin
 grant EXECUTE on schema ::dbo to admin
 grant insert on NhanVien to admin
 
+grant insert on CTVanChuyen to NV001
+
 grant select on ChucVu to admin
 grant insert on ChucVu to admin
 
