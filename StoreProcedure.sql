@@ -1832,7 +1832,7 @@ begin
 		raiserror (N'[Ma]Bị trùng', 16, 1)
 		set @ok=0
 	end
-	execute dbo.sp_PhieuNhapPhuKien_KiemTra @ThoiGian,@ThanhTien
+	execute dbo.sp_PhieuNhapPhuKien_KiemTra @ThoiGian, @ThanhTien, @ok output
 	if(@ok<>0)
 	begin
 		insert into PhieuNhapPhuKien values(@Ma, @ThoiGian, @NVXacNhan, @Kho, @NCC, @ThanhTien)
@@ -1843,6 +1843,34 @@ begin
 	end
 	else
 		raiserror(N'[_Msg]Thêm thất bại',16,1)
+end
+go
+
+alter procedure sp_PhieuNhapPhuKien_Update
+@Ma varchar(10),
+@ThoiGian datetime,
+@NVXacNhan nvarchar(10),
+@Kho nvarchar(10),
+@NCC nvarchar(10),
+@ThanhTien money
+as
+begin
+	declare @ok bit
+	set @ok =1
+	
+	execute dbo.sp_PhieuNhapPhuKien_KiemTra @ThoiGian, @ThanhTien, @ok output
+
+	if(@ok <> 0)
+	begin
+		update PhieuNhapPhuKien set ThoiGian=@ThoiGian, NVXacNhan=@NVXacNhan, Kho=@Kho,
+		NCC=@NCC, ThanhTien=@ThanhTien where Ma=@Ma
+		if(@@ERROR<>0)
+			raiserror(N'[_Msg]Xóa thất bại',16,1)
+		else
+			raiserror(N'[_Msg]Ðã xóa thành công',16,1)
+	end
+	else
+		raiserror(N'[_Msg]Cập nhật thất bại',16,1)
 end
 go
 
@@ -2564,12 +2592,19 @@ go
 
 alter procedure sp_PhieuSuaChua_KiemTra(
 @NgaySua datetime,
+@Xe nvarchar(50),
 @Ok bit output)
 as
 begin
 	if(@NgaySua is null)
 	begin
 		raiserror( N'[NgaySua]Phải được nhập vào',16,1)
+		set @ok=0
+	end
+
+	if(@Xe is null)
+	begin
+		raiserror (N'[Xe]Phải được nhập vào', 16, 1)
 		set @ok=0
 	end
 
@@ -2580,7 +2615,8 @@ alter procedure sp_PhieuSuaChua_Insert
 @Ma nvarchar(10),
 @NgaySua datetime,
 @GhiChu nvarchar(max),
-@NVSua nvarchar(10)
+@NVSua nvarchar(10),
+@Xe nvarchar(50)
 AS
 BEGIN
 	declare @ok bit
@@ -2597,17 +2633,19 @@ BEGIN
 		raiserror (N'[Ma]Không được ít hơn 1 hoặc lớn hơn 10 kí tự',16,1)
 		set @ok=0
 	end
-	
+
+	execute dbo.sp_PhieuSuaChua_KiemTra @NgaySua, @Xe, @ok output
+
 	select * from PhieuSuaChua where Ma=@Ma
 	if(@@ROWCOUNT>0)
 	begin
 		raiserror (N'[Ma] bị trùng', 16, 1)
 		set @ok=0
 	end
-	execute dbo.sp_PhieuSuaChua_KiemTra @NgaySua, @ok output
+	
 	if(@ok<>0)
 	begin
-		insert into PhieuSuaChua values (@Ma, @NgaySua, @GhiChu, @NVSua)
+		insert into PhieuSuaChua values (@Ma, @NgaySua, @GhiChu, @NVSua, @Xe)
 		if(@@ERROR<>0)
 			raiserror(N'[_Msg]Thêm thất bại',16,1)
 		else
@@ -2622,16 +2660,17 @@ alter PROCEDURE sp_PhieuSuaChua_Update
 @Ma nvarchar(10),
 @NgaySua datetime,
 @GhiChu nvarchar(max),
-@NVSua nvarchar(10)
+@NVSua nvarchar(10),
+@Xe nvarchar(50)
 AS
 BEGIN
 	declare @ok bit;
 	set @ok=1;
 	
-	execute dbo.sp_PhieuSuaChua_KiemTra @NgaySua, @ok output
+	execute dbo.sp_PhieuSuaChua_KiemTra @NgaySua, @Xe, @ok output
 	if(@ok <> 0)	
 	begin
-		UPDATE PhieuSuaChua SET NgaySuaChua=@NgaySua,NVSuaChua=@NVSua,GhiChu=@GhiChu
+		UPDATE PhieuSuaChua SET NgaySuaChua=@NgaySua, NVSuaChua=@NVSua, GhiChu=@GhiChu, Xe=@Xe
 		WHERE Ma=@Ma
 		if(@@ERROR<>0)
 			raiserror(N'[_Msg]Cập nhật thất bại',16,1)
