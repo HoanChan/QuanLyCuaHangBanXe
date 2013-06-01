@@ -15,15 +15,6 @@ begin
 end
 go
 
-
-
-alter procedure sp_ChucVu_Select
-as
-begin
-	 select * from ChucVu
-end
-go
-
 alter procedure sp_ChucVu_KiemTra(
 @Ma nvarchar(10),
 @Ten nvarchar(30),
@@ -100,6 +91,10 @@ BEGIN
 
 	exec sp_droprole @Ma
 	DELETE FROM ChucVu WHERE Ma=@Ma
+	if(@@ERROR<>0)
+		raiserror(N'[_Msg]Xóa thất bại',16,1)
+	else
+		raiserror(N'[_Msg]Ðã xóa thành công',16,1)
 END
 go
 
@@ -130,13 +125,6 @@ begin
 			raiserror(N'[_Msg]Cập nhật thất bại',16,1)
 		else
 			raiserror(N'[_Msg]Đã cập nhật thành công',16,1)
-end
-go
-
-alter procedure sp_NCC_Select
-as
-begin
-	select * from NCC
 end
 go
 
@@ -194,7 +182,15 @@ BEGIN
 	end
 	execute dbo.sp_NCC_KiemTra @Ten, @DiaChi, @SoDT, @ok output
 	if(@ok<>0)
+	begin
 		insert into NCC values(@Ma, @Ten, @DiaChi, @SoDT)
+		if(@@ERROR<>0)
+			raiserror(N'[_Msg]Thêm thất bại',16,1)
+		else
+			raiserror(N'[_Msg]Ðã thêm thành công',16,1)
+	end
+	else
+		raiserror(N'[_Msg]Thêm thất bại',16,1)
 END
 GO
 
@@ -203,6 +199,10 @@ alter procedure sp_NCC_Delete
 AS
 BEGIN
 	delete from NCC where Ma=@Ma
+	if(@@ERROR<>0)
+		raiserror(N'[_Msg]Xóa thất bại',16,1)
+	else
+		raiserror(N'[_Msg]Ðã xóa thành công',16,1)
 END
 GO
 
@@ -217,16 +217,17 @@ BEGIN
 	set @ok=1
 	execute dbo.sp_NCC_KiemTra @Ten, @DiaChi, @SoDT, @ok output
 	if(@ok<>0)
+	begin
 		update NCC set Ten=@Ten, DiaChi=@DiaChi, SoDT=@SoDT where Ma=@Ma
+		if(@@ERROR<>0)
+			raiserror(N'[_Msg]Cập nhật thất bại',16,1)
+		else
+			raiserror(N'[_Msg]Đã cập nhật thành công',16,1)
+	end
+	else
+		raiserror(N'[_Msg]Cập nhật thất bại',16,1)
 END
 GO
-
-alter procedure sp_ChiNhanh_Select
-as
-begin
-	select * from ChiNhanh
-end
-go
 
 alter procedure sp_ChiNhanh_KiemTra(
 @Ma nvarchar(10),
@@ -284,7 +285,15 @@ BEGIN
 	EXECUTE  dbo.sp_ChiNhanh_KiemTra @Ma, @Ten, @DiaChi, @SoDT,@NVQuanLy, @ok output
 
 	if(@ok <> 0)
+	begin
 		insert into ChiNhanh values(@Ma, @Ten, @DiaChi, @SoDT, @NVQuanLy)
+		if(@@ERROR <> 0)
+			raiserror(N'[_Msg]Thêm thất bại',16,1)
+		else
+			raiserror(N'[_Msg]Ðã thêm thành công',16,1)
+	end
+	else
+		raiserror(N'[_Msg]Thêm thất bại',16,1)
 END
 GO
 
@@ -314,8 +323,17 @@ BEGIN
 
 	EXECUTE  dbo.sp_ChiNhanh_KiemTra @Ma, @Ten, @DiaChi, @SoDT, @NVQuanLy, @ok output
 	if(@ok = 0)
-		return
-	update ChiNhanh set Ten=@Ten, DiaChi=@DiaChi, SoDT=@SoDT, NVQuanLy=@NVQuanLy where Ma=@Ma
+	begin
+		raiserror(N'[_Msg]Cập nhật thất bại',16,1)
+	end
+	else
+	begin
+		update ChiNhanh set Ten=@Ten, DiaChi=@DiaChi, SoDT=@SoDT, NVQuanLy=@NVQuanLy where Ma=@Ma
+		if(@@ERROR <> 0)
+			raiserror(N'[_Msg]Thêm thất bại',16,1)
+		else
+			raiserror(N'[_Msg]Ðã thêm thành công',16,1)
+	end
 END
 GO
 
@@ -324,15 +342,12 @@ alter PROCEDURE sp_ChiNhanh_Delete
 AS
 BEGIN
 	delete from ChiNhanh where Ma=@Ma
+	if(@@ERROR<>0)
+		raiserror(N'[_Msg]Xóa thất bại',16,1)
+	else
+		raiserror(N'[_Msg]Ðã xóa thành công',16,1)
 END
 GO
-
-alter procedure sp_NhanVien_Select
-as
-begin
-	select * from NhanVien
-end
-go
 
 alter procedure sp_NhanVien_KiemTra(
 @Ma nvarchar(10),
@@ -613,13 +628,6 @@ BEGIN
 END
 GO
 
-alter procedure sp_KhachHang_Select
-as
-begin
-	select * from KhachHang
-end
-go
-
 alter procedure sp_KhachHang_KiemTra(
 @Ten nvarchar(30),
 @DiaChi nvarchar(50),
@@ -678,7 +686,15 @@ BEGIN
 	
 	Execute dbo.sp_KhachHang_KiemTra @Ten, @DiaChi, @SoDT, @ok output
 	if(@ok<>0)
+	begin
 		INSERT INTO KhachHang VALUES(@Ma, @Ten, @DiaChi, @SoDT)
+		if(@@ERROR<>0)
+			raiserror(N'[_Msg]Thêm thất bại',16,1)
+		else
+			raiserror(N'[_Msg]Ðã thêm thành công',16,1)
+	end
+	else
+		raiserror(N'[_Msg]Thêm thất bại',16,1)
 END
 GO
 
@@ -694,7 +710,15 @@ BEGIN
 	
 	Execute dbo.sp_KhachHang_KiemTra @Ten, @DiaChi, @SoDT, @ok output
 	if(@ok<>0)
+	begin
 		Update KhachHang set Ten=@Ten, DiaChi=@DiaChi,SoDT=@SoDT where Ma=@Ma
+		if(@@ERROR<>0)
+			raiserror(N'[_Msg]Cập nhật thất bại',16,1)
+		else
+			raiserror(N'[_Msg]Ðã cập nhật thành công',16,1)
+	end
+	else
+		raiserror(N'[_Msg]Cập nhật thất bại',16,1)
 END
 GO
 
@@ -703,15 +727,12 @@ alter PROCEDURE sp_KhachHang_Delete
 AS
 BEGIN
 	DELETE FROM KhachHang WHERE Ma=@Ma
+	if(@@ERROR<>0)
+		raiserror(N'[_Msg]Xóa thất bại',16,1)
+	else
+		raiserror(N'[_Msg]Ðã xóa thành công',16,1)
 END
 GO
-
-alter procedure sp_Xe_Select
-as
-begin
-	select * from Xe
-end
-go
 
 alter procedure sp_Xe_KiemTra(
 @SoKhung nvarchar(50),
@@ -756,7 +777,15 @@ BEGIN
 	end
 	execute dbo.sp_Xe_KiemTra @SoMay, @ok output
 	if(@ok<>0)
+	begin
 		INSERT INTO Xe VALUES(@SoKhung, @SoMay, @ChiNhanh, @LoaiXe)
+		if(@@ERROR<>0)
+			raiserror(N'[_Msg]Thêm thất bại',16,1)
+		else
+			raiserror(N'[_Msg]Ðã thêm thành công',16,1)
+	end
+	else
+		raiserror(N'[_Msg]Thêm thất bại',16,1)
 END
 GO
 
@@ -771,8 +800,16 @@ BEGIN
 	set @ok=1
 	execute dbo.sp_Xe_KiemTra @SoKhung, @ok output
 	if(@ok<>0)
+	begin
 		UPDATE Xe SET SoKhung=@SoKhung, LoaiXe=@LoaiXe, ChiNhanh=@ChiNhanh
 		WHERE SoMay=@SoMay
+		if(@@ERROR<>0)
+			raiserror(N'[_Msg]Cập nhật thất bại',16,1)
+		else
+			raiserror(N'[_Msg]Đã cập nhật thành công',16,1)
+	end
+	else
+		raiserror(N'[_Msg]Cập nhật thất bại',16,1)
 END
 GO
 
@@ -781,15 +818,12 @@ alter PROCEDURE sp_Xe_Delete
 AS
 BEGIN
 	DELETE FROM Xe WHERE SoMay=@SoMay
+	if(@@ERROR<>0)
+		raiserror(N'[_Msg]Xóa thất bại',16,1)
+	else
+		raiserror(N'[_Msg]Ðã xóa thành công',16,1)
 END
 GO
-
-alter procedure sp_LoaiXe_Select
-as
-begin
-	select * from LoaiXe
-end
-go
 
 alter procedure sp_LoaiXe_KiemTra(
 @Ten nvarchar(20),
@@ -900,8 +934,16 @@ BEGIN
 	
 	execute dbo.sp_LoaiXe_KiemTra @Ten, @Hang, @TGBH, @DongCo, @DTXiLanh, @MauSac, @TrongLuong, @Khung, @Banh, @GiaBan, @ok output
 	if(@ok<>0)
+	begin
 		INSERT INTO LoaiXe 
 		VALUES(@Ma, @Ten, @Hang, @TGBH, @DongCo, @DTXiLanh, @MauSac, @TrongLuong, @Khung, @Banh, @GiaBan)
+		if(@@ERROR<>0)
+			raiserror(N'[_Msg]Thêm thất bại',16,1)
+		else
+			raiserror(N'[_Msg]Ðã thêm thành công',16,1)
+	end
+	else
+		raiserror(N'[_Msg]Thêm thất bại',16,1)
 END
 GO
 
@@ -923,8 +965,16 @@ BEGIN
 	set @ok=1
 	execute dbo.sp_LoaiXe_KiemTra @Ten, @Hang, @TGBH, @DongCo, @DTXiLanh, @MauSac, @TrongLuong, @Khung, @Banh, @GiaBan, @ok output
 	if(@ok<>0)
+	begin
 		UPDATE LoaiXe SET Ten=@Ten, MauSac=@MauSac, Hang=@Hang, TGBH=@TGBH, DongCo=@DongCo, TrongLuong=@TrongLuong, DTXiLanh=@DTXiLanh, Khung=@Khung, Banh=@Banh, GiaBan=@GiaBan
 		WHERE Ma=@Ma
+		if(@@ERROR<>0)
+			raiserror(N'[_Msg]Cập nhật thất bại',16,1)
+		else
+			raiserror(N'[_Msg]Đã cập nhật thành công',16,1)
+	end
+	else
+		raiserror(N'[_Msg]Cập nhật thất bại',16,1)
 END
 GO
 
@@ -933,15 +983,12 @@ alter PROCEDURE sp_LoaiXe_Delete
 AS
 BEGIN
 	DELETE FROM LoaiXe WHERE Ma=@Ma
+	if(@@ERROR<>0)
+		raiserror(N'[_Msg]Xóa thất bại',16,1)
+	else
+		raiserror(N'[_Msg]Ðã xóa thành công',16,1)
 END
 GO
-
-alter procedure sp_Kho_Select
-as
-begin
-	select * from Kho
-end
-go
 
 alter procedure sp_Kho_KiemTra(
 @Ten nvarchar(30),
@@ -1002,7 +1049,15 @@ BEGIN
 	
 	Execute dbo.sp_Kho_KiemTra @Ten,@DiaChi,@SoDt,@ok output
 	if(@ok<>0)
+	begin
 		INSERT INTO Kho VALUES(@Ma, @Ten, @DiaChi, @SoDT, @NVQuanLy)
+		if(@@ERROR<>0)
+			raiserror(N'[_Msg]Thêm thất bại',16,1)
+		else
+			raiserror(N'[_Msg]Ðã thêm thành công',16,1)
+	end
+	else
+		raiserror(N'[_Msg]Thêm thất bại',16,1)
 END
 GO
 
@@ -1019,7 +1074,15 @@ BEGIN
 	
 	Execute dbo.sp_Kho_KiemTra @Ten,@DiaChi,@SoDt,@ok output
 	if(@ok<>0)
+	begin
 		Update  Kho set  Ten=@Ten, DiaChi=@DiaChi, SoDT=@SoDT, NVQuanLy=@NVQuanLy where Ma=@Ma
+		if(@@ERROR<>0)
+			raiserror(N'[_Msg]Cập nhật thất bại',16,1)
+		else
+			raiserror(N'[_Msg]Đã cập nhật thành công',16,1)
+	end
+	else
+		raiserror(N'[_Msg]Cập nhật thất bại',16,1)
 END
 GO
 
@@ -1028,15 +1091,12 @@ alter PROCEDURE sp_Kho_Delete
 AS
 BEGIN
 	DELETE FROM Kho WHERE Ma=@Ma
+	if(@@ERROR<>0)
+		raiserror(N'[_Msg]Xóa thất bại',16,1)
+	else
+		raiserror(N'[_Msg]Ðã xóa thành công',16,1)
 END
 GO
-
-alter procedure sp_PhieuXuatKho_Select
-as
-begin
-	select * from PhieuXuatKho
-end
-go
 
 alter procedure sp_PhieuXuatKho_KiemTra(
 @NgayXuat datetime,
@@ -1087,7 +1147,15 @@ begin
 	end
 	execute dbo.sp_PhieuXuatKho_KiemTra @NgayXuat, @ok output
 	if(@ok<>0)
+	begin
 		insert into PhieuXuatKho values(@Ma, @NgayXuat, @ChiNhanh, @NVXacNhan, @Kho)
+		if(@@ERROR<>0)
+			raiserror(N'[_Msg]Thêm thất bại',16,1)
+		else
+			raiserror(N'[_Msg]Ðã thêm thành công',16,1)
+	end
+	else
+		raiserror(N'[_Msg]Thêm thất bại',16,1)
 end
 go
 
@@ -1104,17 +1172,18 @@ BEGIN
 	
 	execute dbo.sp_PhieuXuatKho_KiemTra @NgayXuat, @ok output
 	if(@ok <> 0)	
+	begin
 		UPDATE PhieuXuatKho SET NgayXuat=@NgayXuat,ChiNhanh=@ChiNhanh,NVXacNhan=@NVXacNhan,Kho=@Kho
 		WHERE Ma=@Ma
+		if(@@ERROR<>0)
+			raiserror(N'[_Msg]Cập nhật thất bại',16,1)
+		else
+			raiserror(N'[_Msg]Đã cập nhật thành công',16,1)
+	end
+	else
+		raiserror(N'[_Msg]Cập nhật thất bại',16,1)
 END
 GO
-
-alter procedure sp_CTVanChuyen_Select
-as
-begin
-	select * from CTVanChuyen
-end
-go
 
 alter procedure sp_CTVanChuyen_Insert
 @NhanVien nvarchar(10),
@@ -1181,13 +1250,6 @@ begin
 end
 GO
 
-alter procedure sp_HoSoBanXe_Select
-as
-begin
-	select * from HoSoBanXe
-end
-go
-
 alter procedure sp_HoSoBanXe_KiemTra(
 @NgayMua datetime,
 @Ok bit output)
@@ -1235,7 +1297,15 @@ begin
 	Execute dbo.sp_HoSoBanXe_KiemTra @NgayMua, @ok output
 	
 	if(@ok<>0)
+	begin
 		insert into HoSoBanXe values (@Ma, @NgayMua, @KhachHang, @NhanVienBan, @Xe)
+		if(@@ERROR<>0)
+			raiserror(N'[_Msg]Thêm thất bại',16,1)
+		else
+			raiserror(N'[_Msg]Ðã thêm thành công',16,1)
+	end
+	else
+		raiserror(N'[_Msg]Thêm thất bại',16,1)
 end
 go
 
@@ -1271,17 +1341,18 @@ begin
 
 	Execute dbo.sp_HoSoBanXe_KiemTra @NgayMua, @ok output
 	if(@ok<>0)
+	begin
 		update HoSoBanXe set NgayMua=@NgayMua,KhachHang=@KhachHang, NhanVienBan=@NhanVienBan, Xe=@Xe
-			where Ma=@Ma
+		where Ma=@Ma
+		if(@@ERROR<>0)
+			raiserror(N'[_Msg]Cập nhật thất bại',16,1)
+		else
+			raiserror(N'[_Msg]Đã cập nhật thành công',16,1)
+	end
+	else
+		raiserror(N'[_Msg]Cập nhật thất bại',16,1)
 end
 GO
-
-alter procedure sp_CTPhieuNhapXe_Select
-as
-begin
-	select * from CTPhieuNhapXe
-end
-go
 
 alter procedure sp_CTPhieuNhapXe_KiemTra(
 @SoLuong int,
@@ -1346,7 +1417,15 @@ begin
 	Execute dbo.sp_CTPhieuNhapXe_KiemTra @SoLuong, @GiaMua, @ThanhTien, @ok output 
 	
 	if(@ok<>0)
+	begin
 		insert into CTNhapPhuKien values(@PhieuNhapXe, @LoaiXe, @SoLuong, @GiaMua, @ThanhTien)
+		if(@@ERROR<>0)
+			raiserror(N'[_Msg]Thêm thất bại',16,1)
+		else
+			raiserror(N'[_Msg]Ðã thêm thành công',16,1)
+	end
+	else
+		raiserror(N'[_Msg]Thêm thất bại',16,1)
 end
 go
 
@@ -1384,17 +1463,18 @@ begin
 	Execute dbo.sp_CTPhieuNhapXe_KiemTra @SoLuong, @GiaMua, @ThanhTien, @ok output 
 	
 	if(@ok<>0)
+	begin
 		update CTPhieuNhapXe set PhieuNhapXe=@PhieuNhapXe,LoaiXe=@LoaiXe,
 	 GiaMua=@GiaMua, SoLuong=@SoLuong, ThanhTien=@ThanhTien where PhieuNhapXe=@PhieuNhapXe
+		if(@@ERROR<>0)
+			raiserror(N'[_Msg]Cập nhật thất bại',16,1)
+		else
+			raiserror(N'[_Msg]Đã cập nhật thành công',16,1)
+	end
+	else
+		raiserror(N'[_Msg]Cập nhật thất bại',16,1)
 end
 GO
-
-alter procedure sp_CTPhieuXuatXe_Select
-as
-begin
-	select * from CTPhieuXuatXe
-end
-go
 
 alter procedure sp_CTPhieuXuatXe_KiemTra(
 @SoLuong int,
@@ -1442,7 +1522,15 @@ begin
 	Execute dbo.sp_CTPhieuXuatXe_KiemTra @SoLuong, @ok output 
 
 	if(@ok<>0)
+	begin
 		insert into CTPhieuXuatXe values(@PhieuXuatKho, @LoaiXe, @SoLuong)
+		if(@@ERROR<>0)
+			raiserror(N'[_Msg]Thêm thất bại',16,1)
+		else
+			raiserror(N'[_Msg]Ðã thêm thành công',16,1)
+	end
+	else
+		raiserror(N'[_Msg]Thêm thất bại',16,1)
 end
 go
 
@@ -1477,17 +1565,18 @@ begin
 	
 	execute dbo.sp_CTPhieuXuatXe_KiemTra @SoLuong, @ok output
 	if(@ok <>0 )
+	begin
 		update CTPhieuXuatXe set PhieuXuatKho=@PhieuXuatKho,LoaiXe=@LoaiXe,
-	 SoLuong=@SoLuong where PhieuXuatKho=@PhieuXuatKho
+		SoLuong=@SoLuong where PhieuXuatKho=@PhieuXuatKho
+		if(@@ERROR<>0)
+			raiserror(N'[_Msg]Cập nhật thất bại',16,1)
+		else
+			raiserror(N'[_Msg]Đã cập nhật thành công',16,1)
+	end
+	else
+		raiserror(N'[_Msg]Cập nhật thất bại',16,1)
 end
 GO
-
-alter procedure sp_CTCungCapXe_Select
-as
-begin
-	select * from CTCungCapXe
-end
-go
 
 alter procedure sp_CTCungCapXe_Insert
 @NCC nvarchar(10),
@@ -1518,7 +1607,15 @@ begin
 	end
 	
 	if(@ok<>0)
+	begin
 		insert into CTCungCapXe values(@NCC, @LoaiXe)
+		if(@@ERROR<>0)
+			raiserror(N'[_Msg]Thêm thất bại',16,1)
+		else
+			raiserror(N'[_Msg]Ðã thêm thành công',16,1)
+	end
+	else
+		raiserror(N'[_Msg]Thêm thất bại',16,1)
 end
 go
 
@@ -1551,16 +1648,17 @@ begin
 	end
 	
 	if(@ok<>0)
+	begin
 		update CTCungCapXe set NCC=@NCC,LoaiXe=@LoaiXe where NCC=@NCC
+		if(@@ERROR<>0)
+			raiserror(N'[_Msg]Cập nhật thất bại',16,1)
+		else
+			raiserror(N'[_Msg]Đã cập nhật thành công',16,1)
+	end
+	else
+		raiserror(N'[_Msg]Cập nhật thất bại',16,1)
 end
 GO
-
-alter procedure sp_PhieuNhapXe_Select
-as
-begin
-	select * from PhieuNhapXe
-end
-go
 
 alter procedure sp_PhieuNhapXe_KiemTra(
 @ThoiGian datetime,
@@ -1615,7 +1713,15 @@ begin
 	
 	execute dbo.sp_PhieuNhapXe_KiemTra @ThoiGian, @ThanhTien, @ok output
 	if(@ok <> 0)
+	begin
 		insert into PhieuNhapXe values(@Ma, @Kho, @NCC, @NVXacNhan, @ThoiGian, @ThanhTien)
+		if(@@ERROR<>0)
+			raiserror(N'[_Msg]Thêm thất bại',16,1)
+		else
+			raiserror(N'[_Msg]Ðã thêm thành công',16,1)
+	end
+	else
+		raiserror(N'[_Msg]Thêm thất bại',16,1)
 end
 go
 
@@ -1633,17 +1739,18 @@ BEGIN
 	
 	execute dbo.sp_PhieuNhapXe_KiemTra @ThoiGian, @ThanhTien, @ok output
 	if(@ok <> 0)	
+	begin
 		UPDATE PhieuNhapXe SET Kho=@Kho, NCC=@NCC, NVXacNhan=@NVXacNhan, ThoiGian=@ThoiGian, ThanhTien=@ThanhTien
 		WHERE Ma=@Ma
+		if(@@ERROR<>0)
+			raiserror(N'[_Msg]Cập nhật thất bại',16,1)
+		else
+			raiserror(N'[_Msg]Đã cập nhật thành công',16,1)
+	end
+	else
+		raiserror(N'[_Msg]Cập nhật thất bại',16,1)
 END
 GO
-
-alter procedure sp_PhieuNhapPhuKien_Select
-as
-begin
-	select * from PhieuNhapPhuKien
-end
-go
 
 alter procedure sp_PhieuNhapPhuKien_KiemTra(
 @ThoiGian datetime,
@@ -1727,14 +1834,15 @@ begin
 	end
 	execute dbo.sp_PhieuNhapPhuKien_KiemTra @ThoiGian,@ThanhTien
 	if(@ok<>0)
+	begin
 		insert into PhieuNhapPhuKien values(@Ma, @ThoiGian, @NVXacNhan, @Kho, @NCC, @ThanhTien)
-end
-go
-
-alter procedure sp_CTCungCapPhuKien_Select
-as
-begin
-	select * from CTCungCapPhuKien
+		if(@@ERROR<>0)
+			raiserror(N'[_Msg]Thêm thất bại',16,1)
+		else
+			raiserror(N'[_Msg]Ðã thêm thành công',16,1)
+	end
+	else
+		raiserror(N'[_Msg]Thêm thất bại',16,1)
 end
 go
 
@@ -1784,7 +1892,15 @@ begin
 	end
 	
 	if(@ok<>0)
+	begin
 		insert into CTCungCapPhuKien values(@NCC, @LoaiPhuKien)
+		if(@@ERROR<>0)
+			raiserror(N'[_Msg]Thêm thất bại',16,1)
+		else
+			raiserror(N'[_Msg]Ðã thêm thành công',16,1)
+	end
+	else
+		raiserror(N'[_Msg]Thêm thất bại',16,1)
 end
 go
 
@@ -1809,16 +1925,17 @@ begin
 	end
 	
 	if(@ok <>0)
+	begin
 		update CTCungCapPhuKien set NCC=@NCC,LoaiPhuKien=@LoaiPhuKien where NCC=@NCC
+		if(@@ERROR<>0)
+			raiserror(N'[_Msg]Cập nhật thất bại',16,1)
+		else
+			raiserror(N'[_Msg]Đã cập nhật thành công',16,1)
+	end
+	else
+		raiserror(N'[_Msg]Cập nhật thất bại',16,1)
 end
 GO
-
-alter procedure sp_CTNhapPhuKien_Select
-as
-begin
-	select * from CTNhapPhuKien
-end
-go
 
 alter procedure sp_CTNhapPhuKien_KiemTra(
 @SoLuong int,
@@ -1925,13 +2042,6 @@ begin
 end
 GO
 
-alter procedure sp_CTPhieuXuatPhuKien_Select
-as
-begin
-	select * from CTPhieuXuatPhuKien
-end
-go
-
 alter procedure sp_CTPhieuXuatPhuKien_KiemTra(
 @SoLuong int,
 @Ok bit output)
@@ -1978,7 +2088,15 @@ begin
 	Execute dbo.sp_CTPhieuXuatPhuKien_KiemTra  @SoLuong, @ok output 
 	
 	if(@ok<>0)
+	begin
 		insert into CTPhieuXuatPhuKien values(@PhieuXuatKho, @LoaiPhuKien, @SoLuong)
+		if(@@ERROR<>0)
+			raiserror(N'[_Msg]Thêm thất bại',16,1)
+		else
+			raiserror(N'[_Msg]Ðã thêm thành công',16,1)
+	end
+	else
+		raiserror(N'[_Msg]Thêm thất bại',16,1)
 end
 go
 
@@ -2017,17 +2135,18 @@ begin
 		set @ok=0;
 	end
 	if(@ok<>0)
+	begin
 		update CTphieuXuatPhuKien set PhieuXuatKho=@PhieuXuatKho,LoaiPhuKien=@LoaiPhuKien,
 				SoLuong=@SoLuong where PhieuXuatKho=@PhieuXuatKho
+		if(@@ERROR<>0)
+			raiserror(N'[_Msg]Cập nhật thất bại',16,1)
+		else
+			raiserror(N'[_Msg]Đã cập nhật thành công',16,1)
+			end
+	else
+		raiserror(N'[_Msg]Cập nhật thất bại',16,1)
 end
 GO
-
-alter procedure sp_PhuKien_Select
-as
-begin
-	select * from PhuKien
-end
-go
 
 alter procedure sp_PhuKien_Insert
 @Ma nvarchar(10),
@@ -2058,7 +2177,15 @@ begin
 	end
 	execute dbo.sp_PhuKien_KiemTra @Hang, @ok output
 	if(@ok<>0)
+	begin
 		insert into PhuKien values(@Ma, @Hang, @LoaiPhuKien)
+		if(@@ERROR<>0)
+			raiserror(N'[_Msg]Thêm thất bại',16,1)
+		else
+			raiserror(N'[_Msg]Ðã thêm thành công',16,1)
+	end
+	else
+		raiserror(N'[_Msg]Thêm thất bại',16,1)
 end
 go
 
@@ -2072,8 +2199,16 @@ begin
 	set @ok=1
 	execute dbo.sp_PhuKien_KiemTra @Hang, @ok output
 	if(@ok<>0)
+	begin
 		update PhuKien set Hang=@Hang, LoaiPhuKien=@LoaiPhuKien
 		where Ma=@Ma
+		if(@@ERROR<>0)
+			raiserror(N'[_Msg]Cập nhật thất bại',16,1)
+		else
+			raiserror(N'[_Msg]Đã cập nhật thành công',16,1)
+	end
+	else
+		raiserror(N'[_Msg]Cập nhật thất bại',16,1)
 end
 go
 
@@ -2082,13 +2217,10 @@ alter procedure sp_PhuKien_Delete
 as
 begin
 	delete from PhuKien where Ma=@Ma
-end
-go
-
-alter procedure sp_LoaiPhuKien_Select
-as
-begin
-	select * from LoaiPhuKien
+	if(@@ERROR<>0)
+		raiserror(N'[_Msg]Xóa thất bại',16,1)
+	else
+		raiserror(N'[_Msg]Ðã xóa thành công',16,1)
 end
 go
 
@@ -2143,7 +2275,15 @@ begin
 	
 	execute dbo.sp_LoaiPhuKien_KiemTra @Ten, @GiaBan, @ok output
 	if(@ok<>0)
+	begin
 		insert into LoaiPhuKien values(@Ma, @Ten, @GiaBan, @GhiChu)
+		if(@@ERROR<>0)
+			raiserror(N'[_Msg]Thêm thất bại',16,1)
+		else
+			raiserror(N'[_Msg]Ðã thêm thành công',16,1)
+	end
+	else
+		raiserror(N'[_Msg]Thêm thất bại',16,1)
 end
 go
 
@@ -2159,8 +2299,16 @@ begin
 
 	execute dbo.sp_LoaiPhuKien_KiemTra @Ten, @GiaBan, @ok output
 	if(@ok<>0)
+	begin
 		update LoaiPhuKien set Ten=@Ten, GiaBan=@GiaBan, GhiChu=@GhiChu
 			where Ma=@Ma
+		if(@@ERROR<>0)
+			raiserror(N'[_Msg]Cập nhật thất bại',16,1)
+		else
+			raiserror(N'[_Msg]Đã cập nhật thành công',16,1)
+	end
+	else
+		raiserror(N'[_Msg]Cập nhật thất bại',16,1)
 end
 go
 
@@ -2169,28 +2317,12 @@ alter procedure sp_LoaiPhuKien_Delete
 as
 begin
 	delete from LoaiPhuKien where Ma=@Ma
+	if(@@ERROR<>0)
+		raiserror(N'[_Msg]Xóa thất bại',16,1)
+	else
+		raiserror(N'[_Msg]Ðã xóa thành công',16,1)
 end
 go
-
-alter procedure sp_CTQuyen_Select
-as
-begin
-	select * from CTQuyen
-end
-go
-
-alter procedure sp_Quyen_KiemTra(
-@Ten nvarchar(30),
-@Ok bit output)
-as
-begin
-	if(len(@Ten) not between 1 and 30)
-	begin
-		raiserror( N'[Ten]Số lượng kí tự không ít hơn 1 hoặc lớn hơn 10',16,1)
-		set @ok=0
-	end
-end
-GO
 
 alter procedure sp_KiemTraQuyen(
 @ChucVu nvarchar(10), 
@@ -2246,11 +2378,10 @@ begin
 	end
 	
 
-	select * from CTQuyen where ChucVu=@ChucVu and Quyen=@Quyen and Menu=@Menu
+	select * from CTQuyen where ChucVu=@ChucVu and Menu=@Menu
 	if(@@ROWCOUNT>0)
 	begin
 		raiserror (N'[ChucVu]bị trùng', 16, 1)
-		raiserror (N'[Quyen]bị trùng', 16, 1)
 		raiserror (N'[Menu]bị trùng', 16, 1)
 		set @ok=0;
 	end
@@ -2278,7 +2409,10 @@ begin
 			exec ('grant delete on  ' + @Menu + ' to [' +  @ChucVu + ']')
 			execute dbo.sp_CTQuyen_FK @ChucVu, @Menu, @ok
 		end
+		raiserror(N'[_Msg]Ðã thêm thành công',16,1)
 	end
+	else
+		raiserror(N'[_Msg]Thêm thất bại',16,1)
 end
 go
 
@@ -2397,7 +2531,7 @@ alter procedure sp_CTQuyen_Delete
 @Menu nvarchar(100)
 as
 begin
-	delete from CTQuyen where ChucVu=@ChucVu and Quyen=@Quyen and Menu=@Menu
+	delete from CTQuyen where ChucVu=@ChucVu and Menu=@Menu
 	declare @ok bit;
 	
 	select @Menu = RIGHT(@Menu,LEN(@Menu)-7)
@@ -2424,70 +2558,7 @@ begin
 		exec ('Revoke EXECUTE on sp_CTQuyen_FK to  [' +  @ChucVu +'] cascade')
 		exec ('Revoke EXECUTE on sp_KiemTraQuyen to  [' +  @ChucVu + '] cascade')
 	end
-end
-go
-
-alter procedure sp_Quyen_Select
-as
-begin
-	select * from Quyen
-end
-go
-
-alter procedure sp_Quyen_Insert
-@Ma nvarchar(10),
-@Ten nvarchar(30),
-@GhiChu nvarchar(MAX)
-as
-begin
-	declare @ok bit
-	set @ok=1
-	
-	if(@Ma is null)
-	begin
-		raiserror (N'[Ma]Phải được nhập vào', 16, 1)
-		set @ok=0
-	end
-	
-	if(len(@Ma)not between 1 and 10)
-	begin
-		raiserror (N'[Ma]Không được ít hơn 1 hoặc lớn hơn 10 kí tự',16,1)
-		set @ok=0
-	end
-	
-	select * from Quyen where Ma=@Ma
-	if(@@ROWCOUNT>0)
-	begin
-		raiserror (N'[Ma] bị trùng', 16, 1)
-		set @ok=0
-	end
-	execute dbo.sp_Quyen_KiemTra @Ten, @ok output
-	if(@ok<>0)
-		insert into Quyen values(@Ma, @Ten, @GhiChu)
-end
-go
-
-alter procedure sp_Quyen_Update
-@Ma nvarchar(10),
-@Ten nvarchar(30),
-@GhiChu nvarchar(MAX)
-as
-begin
-	declare @ok bit
-	set @ok=1
-	
-	execute dbo.sp_Quyen_KiemTra @Ten, @ok output
-	if(@ok<>0)
-		update Quyen set Ten=@Ten, GhiChu=@GhiChu
-		where Ma=@Ma
-end
-go
-
-alter procedure sp_Quyen_Delete
-@Ma nvarchar(10)
-as
-begin
-	delete from Quyen where Ma=@Ma
+	raiserror(N'[_Msg]Ðã xóa thành công',16,1)
 end
 go
 
@@ -2504,13 +2575,6 @@ begin
 
 end
 GO
-
-alter procedure sp_PhieuSuaChua_Select
-as
-begin
-	select * from PhieuSuaChua
-end
-go
 
 alter procedure sp_PhieuSuaChua_Insert
 @Ma nvarchar(10),
@@ -2542,7 +2606,15 @@ BEGIN
 	end
 	execute dbo.sp_PhieuSuaChua_KiemTra @NgaySua, @ok output
 	if(@ok<>0)
+	begin
 		insert into PhieuSuaChua values (@Ma, @NgaySua, @GhiChu, @NVSua)
+		if(@@ERROR<>0)
+			raiserror(N'[_Msg]Thêm thất bại',16,1)
+		else
+			raiserror(N'[_Msg]Ðã thêm thành công',16,1)
+	end
+	else
+		raiserror(N'[_Msg]Thêm thất bại',16,1)	
 END
 go
 
@@ -2558,17 +2630,18 @@ BEGIN
 	
 	execute dbo.sp_PhieuSuaChua_KiemTra @NgaySua, @ok output
 	if(@ok <> 0)	
+	begin
 		UPDATE PhieuSuaChua SET NgaySuaChua=@NgaySua,NVSuaChua=@NVSua,GhiChu=@GhiChu
 		WHERE Ma=@Ma
+		if(@@ERROR<>0)
+			raiserror(N'[_Msg]Cập nhật thất bại',16,1)
+		else
+			raiserror(N'[_Msg]Đã cập nhật thành công',16,1)
+	end
+	else
+		raiserror(N'[_Msg]Cập nhật thất bại',16,1)
 END
 GO
-
-alter procedure sp_CTSuaChua_Select
-as
-begin
-	select * from CTSuaChua
-end
-go
 
 alter procedure sp_CTSuaChua_KiemTra(
 @SoLuong int,
@@ -2615,11 +2688,19 @@ BEGIN
 	
 	execute dbo.sp_CTSuaChua_KiemTra @SoLuong, @ok output
 	if(@ok <> 0 )
+	begin
 		insert into CTSuaChua values(@PhieuSuaChua, @PhuKien, @SoLuong)
+		if(@@ERROR<>0)
+			raiserror(N'[_Msg]Thêm thất bại',16,1)
+		else
+			raiserror(N'[_Msg]Ðã thêm thành công',16,1)
+	end
+	else
+		raiserror(N'[_Msg]Thêm thất bại',16,1)
 END
 go
 
-alter procedure [dbo].[sp_CTSuaChua_Update]
+alter procedure sp_CTSuaChua_Update
 @PhieuSuaChua nvarchar(10),
 @PhuKien nvarchar(10),
 @SoLuong int
@@ -2650,162 +2731,19 @@ begin
 	
 	execute dbo.sp_CTSuaChua_KiemTra @SoLuong, @ok output
 	if(@ok <>0 )
+	begin
 		update CTSuaChua set PhieuSuaChua=@PhieuSuaChua,PhuKien=@PhuKien,
-	 SoLuong=@SoLuong where PhieuSuaChua=@PhieuSuaChua
+		SoLuong=@SoLuong where PhieuSuaChua=@PhieuSuaChua
+		if(@@ERROR<>0)
+			raiserror(N'[_Msg]Cập nhật thất bại',16,1)
+		else
+			raiserror(N'[_Msg]Đã cập nhật thành công',16,1)
+	end
+	else
+		raiserror(N'[_Msg]Cập nhật thất bại',16,1)
 end
 GO
 
-alter procedure sp_Menu_Select
-as
-begin
-	select * from Menu
-end
-go
-
-alter procedure sp_Menu_KiemTra(
-@Ten nvarchar(30),
-@GhiChu nvarchar(MAX),
-@Ok bit output)
-as
-begin
-	if(len(@Ten)not between 1 and 30)
-	begin
-		raiserror( N'[Ten]Số lượng ký tự không được ít hơn 1 hoặc lớn hơn 30',16,1)
-		set @ok=0
-	end
-end
-GO
-
-alter procedure sp_Menu_Insert
-@Ma nvarchar(10),
-@Ten nvarchar(30),
-@GhiChu nvarchar(MAX)
-as
-begin
-	declare @ok bit
-	set @ok=1
-	
-	if(@Ma is null)
-	begin
-		raiserror (N'[Ma]Phải được nhập vào',16,1)
-		set @ok=0
-	end	
-	
-	if( len(@Ma) not between 1 and 10 )
-	begin
-		raiserror( N'[Ma] không ít hơn 1 và nhiều hơn 10 kí tự',16,1)
-		set @ok=0
-	end
-	
-	select * from Menu where Ma=@Ma
-	if(@@ROWCOUNT>0)
-	begin
-		raiserror (N'[Ma]Bị trùng', 16, 1)
-		set @ok=0
-	end
-	
-	execute dbo.sp_Menu_KiemTra @Ten,@ok output
-	if(@ok<>0)
-		insert into Menu values(@Ma, @Ten, @GhiChu)
-end
-go
-
-alter procedure sp_Menu_Update
-@Ma nvarchar(10),
-@Ten nvarchar(30),
-@GhiChu nvarchar(MAX)
-as
-begin
-	declare @ok bit
-	set @ok=1
-	
-	execute dbo.sp_Menu_KiemTra @Ten,@ok output
-	if(@ok<>0)
-		update Menu set Ten=@Ten, GhiChu=@GhiChu
-			where Ma=@Ma
-end
-go
-
-alter procedure sp_Menu_Delete
-@Ma nvarchar(10)
-as
-begin
-	delete from Menu where Ma=@Ma
-end
-go
-
-alter procedure sp_Quyen_Menu_Select
-as
-begin
-	select * from Quyen_Menu
-end
-go
-
-alter procedure sp_Quyen_Menu_Insert
-@Quyen nvarchar(10),
-@Menu nvarchar(10)
-as
-begin
-	declare @ok bit
-	set @ok=1
-	if(@Quyen is null)
-	begin
-		raiserror (N'[Quyen]Phải được nhập vào', 16, 1)
-		set @ok=0
-	end
-	
-	if(@Menu is null)
-	begin
-		raiserror (N'[Menu]Phải được nhập vào', 16, 1)
-		set @ok=0
-	end
-
-	select * from Quyen_Menu where Quyen=@Quyen and Menu=@Menu
-	if(@@ROWCOUNT>0)
-	begin
-		raiserror (N'[Menu] bị trùng', 16, 1)
-		raiserror (N'[Quyen] bị trùng', 16, 1)
-		set @ok=0 
-	end
-	
-	if(@ok<>0)
-		insert into Quyen_Menu values(@Quyen, @Menu)
-end
-go
-
-alter procedure sp_Quyen_Menu_Update
-@QuyenMoi nvarchar(10),
-@Menu nvarchar(10),
-@QuyenCu nvarchar(10)
-as
-begin
-	declare @ok bit
-	set @ok=1
-	if(@QuyenCu is null)
-	begin
-		raiserror (N'[Quyen]Phải được nhập vào', 16, 1)
-		set @ok=0
-	end
-	
-	if(@Menu is null)
-	begin
-		raiserror (N'[Menu]Phải được nhập vào', 16, 1)
-		set @ok=0
-	end
-	if(@ok<>0)
-	update Quyen_Menu set Quyen=@QuyenMoi
-	where Menu=@Menu and Quyen=@QuyenCu
-end
-go
-
-alter procedure sp_Quyen_Menu_Delete
-@Quyen nvarchar(10),
-@Menu nvarchar(10)
-as
-begin
-	delete from Quyen_Menu where Quyen=@Quyen and Menu=@Menu
-end
-go
 
 alter procedure sp_Select
 @TenBang nvarchar(MAX),
@@ -2818,5 +2756,4 @@ begin
 		exec ('select * from  ' + @TenBang + ' where ' + @DieuKien)
 end
 go
-
 --grant [ten_procedure] on [table] to [user | group]
