@@ -17,8 +17,8 @@ namespace QuanLyCuaHangBanXe
         //NguoiDung NguoiDung = null;
         public Main()
         {
-            XtraFormLogin Login = new XtraFormLogin();
-            if (Login.ShowDialog() == DialogResult.Cancel) Environment.Exit(0);
+            //XtraFormLogin Login = new XtraFormLogin();
+            //if (Login.ShowDialog() == DialogResult.Cancel) Environment.Exit(0);
             InitializeComponent();
             InitSkinGallery();
             InitGrid();
@@ -78,6 +78,11 @@ namespace QuanLyCuaHangBanXe
             e.RelationName = CurrentMDI.GetRelationName(e.RelationIndex);
         }
 
+
+        private void iExit_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            Environment.Exit(0);
+        }
         private void iBaoCao_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
             XtraReport r = new XtraReport();
@@ -160,9 +165,9 @@ namespace QuanLyCuaHangBanXe
             UpdateGridView(new PhieuXuatKho());
         }
 
-        private void iExit_ItemClick(object sender, ItemClickEventArgs e)
+        private void iQuanLyNCC_ItemClick(object sender, ItemClickEventArgs e)
         {
-            Environment.Exit(0);
+            UpdateGridView(new NCC());
         }
 
     }
