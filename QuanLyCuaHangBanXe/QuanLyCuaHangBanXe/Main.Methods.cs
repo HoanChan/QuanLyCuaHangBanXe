@@ -433,7 +433,7 @@ namespace QuanLyCuaHangBanXe
             btnAddNew.Click += new EventHandler(delegate(object sender, EventArgs e)
             {
                 var NewElement = GetCurrentRecord();
-                bool isOk = false;
+                bool isOk = true;
                 try
                 {
                     Table.Insert(NewElement);
@@ -444,7 +444,7 @@ namespace QuanLyCuaHangBanXe
                 }
                 finally
                 {
-                    if (!isOk)
+                    if (isOk)
                     {
                         dxErrorProvider.ClearErrors();
                         DefaultButtonDisplay();
