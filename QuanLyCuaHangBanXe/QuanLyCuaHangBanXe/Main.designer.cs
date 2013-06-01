@@ -375,6 +375,7 @@
             this.iQuanLyNCC.Id = 92;
             this.iQuanLyNCC.LargeImageIndex = 4;
             this.iQuanLyNCC.Name = "iQuanLyNCC";
+            this.iQuanLyNCC.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.iQuanLyNCC_ItemClick);
             // 
             // iQuanLyPhieuNhapPhuKien
             // 
