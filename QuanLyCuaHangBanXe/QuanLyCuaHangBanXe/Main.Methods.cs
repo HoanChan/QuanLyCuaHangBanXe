@@ -444,7 +444,7 @@ namespace QuanLyCuaHangBanXe
                 }
                 finally
                 {
-                    if (isOk)
+                    if (!isOk)
                     {
                         dxErrorProvider.ClearErrors();
                         DefaultButtonDisplay();
