@@ -1,24 +1,6 @@
 ﻿use CUAHANG_BANXE
 go
 
-alter trigger tg_ChucVu_Insert_Update on ChucVu
-for insert, update
-as
-begin
-	declare @Ma nvarchar(10);
-	declare @Ten nvarchar(30);
-
-	select @Ma=Ma, @Ten=Ten from inserted
-	
-	select * from ChucVu where Ten=@Ten
-	if(@@ROWCOUNT>1)
-	begin
-		raiserror ( N'[Ten]Đã tồn tại', 16, 1)
-		rollback transaction
-	end
-end
-go
-
 alter trigger tg_ChucVu_Delete on ChucVu
 instead of delete
 as
@@ -157,69 +139,6 @@ begin
 end
 go
 
-alter trigger tg_Quyen_Insert_Update on Quyen
-for insert, update
-as
-begin
-	declare @Ma nvarchar(10);
-	declare @Ten nvarchar(30);
-	select @Ma=Ma, @Ten=Ten from inserted
-	
-	select * from Quyen where Ten=@Ten
-	if(@@ROWCOUNT>1)
-	begin
-		raiserror (N'[Ten]Đã tồn tại', 16, 1)
-		rollback transaction
-	end
-end
-go
-
-alter trigger tg_Quyen_Delete on Quyen
-instead of delete
-as
-begin
-	declare @Ma nvarchar(10);
-	select @Ma=Ma from deleted
-	begin tran t1
-		delete from CTQuyen where Quyen=@Ma
-		delete from Quyen_Menu where Quyen=@Ma
-
-		delete from Quyen where Ma=@Ma
-	commit tran t1
-end
-go
-
-alter trigger tg_Menu_Insert_Update on Menu
-for insert, update
-as
-begin
-	declare @Ma nvarchar(50);
-	declare @Ten nvarchar(30);
-	select @Ma=Ma, @Ten=Ten from inserted
-	
-	select * from ChucVu where Ten=@Ten
-	if(@@ROWCOUNT>1)
-	begin
-		raiserror (N'[Ten]Đã tồn tại', 16, 1)
-		rollback transaction
-	end
-end
-go
-
-alter trigger tg_Menu_Delete on Menu
-instead of delete
-as
-begin
-	declare @Ma nvarchar(50);
-	select @Ma=Ma from deleted
-	begin tran t1
-		delete from Quyen_Menu where Menu=@Ma
-
-		delete from Menu where Ma=@Ma
-	commit tran t1
-end
-go
-
 alter trigger tg_Xe_Delete on Xe
 instead of delete
 AS
@@ -228,6 +147,7 @@ BEGIN
 	select @SoMay=SoMay from deleted
 	begin tran t1
 		update HoSoBanXe set Xe=null where Xe=@SoMay
+		update PhieuSuaChua set Xe=null where Xe=@SoMay
 		delete from Xe where SoMay=@SoMay
 	commit tran t1
 END
@@ -289,14 +209,15 @@ alter trigger tg_Kho_Delele on Kho
 instead of delete
 as
 begin
-	declare @MaKho nvarchar(10);
-	select @MaKho=Ma from deleted
+	declare @Ma nvarchar(10);
+	select @Ma=Ma from deleted
 	begin tran t1
-		update PhieuNhapPhuKien set Kho=null where Kho=@MaKho
-		update PhieuXuatKho set Kho=null where Kho=@MaKho
-		update PhieuNhapXe set Kho=null where Kho=@MaKho
+		update PhieuNhapPhuKien set Kho=null where Kho=@Ma
+		update PhieuXuatKho set Kho=null where Kho=@Ma
+		update PhieuNhapXe set Kho=null where Kho=@Ma
+		update NhanVien set Kho=null where Kho=@Ma
 
-		delete from Kho where Ma=@MaKho
+		delete from Kho where Ma=@Ma
 	commit tran t1
 end
 go
@@ -326,7 +247,8 @@ begin
 	select @Ma=Ma from deleted
 	begin tran t1
 		update Xe set ChiNhanh=null where ChiNhanh=@Ma
-		update PhieuXuatKHo set ChiNhanh=null where ChiNhanh=@Ma
+		update PhieuXuatKho set ChiNhanh=null where ChiNhanh=@Ma
+		update NhanVien set ChiNhanh=null where ChiNhanh=@Ma
 		delete from ChiNhanh where Ma=@Ma
 	commit tran t1
 
@@ -399,6 +321,7 @@ begin
 		delete from CTPhieuXuatXe where LoaiXe=@LoaiXe
 		delete from CTPhieuNhapXe where LoaiXe=@LoaiXe
 		update CTCungCapXe set LoaiXe=null where LoaiXe=@LoaiXe
+		update Xe set LoaiXe=null where LoaiXe=@LoaiXe
 
 		delete from LoaiXe where Ma=@LoaiXe
 	commit tran t1
