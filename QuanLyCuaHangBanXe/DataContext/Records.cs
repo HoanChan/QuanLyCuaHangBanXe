@@ -181,7 +181,7 @@ namespace DataContext
         [Display(Name = "Hãng sản xuất")]
         public string Hang { get; set; }
         [Display(Name = "Thời gian bảo hành")]
-        public DateTime TGBH { get; set; }
+        public string TGBH { get; set; }
         [Display(Name = "Động cơ")]
         public string DongCo { get; set; }
         [Display(Name = "Dung tích xi lanh")]
@@ -194,8 +194,6 @@ namespace DataContext
         public string Khung { get; set; }
         [Display(Name = "Bánh xe")]
         public string Banh { get; set; }
-        [Display(Name = "Giá bán")]
-        public decimal GiaBan { get; set; }
     }
 
     public partial class Menu
@@ -329,26 +327,54 @@ namespace DataContext
         public string SoMay { get; set; }
         [Display(Name = "Số khung")]
         public string SoKhung { get; set; }
-        [ForeignKey("ChiNhanh_Ma"), Display(Name = "Chi nhánh")]
-        public string ChiNhanh { get; set; }
         [ForeignKey("LoaiXe_Ma"), Display(Name = "Loại xe")]
         public string LoaiXe { get; set; }
+        [ForeignKey("PhieuXuatKho_Ma"), Display(Name = "Phiếu xuất kho")]
+        public string PhieuXuatKho { get; set; }
+        [ForeignKey("PhieuNhapXe_Ma"), Display(Name = "Phiếu nhập xe")]
+        public string PhieuNhapXe { get; set; }
+        [Display(Name = "Giá bán")]
+        public decimal GiaBan { get; set; }
     }
 
     //=============================//
 
-    public partial class v_HangTon_Kho
+    public partial class v_Kho_HangTon
     {
-        public string MaKho { get; set; }
         public string MaLoaiXe { get; set; }
-        public int slTon { get; set; }
+        public string LoaiXe { get; set; }
+        public string Hang { get; set; }
+        public string TGBH { get; set; }
+        public string DongCo { get; set; }
+        public int DTXiLanh { get; set; }
+        public string MauSac { get; set; }
+        public double TrongLuong { get; set; }
+        public string Khung { get; set; }
+        public string Banh { get; set; }
+        public string MaKho { get; set; }
+        public string TenKho { get; set; }
+        public string DiaChi { get; set; }
+        public string SoDT { get; set; }
+        public string SoLuongTon { get; set; }
     }
 
-    public partial class v_HangTon_ChiNhanh
+    public partial class v_ChiNhanh_HangTon
     {
+        public string MaLoaiXe{ get; set; }
+        public string LoaiXe{ get; set; }
+        public string Hang{ get; set; }
+        public string TGBH{ get; set; }
+        public string DongCo{ get; set; }
+        public int DTXiLanh{ get; set; }
+        public string MauSac{ get; set; }
+        public double TrongLuong{ get; set; }
+        public string Khung{ get; set; }
+        public string Banh{ get; set; }
         public string MaChiNhanh { get; set; }
-        public string MaLoaiXe { get; set; }
-        public int slTon { get; set; }
+        public string ChiNhanh{ get; set; }
+        public string DiaChi{ get; set; }
+        public string SoDT{ get; set; }
+        public string SoLuongTon{ get; set; }
     }
 
     public partial class v_HoSoBanXe
@@ -372,9 +398,22 @@ namespace DataContext
 
     public partial class v_LichSuKhachHang
     {
-      public string SoMay { get; set; }
-      public string KhachHang { get; set; }
       public DateTime NgayMua { get; set; }
-      public int SoLan { get; set; }
+      public string KhachHang { get; set; }
+      public string TenKhachHang { get; set; }
+      public string DiaChi { get; set; }
+      public string SoDT { get; set; }
+      public string SoMay { get; set; }
+      public string SoKhung { get; set; }
+      public string LoaiXe { get; set; }
+      public string Hang { get; set; }
+      public string TGBH { get; set; }
+      public string DongCo { get; set; }
+      public int DTXiLanh { get; set; }
+      public string MauSac { get; set; }
+      public double TrongLuong { get; set; }
+      public string Khung { get; set; }
+      public string Banh { get; set; }
+      public int SoLanBaoHanh { get; set; }
     }
 }

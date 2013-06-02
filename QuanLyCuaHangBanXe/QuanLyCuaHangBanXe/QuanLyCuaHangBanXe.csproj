@@ -77,6 +77,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="HoSoBanXe.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="HoSoBanXe.Designer.cs">
+      <DependentUpon>HoSoBanXe.cs</DependentUpon>
+    </Compile>
     <Compile Include="Main.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -96,12 +102,9 @@
     <Compile Include="XtraFormLogin.Designer.cs">
       <DependentUpon>XtraFormLogin.cs</DependentUpon>
     </Compile>
-    <Compile Include="XtraReport1.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="XtraReport1.Designer.cs">
-      <DependentUpon>XtraReport1.cs</DependentUpon>
-    </Compile>
+    <EmbeddedResource Include="HoSoBanXe.resx">
+      <DependentUpon>HoSoBanXe.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Main.resx">
       <DependentUpon>Main.cs</DependentUpon>
     </EmbeddedResource>
@@ -118,9 +121,6 @@
     </Compile>
     <EmbeddedResource Include="XtraFormLogin.resx">
       <DependentUpon>XtraFormLogin.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="XtraReport1.resx">
-      <DependentUpon>XtraReport1.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.config" />
     <None Include="Properties\Settings.settings">
