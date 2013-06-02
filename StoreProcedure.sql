@@ -51,6 +51,13 @@ BEGIN
 		raiserror (@message, 16, 1)
 		set @ok = 0
 	end
+
+	select * from ChucVu where Ten=@Ten
+	if(@@ROWCOUNT>0)
+	begin
+		raiserror ( N'[Ten]Đã tồn tại', 16, 1)
+		set @ok = 0
+	end
 	
 	EXECUTE dbo.sp_ChucVu_KiemTra @Ma, @Ten, @ok output
 
@@ -105,6 +112,7 @@ as
 begin
 	declare @ok bit;
 	set @ok=1;
+	declare @TenCu nvarchar(30);
 	
 	if(@Ma is null)
 	begin
@@ -117,14 +125,29 @@ begin
 		raiserror (N'[Ma]Không tồn tại', 16, 1)
 		set @ok=0
 	end
-	if(@ok = 0)
-		return
 
-	update ChucVu set Ten=@Ten where Ma=@Ma
-	if(@@ERROR<>0)
-			raiserror(N'[_Msg]Cập nhật thất bại',16,1)
-		else
-			raiserror(N'[_Msg]Đã cập nhật thành công',16,1)
+	select @TenCu=Ten from ChucVu where Ma=@Ma
+
+	if(@Ten <> @TenCu)
+	begin
+		select * from ChucVu where Ten=@Ten
+		if(@@ROWCOUNT>0)
+		begin
+			raiserror ( N'[Ten]Đã tồn tại', 16, 1)
+			set @ok = 0
+		end
+	end
+
+	if(@ok <> 0)
+	begin
+		update ChucVu set Ten=@Ten where Ma=@Ma
+		if(@@ERROR<>0)
+				raiserror(N'[_Msg]Cập nhật thất bại',16,1)
+			else
+				raiserror(N'[_Msg]Đã cập nhật thành công',16,1)
+	end
+	else
+		raiserror(N'[_Msg]Cập nhật thất bại',16,1)
 end
 go
 
@@ -2796,13 +2819,29 @@ end
 go
 --grant [ten_procedure] on [table] to [user | group]
 
-create procedure sp_LayDSQuyen
+alter procedure sp_LayDSQuyen
 @User sysname
 as
 begin
 	select CTQuyen.ChucVu, Quyen, Menu from NhanVien, ChucVu, CTQuyen
 	where NhanVien.ChucVu = ChucVu.Ma and CTQuyen.ChucVu = ChucVu.Ma
 	and NhanVien.Ma = @User
+end
+go
+
+alter procedure sp_AutoCreateLogin
+as
+begin
+	declare @Ma nvarchar(10);
+	declare @MatKhau nvarchar(50);
+	declare cur cursor for select Ma from NhanVien
+	open cur fetch from cur into @Ma
+	while @@FETCH_STATUS=0
+	begin
+		select @MatKhau=MatKhau from NhanVien where Ma=@Ma
+		EXEC sp_change_users_login 'Auto_Fix', @Ma, NULL, @MatKhau
+		fetch next from cur into @Ma
+	end
 end
 go
 
