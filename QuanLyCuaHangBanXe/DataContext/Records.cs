@@ -369,4 +369,12 @@ namespace DataContext
       public string SoKhung { get; set; }
       public string DongCo { get; set; }
     }
+
+    public partial class v_LichSuKhachHang
+    {
+      public string SoMay { get; set; }
+      public string KhachHang { get; set; }
+      public DateTime NgayMua { get; set; }
+      public int SoLan { get; set; }
+    }
 }
