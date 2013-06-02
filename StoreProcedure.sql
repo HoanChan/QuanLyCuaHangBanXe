@@ -759,6 +759,10 @@ GO
 
 alter procedure sp_Xe_KiemTra(
 @SoKhung nvarchar(50),
+@PhieuXuatKho nvarchar(10),
+@LoaiXe nvarchar(10),
+@PhieuNhapXe nvarchar(10),
+@GiaBan money,
 @Ok bit output)
 as
 begin
@@ -767,14 +771,41 @@ begin
 		raiserror( N'[SoKhung]Số lượng kí tự không ít hơn 1 hoặc lớn hơn 50',16,1)
 		set @ok=0
 	end
+
+	if(@PhieuXuatKho is null)
+	begin
+		raiserror (N'[PhieuXuatKho]Phải được nhập vào', 16, 1)
+		set @ok=0
+	end
+
+	if(@LoaiXe is null)
+	begin
+		raiserror (N'[LoaiXe]Phải được nhập vào', 16, 1)
+		set @ok=0
+	end
+
+	if(@PhieuNhapXe is null)
+	begin
+		raiserror (N'[PhieuNhapXe]Phải được nhập vào', 16, 1)
+		set @ok=0
+	end
+
+	if(@GiaBan = 0)
+	begin
+		raiserror (N'[GiaBan]lớn hơn 0', 16, 1)
+		set @ok=0
+	end
+
 end
 GO
 
 alter PROCEDURE sp_Xe_Insert
 @SoKhung nvarchar(50),
 @SoMay nvarchar(50), 
-@ChiNhanh nvarchar(10),
-@LoaiXe nvarchar(10)
+@PhieuXuatKho nvarchar(10),
+@LoaiXe nvarchar(10),
+@PhieuNhapXe nvarchar(10),
+@GiaBan money
 AS
 BEGIN
 	declare @ok bit
@@ -798,10 +829,12 @@ BEGIN
 		raiserror (N'[SoMay]Bị trùng', 16, 1)
 		set @ok=0
 	end
-	execute dbo.sp_Xe_KiemTra @SoMay, @ok output
+
+	execute dbo.sp_Xe_KiemTra @SoKhung,@PhieuXuatKho, @LoaiXe, @PhieuNhapXe, @GiaBan, @ok output
+
 	if(@ok<>0)
 	begin
-		INSERT INTO Xe VALUES(@SoKhung, @SoMay, @ChiNhanh, @LoaiXe)
+		INSERT INTO Xe VALUES(@SoKhung, @SoMay, @PhieuXuatKho, @LoaiXe, @PhieuNhapXe, @GiaBan)
 		if(@@ERROR<>0)
 			raiserror(N'[_Msg]Thêm thất bại',16,1)
 		else
@@ -815,16 +848,18 @@ GO
 alter PROCEDURE sp_Xe_Update
 @SoKhung nvarchar(50),
 @SoMay nvarchar(50), 
-@ChiNhanh nvarchar(10),
-@LoaiXe nvarchar(10)
+@PhieuXuatKho nvarchar(10),
+@LoaiXe nvarchar(10),
+@PhieuNhapXe nvarchar(10),
+@GiaBan money
 AS
 BEGIN
 	declare @ok bit
 	set @ok=1
-	execute dbo.sp_Xe_KiemTra @SoKhung, @ok output
+	execute dbo.sp_Xe_KiemTra @SoKhung,@PhieuXuatKho, @LoaiXe, @PhieuNhapXe, @GiaBan, @ok output
 	if(@ok<>0)
 	begin
-		UPDATE Xe SET SoKhung=@SoKhung, LoaiXe=@LoaiXe, ChiNhanh=@ChiNhanh
+		UPDATE Xe SET SoKhung=@SoKhung, LoaiXe=@LoaiXe, PhieuXuatKho=@PhieuXuatKho, PhieuNhapXe=@PhieuNhapXe, GiaBan=@GiaBan
 		WHERE SoMay=@SoMay
 		if(@@ERROR<>0)
 			raiserror(N'[_Msg]Cập nhật thất bại',16,1)
@@ -851,14 +886,13 @@ GO
 alter procedure sp_LoaiXe_KiemTra(
 @Ten nvarchar(20),
 @Hang nvarchar(10),
-@TGBH datetime,
+@TGBH nvarchar(20),
 @DongCo nvarchar(20),
 @DTXiLanh int,
 @MauSac nvarchar(20),
 @TrongLuong float,
 @Khung nvarchar(30),
 @Banh nvarchar(30),
-@GiaBan money,
 @Ok bit output)
 as
 begin
@@ -911,12 +945,6 @@ begin
 		set @ok=0
 	end
 	
-	if(@GiaBan<=0)
-	begin
-		raiserror( N'[GiaBan]Phải lớn hơn 0 ',16,1)
-		set @ok=0
-	end
-	
 end
 GO
 
@@ -924,14 +952,13 @@ alter PROCEDURE sp_LoaiXe_Insert
 @Ma nvarchar(10),
 @Ten nvarchar(20),
 @Hang nvarchar(10),
-@TGBH datetime,
+@TGBH nvarchar(20),
 @DongCo nvarchar(20),
 @DTXiLanh int,
 @MauSac nvarchar(20),
 @TrongLuong float,
 @Khung nvarchar(30),
-@Banh nvarchar(30),
-@GiaBan money
+@Banh nvarchar(30)
 AS
 BEGIN
 	declare @ok bit
@@ -955,11 +982,11 @@ BEGIN
 		set @ok=0 
 	end
 	
-	execute dbo.sp_LoaiXe_KiemTra @Ten, @Hang, @TGBH, @DongCo, @DTXiLanh, @MauSac, @TrongLuong, @Khung, @Banh, @GiaBan, @ok output
+	execute dbo.sp_LoaiXe_KiemTra @Ten, @Hang, @TGBH, @DongCo, @DTXiLanh, @MauSac, @TrongLuong, @Khung, @Banh, @ok output
 	if(@ok<>0)
 	begin
 		INSERT INTO LoaiXe 
-		VALUES(@Ma, @Ten, @Hang, @TGBH, @DongCo, @DTXiLanh, @MauSac, @TrongLuong, @Khung, @Banh, @GiaBan)
+		VALUES(@Ma, @Ten, @Hang, @TGBH, @DongCo, @DTXiLanh, @MauSac, @TrongLuong, @Khung, @Banh)
 		if(@@ERROR<>0)
 			raiserror(N'[_Msg]Thêm thất bại',16,1)
 		else
@@ -974,22 +1001,21 @@ alter PROCEDURE sp_LoaiXe_Update
 @Ma nvarchar(10),
 @Ten nvarchar(20),
 @Hang nvarchar(10),
-@TGBH datetime,
+@TGBH nvarchar(20),
 @DongCo nvarchar(20),
 @DTXiLanh int,
 @MauSac nvarchar(20),
 @TrongLuong float,
 @Khung nvarchar(30),
-@Banh nvarchar(30),
-@GiaBan money
+@Banh nvarchar(30)
 AS
 BEGIN
 	declare @ok bit;
 	set @ok=1
-	execute dbo.sp_LoaiXe_KiemTra @Ten, @Hang, @TGBH, @DongCo, @DTXiLanh, @MauSac, @TrongLuong, @Khung, @Banh, @GiaBan, @ok output
+	execute dbo.sp_LoaiXe_KiemTra @Ten, @Hang, @TGBH, @DongCo, @DTXiLanh, @MauSac, @TrongLuong, @Khung, @Banh, @ok output
 	if(@ok<>0)
 	begin
-		UPDATE LoaiXe SET Ten=@Ten, MauSac=@MauSac, Hang=@Hang, TGBH=@TGBH, DongCo=@DongCo, TrongLuong=@TrongLuong, DTXiLanh=@DTXiLanh, Khung=@Khung, Banh=@Banh, GiaBan=@GiaBan
+		UPDATE LoaiXe SET Ten=@Ten, MauSac=@MauSac, Hang=@Hang, TGBH=@TGBH, DongCo=@DongCo, TrongLuong=@TrongLuong, DTXiLanh=@DTXiLanh, Khung=@Khung, Banh=@Banh
 		WHERE Ma=@Ma
 		if(@@ERROR<>0)
 			raiserror(N'[_Msg]Cập nhật thất bại',16,1)
