@@ -2796,3 +2796,13 @@ begin
 end
 go
 --grant [ten_procedure] on [table] to [user | group]
+
+ALTER procedure sp_LayDSQuyen
+@User sysname
+as
+begin
+	select CTQuyen.ChucVu, Quyen, Menu from NhanVien, ChucVu, CTQuyen
+	where NhanVien.ChucVu = ChucVu.Ma and CTQuyen.ChucVu = ChucVu.Ma
+	and NhanVien.Ma = @User
+end
+go

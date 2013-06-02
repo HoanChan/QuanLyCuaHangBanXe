@@ -8,18 +8,39 @@ using System.Collections;
 using System.Linq;
 using System.Windows.Forms;
 using DataContext;
+using System.Collections.Generic;
 namespace QuanLyCuaHangBanXe
 {
     public partial class Main : RibbonForm
     {
         MasterDetailInfo CurrentMDI = new MasterDetailInfo();
         IList ReportList = null;
+        List<CTQuyen> DSQuyen = null;
         //NguoiDung NguoiDung = null;
         public Main()
         {
-            //XtraFormLogin Login = new XtraFormLogin();
-            //if (Login.ShowDialog() == DialogResult.Cancel) Environment.Exit(0);
+            XtraFormLogin Login = new XtraFormLogin();
+            if (Login.ShowDialog() == DialogResult.Cancel) Environment.Exit(0);
             InitializeComponent();
+            var TabList = new List<RibbonPage>() { QuanLyRibbonPage };
+            foreach (var page in TabList)
+            {
+                foreach (var group in page.Groups.Cast<RibbonPageGroup>())
+                {
+                    var MenuList = group.ItemLinks.Cast<BarButtonItemLink>()
+                                    .Select(m => m.Item)
+                                    .Where(c => c.GetType().Equals(typeof(BarButtonItem)));
+                    foreach (var button in MenuList)
+                        button.Visibility = BarItemVisibility.Never;
+                }
+
+            }
+
+            DSQuyen = Table.GetListQuyen(Login.UserName);
+            foreach (CTQuyen ctq in DSQuyen)
+            {
+                (ribbonControl.Items[ctq.Menu] as BarButtonItem).Visibility = BarItemVisibility.Always;
+            }
             InitSkinGallery();
             InitGrid();
         }

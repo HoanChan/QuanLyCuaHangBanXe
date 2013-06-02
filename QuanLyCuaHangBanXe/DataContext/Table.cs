@@ -44,12 +44,11 @@ namespace DataContext
                         var aName = pro.GetName().ToBeauty().Replace(" ", string.Empty);
                         var aValue = Row[pro.Name] == DBNull.Value ? null : Row[pro.Name];
                         Item.SetPropertyValue(aName, aValue);
-                        if (aValue == null)
-                            IsOk = false;
-                        else if (pro.Name == Name)
-                        {
-                            IsOk = aValue.Equals(Value);
-                        }
+                        if (aValue != null)
+                            if (pro.Name == Name)
+                            {
+                                IsOk = aValue.Equals(Value);
+                            }
                     }
                     if (IsOk)
                     {
@@ -73,6 +72,23 @@ namespace DataContext
                 }
                 return aList;
             }
+        }
+
+        public static List<CTQuyen> GetListQuyen(string Username)
+        {
+            var aData = db.RunReturnStoredProcedure("sp_LayDSQuyen", new { User = Username });
+            var aList = new List<CTQuyen>();
+            foreach (DataRow Row in aData.Tables[0].Rows)
+            {
+                var Item = new CTQuyen();
+                foreach (var pro in typeof(CTQuyen).GetProperties())
+                {
+                    var aValue = Row[pro.Name] == DBNull.Value ? null : Row[pro.Name];
+                    Item.SetPropertyValue(pro.Name, aValue);
+                }
+                aList.Add(Item);
+            }
+            return aList;
         }
 
         public static DataSet GetData(Type ItemType, string Name = null, object Value = null)

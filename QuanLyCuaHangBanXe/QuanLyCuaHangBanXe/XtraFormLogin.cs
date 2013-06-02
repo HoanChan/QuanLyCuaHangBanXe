@@ -43,5 +43,7 @@ namespace QuanLyCuaHangBanXe
                 btnDangNhap.PerformClick();
             }
         }
+
+        public string UserName { get { return txtTenDangNhap.Text; } }
     }
 }

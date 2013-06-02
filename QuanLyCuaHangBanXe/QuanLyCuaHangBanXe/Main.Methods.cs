@@ -95,7 +95,7 @@ namespace QuanLyCuaHangBanXe
 
         private void CreateDetail(Type EntityType, String Name = null, object Value = null)
         {
-            #region Label + textbox
+            #region ==================================== Labels + textboxs ====================================
             splitContainerControl.Panel2.Controls.Clear();
             var EntityProperties = EntityType.GetProperties();
             int index = 0;
@@ -194,8 +194,8 @@ namespace QuanLyCuaHangBanXe
                 }
             }
             #endregion
-            
-            #region Button
+
+            #region ==================================== Buttons ====================================
             int bWidth = 60;
             int bX = 0;
             var btnEdit = new SimpleButton()
@@ -253,8 +253,8 @@ namespace QuanLyCuaHangBanXe
             };
             index++;
             #endregion
-            
-            #region Func
+
+            #region ==================================== Functions ====================================
             var Element = EntityType.CreateNew();
 
             Func<string, Control> GetControlByName = delegate(string ControlName)
@@ -360,8 +360,8 @@ namespace QuanLyCuaHangBanXe
             };
 
             #endregion
-            
-            #region Button Events
+
+            #region ==================================== Button Events ====================================
             btnEdit.Click += new EventHandler(delegate(object sender, EventArgs e)
                 {
                     foreach (Control control in splitContainerControl.Panel2.Controls)
@@ -483,18 +483,21 @@ namespace QuanLyCuaHangBanXe
             
             splitContainerControl.Panel2.Controls.AddRange(new Control[] { btnEdit, btnCancelEdit, btnUpdate, btnCreateNew, btnCancelNew, btnAddNew, btnDelete });
 
-            #region Relation
+            #region ==================================== Relation ====================================
             var Count = CurrentMDI.GetRelationCount();
             bX = 0;
             bWidth = 160;
             for (int i = 0; i < Count; i++)
             {
                 var MDI = (MasterDetailInfo)CurrentMDI.GetRelationType(i).CreateNew();
+                var aName = MDI.GetType().Name;
                 var aButton = new SimpleButton()
                 {
+                    Name = "btnRelation_"+ aName,
                     Text = MDI.GetName(),
                     Location = new Point(5 + 5 * bX + bWidth * bX, 50 + 30 * index),
-                    Width = bWidth
+                    Width = bWidth,
+                    Enabled = DSQuyen.Where(m => m.Quyen > 1 && m.Menu.Contains(aName)).Count() > 0
                 };
                 aButton.Click += new EventHandler(delegate(object sender, EventArgs e)
                 {
