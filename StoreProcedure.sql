@@ -2419,19 +2419,18 @@ begin
 		insert into CTQuyen values(@ChucVu, @Quyen, @Menu)
 
 		set @Menu = RIGHT(@Menu, LEN(@Menu) - 7)
-
+		exec ('grant EXECUTE on sp_LayDSQuyen to  [' +  @ChucVu + ']')
+		exec ('grant select on  ' + @Menu + ' to  [' +  @ChucVu + ']')
 		if(@Quyen = 1)
 		begin
 			exec ('grant EXECUTE on sp_select to  [' +  @ChucVu + ']')
 			exec ('grant EXECUTE on sp_CTQuyen_FK to  [' +  @ChucVu + ']')
 			exec ('grant EXECUTE on sp_KiemTraQuyen to  [' +  @ChucVu + ']')
-			exec ('grant select on  ' + @Menu + ' to  [' +  @ChucVu + ']')
 			execute dbo.sp_CTQuyen_FK @ChucVu, @Menu, @ok
 		end
 		else
 		begin
 			exec ('grant EXECUTE on schema ::dbo to  [' +  @ChucVu + ']')
-			exec ('grant select on  ' + @Menu + ' to [' +  @ChucVu + ']')
 			exec ('grant insert on  ' + @Menu + ' to [' +  @ChucVu + ']')
 			exec ('grant update on  ' + @Menu + ' to [' +  @ChucVu + ']')
 			exec ('grant delete on  ' + @Menu + ' to [' +  @ChucVu + ']')
@@ -2567,11 +2566,11 @@ begin
 	begin
 		set @ok=0
 		execute dbo.sp_CTQuyen_FK @ChucVu, @Menu, @ok
-		
 		exec ('Revoke select on ' + @Menu + ' to [' + @ChucVu + '] cascade')
 		exec ('Revoke EXECUTE on sp_select to [' + @ChucVu + '] cascade')
 		exec ('Revoke EXECUTE on sp_CTQuyen_FK to  [' +  @ChucVu +'] cascade')
 		exec ('Revoke EXECUTE on sp_KiemTraQuyen to  [' +  @ChucVu + '] cascade')
+		exec ('Revoke EXECUTE on sp_LayDSQuyen to  [' +  @ChucVu + '] cascade')
 	end
 	else
 	begin
@@ -2581,10 +2580,10 @@ begin
 		exec ('Revoke insert on ' + @Menu + ' to [' + @ChucVu + '] cascade')
 		exec ('Revoke update on ' + @Menu + ' to [' + @ChucVu + '] cascade')
 		exec ('Revoke delete on ' + @Menu + ' to [' + @ChucVu + '] cascade')
-
-		exec ('Revoke EXECUTE on sp_select to [' + @ChucVu + '] cascade')
-		exec ('Revoke EXECUTE on sp_CTQuyen_FK to  [' +  @ChucVu +'] cascade')
-		exec ('Revoke EXECUTE on sp_KiemTraQuyen to  [' +  @ChucVu + '] cascade')
+		exec ('Revoke EXECUTE on schema ::dbo to  [' +  @ChucVu + '] cascade')
+		--exec ('Revoke EXECUTE on sp_select to [' + @ChucVu + '] cascade')
+		--exec ('Revoke EXECUTE on sp_CTQuyen_FK to  [' +  @ChucVu +'] cascade')
+		--exec ('Revoke EXECUTE on sp_KiemTraQuyen to  [' +  @ChucVu + '] cascade')
 	end
 	raiserror(N'[_Msg]Ðã xóa thành công',16,1)
 end
@@ -2797,7 +2796,7 @@ end
 go
 --grant [ten_procedure] on [table] to [user | group]
 
-ALTER procedure sp_LayDSQuyen
+create procedure sp_LayDSQuyen
 @User sysname
 as
 begin
@@ -2806,3 +2805,4 @@ begin
 	and NhanVien.Ma = @User
 end
 go
+
