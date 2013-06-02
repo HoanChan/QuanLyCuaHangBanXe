@@ -334,4 +334,39 @@ namespace DataContext
         [ForeignKey("LoaiXe_Ma"), Display(Name = "Loại xe")]
         public string LoaiXe { get; set; }
     }
+
+    //=============================//
+
+    public partial class v_HangTon_Kho
+    {
+        public string MaKho { get; set; }
+        public string MaLoaiXe { get; set; }
+        public int slTon { get; set; }
+    }
+
+    public partial class v_HangTon_ChiNhanh
+    {
+        public string MaChiNhanh { get; set; }
+        public string MaLoaiXe { get; set; }
+        public int slTon { get; set; }
+    }
+
+    public partial class v_HoSoBanXe
+    {
+      public string MaHoSo { get; set; }
+      public string TenChiNhanh { get; set; }
+      public string DiaChiCN { get; set; }
+      public string TenNgDaiDien { get; set; }
+      public string CVNgDaiDien { get; set; }
+      public string TenKH { get; set; }
+      public string DiaChiKH { get; set; }
+      public string SdtKH { get; set; }
+      public string HangSxXe { get; set; }
+      public string DTXiLanh { get; set; }
+      public string TenXe { get; set; }
+      public string MauSac { get; set; }
+      public string SoMay { get; set; }
+      public string SoKhung { get; set; }
+      public string DongCo { get; set; }
+    }
 }
