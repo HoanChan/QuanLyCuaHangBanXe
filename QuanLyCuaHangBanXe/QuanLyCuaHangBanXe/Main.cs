@@ -53,9 +53,10 @@ namespace QuanLyCuaHangBanXe
         void InitGrid()
         {
             //gridView.NewItemRowText = "Bấm vào đây để thêm dữ liệu mới";
+            gridView.GroupPanelText = gridView1.GroupPanelText = "Kéo cột dữ liệu vào đây để gom nhóm";
             gridView.OptionsPrint.EnableAppearanceEvenRow = true;
             gridView.OptionsPrint.EnableAppearanceOddRow = true;
-            gridView.OptionsBehavior.Editable = false;
+            gridView.OptionsBehavior.Editable = gridView1.OptionsBehavior.Editable = false;
             //gridView.OptionsView.NewItemRowPosition = NewItemRowPosition.Top;
             gridView.OptionsDetail.EnableMasterViewMode = true;
             gridView.OptionsSelection.MultiSelect = false;

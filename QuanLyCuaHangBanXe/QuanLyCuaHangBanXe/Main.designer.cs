@@ -31,7 +31,6 @@
             this.components = new System.ComponentModel.Container();
             DevExpress.XtraGrid.GridLevelNode gridLevelNode1 = new DevExpress.XtraGrid.GridLevelNode();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
-            this.cardView1 = new DevExpress.XtraGrid.Views.Card.CardView();
             this.DataGridView = new DevExpress.XtraGrid.GridControl();
             this.gridView = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.ribbonControl = new DevExpress.XtraBars.Ribbon.RibbonControl();
@@ -76,7 +75,7 @@
             this.ribbonStatusBar = new DevExpress.XtraBars.Ribbon.RibbonStatusBar();
             this.splitContainerControl = new DevExpress.XtraEditors.SplitContainerControl();
             this.dxErrorProvider = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider(this.components);
-            ((System.ComponentModel.ISupportInitialize)(this.cardView1)).BeginInit();
+            this.gridView1 = new DevExpress.XtraGrid.Views.Grid.GridView();
             ((System.ComponentModel.ISupportInitialize)(this.DataGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ribbonControl)).BeginInit();
@@ -88,19 +87,13 @@
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerControl)).BeginInit();
             this.splitContainerControl.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProvider)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView1)).BeginInit();
             this.SuspendLayout();
-            // 
-            // cardView1
-            // 
-            this.cardView1.FocusedCardTopFieldIndex = 0;
-            this.cardView1.GridControl = this.DataGridView;
-            this.cardView1.Name = "cardView1";
-            this.cardView1.VertScrollVisibility = DevExpress.XtraGrid.Views.Base.ScrollVisibility.Auto;
             // 
             // DataGridView
             // 
             this.DataGridView.Dock = System.Windows.Forms.DockStyle.Fill;
-            gridLevelNode1.LevelTemplate = this.cardView1;
+            gridLevelNode1.LevelTemplate = this.gridView1;
             gridLevelNode1.RelationName = "Detail";
             this.DataGridView.LevelTree.Nodes.AddRange(new DevExpress.XtraGrid.GridLevelNode[] {
             gridLevelNode1});
@@ -111,7 +104,7 @@
             this.DataGridView.TabIndex = 9;
             this.DataGridView.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridView,
-            this.cardView1});
+            this.gridView1});
             // 
             // gridView
             // 
@@ -527,6 +520,11 @@
             // 
             this.dxErrorProvider.ContainerControl = this;
             // 
+            // gridView1
+            // 
+            this.gridView1.GridControl = this.DataGridView;
+            this.gridView1.Name = "gridView1";
+            // 
             // Main
             // 
             this.AllowFormGlass = DevExpress.Utils.DefaultBoolean.False;
@@ -541,7 +539,6 @@
             this.Ribbon = this.ribbonControl;
             this.StatusBar = this.ribbonStatusBar;
             this.Text = "Quản Lý Cửa Hàng Bán Xe";
-            ((System.ComponentModel.ISupportInitialize)(this.cardView1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.DataGridView)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ribbonControl)).EndInit();
@@ -553,6 +550,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerControl)).EndInit();
             this.splitContainerControl.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProvider)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -592,7 +590,6 @@
         private DevExpress.XtraEditors.SplitContainerControl splitContainerControl;
         private DevExpress.XtraGrid.GridControl DataGridView;
         private DevExpress.XtraGrid.Views.Grid.GridView gridView;
-        private DevExpress.XtraGrid.Views.Card.CardView cardView1;
         private DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider dxErrorProvider;
         private DevExpress.XtraBars.BarButtonItem iQuanLyChucVu;
         private DevExpress.XtraBars.BarButtonItem iQuanLyChiNhanh;
@@ -606,6 +603,7 @@
         private DevExpress.XtraBars.BarButtonItem iQuanLyPhieuNhapXe;
         private DevExpress.XtraBars.BarButtonItem iQuanLyPhieuSuaChua;
         private DevExpress.XtraBars.BarButtonItem iQuanLyPhieuXuatKho;
+        private DevExpress.XtraGrid.Views.Grid.GridView gridView1;
 
     }
 }
