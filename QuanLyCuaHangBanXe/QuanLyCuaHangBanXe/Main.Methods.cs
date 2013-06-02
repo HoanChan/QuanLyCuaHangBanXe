@@ -31,7 +31,7 @@ namespace QuanLyCuaHangBanXe
             }
             else
             {
-                siStatus.Caption = CurrentMDI.GetName()+" / " + MDI.GetName() + "[" + Name + " = " + Value.ToString() + "]";
+                siStatus.Caption = CurrentMDI.GetName() + " / " + MDI.GetName() + "[" + Name + " = " + (Value ?? "null").ToString() + "]";
             }
             CurrentMDI = MDI;
             DataGridView.BeginUpdate();
