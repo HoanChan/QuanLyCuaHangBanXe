@@ -108,7 +108,7 @@ namespace QuanLyCuaHangBanXe
                 {
                     var DataBindingsType = "Text";
                     var label = new LabelControl();
-                    label.Location = new Point(20, 50 + 30 * index);
+                    label.Location = new Point(20, 50 + 30 * index + 3);
                     label.Text = DisplayName;
                     label.Font = new Font(label.Font, CurrentMDI.IsKey(Pro.Name) ? FontStyle.Underline | FontStyle.Bold : FontStyle.Regular);
                     BaseEdit textbox = new TextEdit();
