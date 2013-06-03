@@ -304,7 +304,7 @@ begin
 
 	if(@SLBan>=@SLNhap)
 	begin
-		raiserror ('Het hang',16,1)
+		raiserror ('Hết hàng',16,1)
 		rollback transaction
 	end
 end
@@ -351,6 +351,39 @@ begin
 		delete from CTSuaChua where PhuKien=@Ma
 
 		delete from PhuKien where Ma=@Ma
+	commit tran t1
+end
+go
+
+alter trigger tg_PhieuXuatKho_Delete on PhieuXuatKho
+instead of delete
+as
+begin
+	declare @Ma nvarchar(10);
+	select @Ma=Ma from deleted
+	begin tran t1
+		delete from CTPhieuXuatPhuKien where PhieuXuatKho=@Ma
+		delete from CTVanChuyen where PhieuXuatKho=@Ma
+		delete from CTPhieuXuatXe where PhieuXuatKho=@Ma
+
+		update Xe set PhieuXuatKho=null where PhieuXuatKho=@Ma
+
+		delete from PhieuXuatKho where Ma=@Ma
+	commit tran t1
+end
+go
+
+alter trigger tg_PhieuNhapXe_Delete on PhieuNhapXe
+instead of delete
+as
+begin
+	declare @Ma nvarchar(10);
+	select @Ma=Ma from deleted
+	begin tran t1
+		delete from CTPhieuNhapXe where PhieuNhapXe=@Ma
+		delete from Xe where PhieuNhapXe=@Ma
+
+		delete from PhieuNhapXe where Ma=@Ma
 	commit tran t1
 end
 go

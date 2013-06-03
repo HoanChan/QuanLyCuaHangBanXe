@@ -772,12 +772,6 @@ begin
 		set @ok=0
 	end
 
-	if(@PhieuXuatKho is null)
-	begin
-		raiserror (N'[PhieuXuatKho]Phải được nhập vào', 16, 1)
-		set @ok=0
-	end
-
 	if(@LoaiXe is null)
 	begin
 		raiserror (N'[LoaiXe]Phải được nhập vào', 16, 1)
@@ -2462,28 +2456,40 @@ begin
 		raiserror (N'[Menu]bị trùng', 16, 1)
 		set @ok=0;
 	end
+
 	
+
 	if(@ok<>0)
 	begin
-		insert into CTQuyen values(@ChucVu, @Quyen, @Menu)
-
-		set @Menu = RIGHT(@Menu, LEN(@Menu) - 7)
-		exec ('grant EXECUTE on sp_LayDSQuyen to  [' +  @ChucVu + ']')
-		exec ('grant select on  ' + @Menu + ' to  [' +  @ChucVu + ']')
-		if(@Quyen = 1)
+		if(@Menu like '%v_%')
 		begin
-			exec ('grant EXECUTE on sp_select to  [' +  @ChucVu + ']')
-			exec ('grant EXECUTE on sp_CTQuyen_FK to  [' +  @ChucVu + ']')
-			exec ('grant EXECUTE on sp_KiemTraQuyen to  [' +  @ChucVu + ']')
-			execute dbo.sp_CTQuyen_FK @ChucVu, @Menu, @ok
+			declare @View nvarchar(100);
+			set @View = RIGHT(@Menu, LEN(@Menu) - 7)
+			exec ('grant select on  ' + @View + ' to  [' +  @ChucVu + ']')
+			insert into CTQuyen values(@ChucVu, @Quyen, @Menu)
 		end
 		else
 		begin
-			exec ('grant EXECUTE on schema ::dbo to  [' +  @ChucVu + ']')
-			exec ('grant insert on  ' + @Menu + ' to [' +  @ChucVu + ']')
-			exec ('grant update on  ' + @Menu + ' to [' +  @ChucVu + ']')
-			exec ('grant delete on  ' + @Menu + ' to [' +  @ChucVu + ']')
-			execute dbo.sp_CTQuyen_FK @ChucVu, @Menu, @ok
+			insert into CTQuyen values(@ChucVu, @Quyen, @Menu)
+
+			set @Menu = RIGHT(@Menu, LEN(@Menu) - 7)
+			exec ('grant EXECUTE on sp_LayDSQuyen to  [' +  @ChucVu + ']')
+			exec ('grant select on  ' + @Menu + ' to  [' +  @ChucVu + ']')
+			if(@Quyen = 1)
+			begin
+				exec ('grant EXECUTE on sp_select to  [' +  @ChucVu + ']')
+				exec ('grant EXECUTE on sp_CTQuyen_FK to  [' +  @ChucVu + ']')
+				exec ('grant EXECUTE on sp_KiemTraQuyen to  [' +  @ChucVu + ']')
+				execute dbo.sp_CTQuyen_FK @ChucVu, @Menu, @ok
+			end
+			else
+			begin
+				exec ('grant EXECUTE on schema ::dbo to  [' +  @ChucVu + ']')
+				exec ('grant insert on  ' + @Menu + ' to [' +  @ChucVu + ']')
+				exec ('grant update on  ' + @Menu + ' to [' +  @ChucVu + ']')
+				exec ('grant delete on  ' + @Menu + ' to [' +  @ChucVu + ']')
+				execute dbo.sp_CTQuyen_FK @ChucVu, @Menu, @ok
+			end
 		end
 		raiserror(N'[_Msg]Ðã thêm thành công',16,1)
 	end
@@ -2611,28 +2617,34 @@ begin
 	declare @ok bit;
 	
 	select @Menu = RIGHT(@Menu,LEN(@Menu)-7)
-	if(@Quyen=1)
+	if(@Menu like '%v_%')
 	begin
-		set @ok=0
-		execute dbo.sp_CTQuyen_FK @ChucVu, @Menu, @ok
-		exec ('Revoke select on ' + @Menu + ' to [' + @ChucVu + '] cascade')
-		exec ('Revoke EXECUTE on sp_select to [' + @ChucVu + '] cascade')
-		exec ('Revoke EXECUTE on sp_CTQuyen_FK to  [' +  @ChucVu +'] cascade')
-		exec ('Revoke EXECUTE on sp_KiemTraQuyen to  [' +  @ChucVu + '] cascade')
-		exec ('Revoke EXECUTE on sp_LayDSQuyen to  [' +  @ChucVu + '] cascade')
+			declare @View nvarchar(100);
+			set @View = RIGHT(@Menu, LEN(@Menu) - 7)
+			exec ('grant Revoke on  ' + @View + ' to  [' +  @ChucVu + ']')
 	end
 	else
 	begin
-		set @ok=0
-		execute dbo.sp_CTQuyen_FK @ChucVu, @Menu, @ok
-		exec ('Revoke select on ' + @Menu + ' to [' + @ChucVu + '] cascade')
-		exec ('Revoke insert on ' + @Menu + ' to [' + @ChucVu + '] cascade')
-		exec ('Revoke update on ' + @Menu + ' to [' + @ChucVu + '] cascade')
-		exec ('Revoke delete on ' + @Menu + ' to [' + @ChucVu + '] cascade')
-		exec ('Revoke EXECUTE on schema ::dbo to  [' +  @ChucVu + '] cascade')
-		--exec ('Revoke EXECUTE on sp_select to [' + @ChucVu + '] cascade')
-		--exec ('Revoke EXECUTE on sp_CTQuyen_FK to  [' +  @ChucVu +'] cascade')
-		--exec ('Revoke EXECUTE on sp_KiemTraQuyen to  [' +  @ChucVu + '] cascade')
+		if(@Quyen=1)
+		begin
+			set @ok=0
+			execute dbo.sp_CTQuyen_FK @ChucVu, @Menu, @ok
+			exec ('Revoke select on ' + @Menu + ' to [' + @ChucVu + '] cascade')
+			exec ('Revoke EXECUTE on sp_select to [' + @ChucVu + '] cascade')
+			exec ('Revoke EXECUTE on sp_CTQuyen_FK to  [' +  @ChucVu +'] cascade')
+			exec ('Revoke EXECUTE on sp_KiemTraQuyen to  [' +  @ChucVu + '] cascade')
+			exec ('Revoke EXECUTE on sp_LayDSQuyen to  [' +  @ChucVu + '] cascade')
+		end
+		else
+		begin
+			set @ok=0
+			execute dbo.sp_CTQuyen_FK @ChucVu, @Menu, @ok
+			exec ('Revoke select on ' + @Menu + ' to [' + @ChucVu + '] cascade')
+			exec ('Revoke insert on ' + @Menu + ' to [' + @ChucVu + '] cascade')
+			exec ('Revoke update on ' + @Menu + ' to [' + @ChucVu + '] cascade')
+			exec ('Revoke delete on ' + @Menu + ' to [' + @ChucVu + '] cascade')
+			exec ('Revoke EXECUTE on schema ::dbo to  [' +  @ChucVu + '] cascade')
+		end
 	end
 	raiserror(N'[_Msg]Ðã xóa thành công',16,1)
 end
