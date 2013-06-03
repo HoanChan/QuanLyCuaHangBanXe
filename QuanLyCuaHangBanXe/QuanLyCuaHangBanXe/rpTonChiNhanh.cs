@@ -18,7 +18,7 @@ namespace QuanLyCuaHangBanXe
         {
             var ChiNhanh = (string)GetCurrentColumnValue("ChiNhanh");
             if (string.IsNullOrEmpty(ChiNhanh)) return;
-            ((rpKho)((XRSubreport)sender).ReportSource).DataSource = Table.GetList(typeof(ChiNhanh), "Ma", ChiNhanh, false);
+            ((rpChiNhanh)((XRSubreport)sender).ReportSource).DataSource = Table.GetList(typeof(ChiNhanh), "Ma", ChiNhanh, false);
         }
 
         private void xrLoaiXe_BeforePrint(object sender, System.Drawing.Printing.PrintEventArgs e)
