@@ -25,7 +25,7 @@ namespace QuanLyCuaHangBanXe
         {
             var Xe = (string)GetCurrentColumnValue("Xe");
             if (string.IsNullOrEmpty(Xe)) return;
-            ((rpXe)((XRSubreport)sender).ReportSource).DataSource = Table.GetList(typeof(Xe), "Ma", Xe, false);
+            ((rpXe)((XRSubreport)sender).ReportSource).DataSource = Table.GetList(typeof(Xe), "SoMay", Xe, false);
         }
 
         private void xrLoaiXe_BeforePrint(object sender, System.Drawing.Printing.PrintEventArgs e)

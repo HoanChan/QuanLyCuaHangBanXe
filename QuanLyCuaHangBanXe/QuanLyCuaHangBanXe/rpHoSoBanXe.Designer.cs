@@ -50,6 +50,7 @@
             this.topMarginBand1 = new DevExpress.XtraReports.UI.TopMarginBand();
             this.bottomMarginBand1 = new DevExpress.XtraReports.UI.BottomMarginBand();
             this.rpXe2 = new QuanLyCuaHangBanXe.rpXe();
+            this.MaHoSo = new DevExpress.XtraReports.Parameters.Parameter();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.rpXe2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this)).BeginInit();
@@ -228,6 +229,12 @@
             this.bottomMarginBand1.HeightF = 28.2917F;
             this.bottomMarginBand1.Name = "bottomMarginBand1";
             // 
+            // MaHoSo
+            // 
+            this.MaHoSo.Description = "Mã Hồ Sơ";
+            this.MaHoSo.Name = "MaHoSo";
+            this.MaHoSo.Value = "";
+            // 
             // rpHoSoBanXe
             // 
             this.Bands.AddRange(new DevExpress.XtraReports.UI.Band[] {
@@ -237,7 +244,10 @@
             this.topMarginBand1,
             this.bottomMarginBand1});
             this.DataSource = this.bindingSource1;
+            this.FilterString = "[Ma] = ?MaHoSo";
             this.Margins = new System.Drawing.Printing.Margins(100, 100, 21, 28);
+            this.Parameters.AddRange(new DevExpress.XtraReports.Parameters.Parameter[] {
+            this.MaHoSo});
             this.SnapToGrid = false;
             this.StyleSheet.AddRange(new DevExpress.XtraReports.UI.XRControlStyle[] {
             this.Title,
@@ -274,5 +284,6 @@
         private DevExpress.XtraReports.UI.TopMarginBand topMarginBand1;
         private DevExpress.XtraReports.UI.BottomMarginBand bottomMarginBand1;
         private rpXe rpXe2;
+        private DevExpress.XtraReports.Parameters.Parameter MaHoSo;
     }
 }
