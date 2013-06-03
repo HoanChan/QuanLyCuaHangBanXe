@@ -30,7 +30,6 @@
         {
             this.components = new System.ComponentModel.Container();
             this.Detail = new DevExpress.XtraReports.UI.DetailBand();
-            this.xrLoaiXe = new DevExpress.XtraReports.UI.XRSubreport();
             this.xrXe = new DevExpress.XtraReports.UI.XRSubreport();
             this.xrLabel4 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel5 = new DevExpress.XtraReports.UI.XRLabel();
@@ -56,24 +55,15 @@
             // Detail
             // 
             this.Detail.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
-            this.xrLoaiXe,
             this.xrXe,
             this.xrLabel4,
             this.xrLabel5,
             this.xrLabel9,
             this.xrLabel10});
-            this.Detail.HeightF = 203F;
+            this.Detail.HeightF = 120.7083F;
             this.Detail.Name = "Detail";
             this.Detail.Padding = new DevExpress.XtraPrinting.PaddingInfo(0, 0, 0, 0, 100F);
             this.Detail.TextAlignment = DevExpress.XtraPrinting.TextAlignment.TopLeft;
-            // 
-            // xrLoaiXe
-            // 
-            this.xrLoaiXe.LocationFloat = new DevExpress.Utils.PointFloat(10.00001F, 64.58334F);
-            this.xrLoaiXe.Name = "xrLoaiXe";
-            this.xrLoaiXe.ReportSource = new QuanLyCuaHangBanXe.rpLoaiXe();
-            this.xrLoaiXe.SizeF = new System.Drawing.SizeF(630F, 49.04166F);
-            this.xrLoaiXe.BeforePrint += new System.Drawing.Printing.PrintEventHandler(this.xrLoaiXe_BeforePrint);
             // 
             // xrXe
             // 
@@ -85,7 +75,7 @@
             // 
             // xrLabel4
             // 
-            this.xrLabel4.LocationFloat = new DevExpress.Utils.PointFloat(6.00001F, 123.9167F);
+            this.xrLabel4.LocationFloat = new DevExpress.Utils.PointFloat(6.00001F, 69.75002F);
             this.xrLabel4.Name = "xrLabel4";
             this.xrLabel4.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.xrLabel4.SizeF = new System.Drawing.SizeF(162F, 18F);
@@ -94,7 +84,7 @@
             // 
             // xrLabel5
             // 
-            this.xrLabel5.LocationFloat = new DevExpress.Utils.PointFloat(6.00001F, 147.9167F);
+            this.xrLabel5.LocationFloat = new DevExpress.Utils.PointFloat(6.00001F, 93.75003F);
             this.xrLabel5.Name = "xrLabel5";
             this.xrLabel5.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.xrLabel5.SizeF = new System.Drawing.SizeF(162F, 18F);
@@ -105,7 +95,7 @@
             // 
             this.xrLabel9.DataBindings.AddRange(new DevExpress.XtraReports.UI.XRBinding[] {
             new DevExpress.XtraReports.UI.XRBinding("Text", null, "NgayMua", "{0:dd/MM/yyyy}")});
-            this.xrLabel9.LocationFloat = new DevExpress.Utils.PointFloat(174F, 123.9167F);
+            this.xrLabel9.LocationFloat = new DevExpress.Utils.PointFloat(174F, 69.75002F);
             this.xrLabel9.Name = "xrLabel9";
             this.xrLabel9.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.xrLabel9.SizeF = new System.Drawing.SizeF(470F, 18F);
@@ -116,7 +106,7 @@
             // 
             this.xrLabel10.DataBindings.AddRange(new DevExpress.XtraReports.UI.XRBinding[] {
             new DevExpress.XtraReports.UI.XRBinding("Text", null, "SoLanBaoHanh")});
-            this.xrLabel10.LocationFloat = new DevExpress.Utils.PointFloat(174F, 147.9167F);
+            this.xrLabel10.LocationFloat = new DevExpress.Utils.PointFloat(174F, 93.75003F);
             this.xrLabel10.Name = "xrLabel10";
             this.xrLabel10.Padding = new DevExpress.XtraPrinting.PaddingInfo(2, 2, 0, 0, 100F);
             this.xrLabel10.SizeF = new System.Drawing.SizeF(470F, 18F);
@@ -263,7 +253,6 @@
         #endregion
 
         private DevExpress.XtraReports.UI.DetailBand Detail;
-        private DevExpress.XtraReports.UI.XRSubreport xrLoaiXe;
         private DevExpress.XtraReports.UI.XRSubreport xrXe;
         private DevExpress.XtraReports.UI.XRLabel xrLabel4;
         private DevExpress.XtraReports.UI.XRLabel xrLabel5;

@@ -28,12 +28,5 @@ namespace QuanLyCuaHangBanXe
             ((rpXe)((XRSubreport)sender).ReportSource).DataSource = Table.GetList(typeof(Xe), "SoMay", Xe, false);
         }
 
-        private void xrLoaiXe_BeforePrint(object sender, System.Drawing.Printing.PrintEventArgs e)
-        {
-            var LoaiXe = (string)GetCurrentColumnValue("LoaiXe");
-            if (string.IsNullOrEmpty(LoaiXe)) return;
-            ((rpLoaiXe)((XRSubreport)sender).ReportSource).DataSource = Table.GetList(typeof(LoaiXe), "Ma", LoaiXe, false);
-        }
-
     }
 }
