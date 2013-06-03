@@ -77,12 +77,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="HangTonKho.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="HangTonKho.Designer.cs">
-      <DependentUpon>HangTonKho.cs</DependentUpon>
-    </Compile>
     <Compile Include="Main.cs">
       <SubType>Form</SubType>
     </Compile>
