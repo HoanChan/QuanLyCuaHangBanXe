@@ -343,14 +343,14 @@ namespace DataContext
     {
         public string LoaiXe { get; set; }
         public string Kho { get; set; }
-        public string SoLuongTon { get; set; }
+        public int SoLuongTon { get; set; }
     }
 
     public partial class v_ChiNhanh_HangTon
     {
         public string LoaiXe { get; set; }
         public string ChiNhanh { get; set; }
-        public string SoLuongTon { get; set; }
+        public int SoLuongTon { get; set; }
     }
 
     public partial class v_HoSoBanXe
