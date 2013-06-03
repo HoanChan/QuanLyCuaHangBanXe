@@ -356,7 +356,7 @@ namespace DataContext
     public partial class v_HoSoBanXe
     {
         public string Ma { get; set; }
-        public string NgayMua { get; set; }
+        public DateTime NgayMua { get; set; }
         public string KhachHang { get; set; }
         public string NhanVienBan { get; set; }
         public string Xe { get; set; }
