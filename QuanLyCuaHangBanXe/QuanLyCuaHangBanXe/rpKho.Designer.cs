@@ -1,6 +1,6 @@
 ﻿namespace QuanLyCuaHangBanXe
 {
-    partial class rpKho
+    partial class HoSoBanXe
     {
         /// <summary>
         /// Required designer variable.
