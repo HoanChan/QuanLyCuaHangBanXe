@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            DevExpress.XtraGrid.GridLevelNode gridLevelNode2 = new DevExpress.XtraGrid.GridLevelNode();
+            DevExpress.XtraGrid.GridLevelNode gridLevelNode1 = new DevExpress.XtraGrid.GridLevelNode();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
             this.gridView1 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.DataGridView = new DevExpress.XtraGrid.GridControl();
@@ -64,6 +64,9 @@
             this.iQuanLyPhieuSuaChua = new DevExpress.XtraBars.BarButtonItem();
             this.iQuanLyPhieuXuatKho = new DevExpress.XtraBars.BarButtonItem();
             this.iBaoCaov_Kho_HangTon = new DevExpress.XtraBars.BarButtonItem();
+            this.iBaoCaov_CuaHang_HangTon = new DevExpress.XtraBars.BarButtonItem();
+            this.iBaoCaov_HoSoBanXe = new DevExpress.XtraBars.BarButtonItem();
+            this.iBaoCaov_LichSuKhachHang = new DevExpress.XtraBars.BarButtonItem();
             this.ribbonImageCollectionLarge = new DevExpress.Utils.ImageCollection(this.components);
             this.homeRibbonPage = new DevExpress.XtraBars.Ribbon.RibbonPage();
             this.fileRibbonPageGroup = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
@@ -77,9 +80,6 @@
             this.ribbonStatusBar = new DevExpress.XtraBars.Ribbon.RibbonStatusBar();
             this.splitContainerControl = new DevExpress.XtraEditors.SplitContainerControl();
             this.dxErrorProvider = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider(this.components);
-            this.iBaoCaov_CuaHang_HangTon = new DevExpress.XtraBars.BarButtonItem();
-            this.iBaoCaov_HoSoBanXe = new DevExpress.XtraBars.BarButtonItem();
-            this.iBaoCaov_LichSuKhachHang = new DevExpress.XtraBars.BarButtonItem();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.DataGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView)).BeginInit();
@@ -102,10 +102,10 @@
             // DataGridView
             // 
             this.DataGridView.Dock = System.Windows.Forms.DockStyle.Fill;
-            gridLevelNode2.LevelTemplate = this.gridView1;
-            gridLevelNode2.RelationName = "Detail";
+            gridLevelNode1.LevelTemplate = this.gridView1;
+            gridLevelNode1.RelationName = "Detail";
             this.DataGridView.LevelTree.Nodes.AddRange(new DevExpress.XtraGrid.GridLevelNode[] {
-            gridLevelNode2});
+            gridLevelNode1});
             this.DataGridView.Location = new System.Drawing.Point(0, 0);
             this.DataGridView.MainView = this.gridView;
             this.DataGridView.Name = "DataGridView";
@@ -290,7 +290,7 @@
             // 
             this.iQuanLyHoSoBanXe.Caption = "Hồ Sơ Bán Xe";
             this.iQuanLyHoSoBanXe.Id = 72;
-            this.iQuanLyHoSoBanXe.LargeImageIndex = 16;
+            this.iQuanLyHoSoBanXe.LargeImageIndex = 19;
             this.iQuanLyHoSoBanXe.Name = "iQuanLyHoSoBanXe";
             this.iQuanLyHoSoBanXe.RibbonStyle = DevExpress.XtraBars.Ribbon.RibbonItemStyles.Large;
             this.iQuanLyHoSoBanXe.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.iQuanLyHoSoBanXe_ItemClick);
@@ -299,7 +299,7 @@
             // 
             this.iQuanLyPhuKien.Caption = "Phụ Kiện";
             this.iQuanLyPhuKien.Id = 73;
-            this.iQuanLyPhuKien.LargeImageIndex = 17;
+            this.iQuanLyPhuKien.LargeImageIndex = 22;
             this.iQuanLyPhuKien.Name = "iQuanLyPhuKien";
             this.iQuanLyPhuKien.RibbonStyle = DevExpress.XtraBars.Ribbon.RibbonItemStyles.Large;
             this.iQuanLyPhuKien.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.iQuanLyPhuKien_ItemClick);
@@ -347,7 +347,7 @@
             // 
             this.iQuanLyLoaiPhuKien.Caption = "Loại Phụ Kiện";
             this.iQuanLyLoaiPhuKien.Id = 88;
-            this.iQuanLyLoaiPhuKien.LargeImageIndex = 0;
+            this.iQuanLyLoaiPhuKien.LargeImageIndex = 13;
             this.iQuanLyLoaiPhuKien.Name = "iQuanLyLoaiPhuKien";
             this.iQuanLyLoaiPhuKien.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.iQuanLyLoaiPhuKien_ItemClick);
             // 
@@ -355,7 +355,7 @@
             // 
             this.iQuanLyXe.Caption = "Xe";
             this.iQuanLyXe.Id = 89;
-            this.iQuanLyXe.LargeImageIndex = 3;
+            this.iQuanLyXe.LargeImageIndex = 20;
             this.iQuanLyXe.Name = "iQuanLyXe";
             this.iQuanLyXe.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.iQuanLyXe_ItemClick);
             // 
@@ -371,7 +371,7 @@
             // 
             this.iQuanLyLoaiXe.Caption = "Loại Xe";
             this.iQuanLyLoaiXe.Id = 91;
-            this.iQuanLyLoaiXe.LargeImageIndex = 14;
+            this.iQuanLyLoaiXe.LargeImageIndex = 21;
             this.iQuanLyLoaiXe.Name = "iQuanLyLoaiXe";
             this.iQuanLyLoaiXe.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.iQuanLyLoaiXe_ItemClick);
             // 
@@ -379,7 +379,7 @@
             // 
             this.iQuanLyNCC.Caption = "Nhà Cung Cấp";
             this.iQuanLyNCC.Id = 92;
-            this.iQuanLyNCC.LargeImageIndex = 4;
+            this.iQuanLyNCC.LargeImageIndex = 12;
             this.iQuanLyNCC.Name = "iQuanLyNCC";
             this.iQuanLyNCC.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.iQuanLyNCC_ItemClick);
             // 
@@ -395,7 +395,7 @@
             // 
             this.iQuanLyPhieuNhapXe.Caption = "Phiếu Nhập Xe";
             this.iQuanLyPhieuNhapXe.Id = 94;
-            this.iQuanLyPhieuNhapXe.LargeImageIndex = 6;
+            this.iQuanLyPhieuNhapXe.LargeImageIndex = 0;
             this.iQuanLyPhieuNhapXe.Name = "iQuanLyPhieuNhapXe";
             this.iQuanLyPhieuNhapXe.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.iQuanLyPhieuNhapXe_ItemClick);
             // 
@@ -423,6 +423,30 @@
             this.iBaoCaov_Kho_HangTon.Name = "iBaoCaov_Kho_HangTon";
             this.iBaoCaov_Kho_HangTon.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.iBaoCaov_Kho_HangTon_ItemClick);
             // 
+            // iBaoCaov_CuaHang_HangTon
+            // 
+            this.iBaoCaov_CuaHang_HangTon.Caption = "Hàng tồn cửa hàng";
+            this.iBaoCaov_CuaHang_HangTon.Id = 98;
+            this.iBaoCaov_CuaHang_HangTon.LargeImageIndex = 10;
+            this.iBaoCaov_CuaHang_HangTon.Name = "iBaoCaov_CuaHang_HangTon";
+            this.iBaoCaov_CuaHang_HangTon.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.iBaoCaov_CuaHang_HangTon_ItemClick);
+            // 
+            // iBaoCaov_HoSoBanXe
+            // 
+            this.iBaoCaov_HoSoBanXe.Caption = "Hồ sơ bán xe";
+            this.iBaoCaov_HoSoBanXe.Id = 99;
+            this.iBaoCaov_HoSoBanXe.LargeImageIndex = 9;
+            this.iBaoCaov_HoSoBanXe.Name = "iBaoCaov_HoSoBanXe";
+            this.iBaoCaov_HoSoBanXe.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.iBaoCaov_HoSoBanXe_ItemClick);
+            // 
+            // iBaoCaov_LichSuKhachHang
+            // 
+            this.iBaoCaov_LichSuKhachHang.Caption = "Lịch sử khách hàng";
+            this.iBaoCaov_LichSuKhachHang.Id = 100;
+            this.iBaoCaov_LichSuKhachHang.LargeImageIndex = 17;
+            this.iBaoCaov_LichSuKhachHang.Name = "iBaoCaov_LichSuKhachHang";
+            this.iBaoCaov_LichSuKhachHang.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.iBaoCaov_LichSuKhachHang_ItemClick);
+            // 
             // ribbonImageCollectionLarge
             // 
             this.ribbonImageCollectionLarge.ImageSize = new System.Drawing.Size(32, 32);
@@ -446,6 +470,10 @@
             this.ribbonImageCollectionLarge.Images.SetKeyName(16, "Superman-icon.png");
             this.ribbonImageCollectionLarge.Images.SetKeyName(17, "Supervisor-icon.png");
             this.ribbonImageCollectionLarge.Images.SetKeyName(18, "client_report_dock_icon_by_ornorm-d5e0d34.png");
+            this.ribbonImageCollectionLarge.Images.SetKeyName(19, "page-icon.png");
+            this.ribbonImageCollectionLarge.Images.SetKeyName(20, "Moto courier.png");
+            this.ribbonImageCollectionLarge.Images.SetKeyName(21, "Motorcycle.png");
+            this.ribbonImageCollectionLarge.Images.SetKeyName(22, "Wheel.png");
             // 
             // homeRibbonPage
             // 
@@ -544,30 +572,6 @@
             // dxErrorProvider
             // 
             this.dxErrorProvider.ContainerControl = this;
-            // 
-            // iBaoCaov_CuaHang_HangTon
-            // 
-            this.iBaoCaov_CuaHang_HangTon.Caption = "Hàng tồn cửa hàng";
-            this.iBaoCaov_CuaHang_HangTon.Id = 98;
-            this.iBaoCaov_CuaHang_HangTon.LargeImageIndex = 4;
-            this.iBaoCaov_CuaHang_HangTon.Name = "iBaoCaov_CuaHang_HangTon";
-            this.iBaoCaov_CuaHang_HangTon.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.iBaoCaov_CuaHang_HangTon_ItemClick);
-            // 
-            // iBaoCaov_HoSoBanXe
-            // 
-            this.iBaoCaov_HoSoBanXe.Caption = "Hồ sơ bán xe";
-            this.iBaoCaov_HoSoBanXe.Id = 99;
-            this.iBaoCaov_HoSoBanXe.LargeImageIndex = 9;
-            this.iBaoCaov_HoSoBanXe.Name = "iBaoCaov_HoSoBanXe";
-            this.iBaoCaov_HoSoBanXe.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.iBaoCaov_HoSoBanXe_ItemClick);
-            // 
-            // iBaoCaov_LichSuKhachHang
-            // 
-            this.iBaoCaov_LichSuKhachHang.Caption = "Lịch sử khách hàng";
-            this.iBaoCaov_LichSuKhachHang.Id = 100;
-            this.iBaoCaov_LichSuKhachHang.LargeImageIndex = 17;
-            this.iBaoCaov_LichSuKhachHang.Name = "iBaoCaov_LichSuKhachHang";
-            this.iBaoCaov_LichSuKhachHang.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.iBaoCaov_LichSuKhachHang_ItemClick);
             // 
             // Main
             // 
