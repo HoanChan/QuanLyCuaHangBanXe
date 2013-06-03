@@ -30,9 +30,9 @@
         {
             this.components = new System.ComponentModel.Container();
             this.Detail = new DevExpress.XtraReports.UI.DetailBand();
-            this.xrSubreport3 = new DevExpress.XtraReports.UI.XRSubreport();
-            this.xrSubreport2 = new DevExpress.XtraReports.UI.XRSubreport();
-            this.xrSubreport1 = new DevExpress.XtraReports.UI.XRSubreport();
+            this.xrXe = new DevExpress.XtraReports.UI.XRSubreport();
+            this.xrKhachHang = new DevExpress.XtraReports.UI.XRSubreport();
+            this.xrChiNhanh = new DevExpress.XtraReports.UI.XRSubreport();
             this.xrLabel1 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel2 = new DevExpress.XtraReports.UI.XRLabel();
             this.xrLabel8 = new DevExpress.XtraReports.UI.XRLabel();
@@ -58,9 +58,9 @@
             // Detail
             // 
             this.Detail.Controls.AddRange(new DevExpress.XtraReports.UI.XRControl[] {
-            this.xrSubreport3,
-            this.xrSubreport2,
-            this.xrSubreport1,
+            this.xrXe,
+            this.xrKhachHang,
+            this.xrChiNhanh,
             this.xrLabel1,
             this.xrLabel2,
             this.xrLabel8,
@@ -70,26 +70,29 @@
             this.Detail.Padding = new DevExpress.XtraPrinting.PaddingInfo(0, 0, 0, 0, 100F);
             this.Detail.TextAlignment = DevExpress.XtraPrinting.TextAlignment.TopLeft;
             // 
-            // xrSubreport3
+            // xrXe
             // 
-            this.xrSubreport3.LocationFloat = new DevExpress.Utils.PointFloat(10.00001F, 202.7083F);
-            this.xrSubreport3.Name = "xrSubreport3";
-            this.xrSubreport3.ReportSource = new QuanLyCuaHangBanXe.rpXe();
-            this.xrSubreport3.SizeF = new System.Drawing.SizeF(629.9999F, 62.58334F);
+            this.xrXe.LocationFloat = new DevExpress.Utils.PointFloat(10.00001F, 202.7083F);
+            this.xrXe.Name = "xrXe";
+            this.xrXe.ReportSource = new QuanLyCuaHangBanXe.rpXe();
+            this.xrXe.SizeF = new System.Drawing.SizeF(629.9999F, 62.58334F);
+            this.xrXe.BeforePrint += new System.Drawing.Printing.PrintEventHandler(this.xrXe_BeforePrint);
             // 
-            // xrSubreport2
+            // xrKhachHang
             // 
-            this.xrSubreport2.LocationFloat = new DevExpress.Utils.PointFloat(10.00001F, 132.75F);
-            this.xrSubreport2.Name = "xrSubreport2";
-            this.xrSubreport2.ReportSource = new QuanLyCuaHangBanXe.rpKhachHang();
-            this.xrSubreport2.SizeF = new System.Drawing.SizeF(629.9999F, 62.58334F);
+            this.xrKhachHang.LocationFloat = new DevExpress.Utils.PointFloat(10.00001F, 133.75F);
+            this.xrKhachHang.Name = "xrKhachHang";
+            this.xrKhachHang.ReportSource = new QuanLyCuaHangBanXe.rpKhachHang();
+            this.xrKhachHang.SizeF = new System.Drawing.SizeF(629.9999F, 62.58334F);
+            this.xrKhachHang.BeforePrint += new System.Drawing.Printing.PrintEventHandler(this.xrKhachHang_BeforePrint);
             // 
-            // xrSubreport1
+            // xrChiNhanh
             // 
-            this.xrSubreport1.LocationFloat = new DevExpress.Utils.PointFloat(10.00001F, 65.625F);
-            this.xrSubreport1.Name = "xrSubreport1";
-            this.xrSubreport1.ReportSource = new QuanLyCuaHangBanXe.rpChiNhanh();
-            this.xrSubreport1.SizeF = new System.Drawing.SizeF(629.9999F, 62.58333F);
+            this.xrChiNhanh.LocationFloat = new DevExpress.Utils.PointFloat(10.00001F, 65.625F);
+            this.xrChiNhanh.Name = "xrChiNhanh";
+            this.xrChiNhanh.ReportSource = new QuanLyCuaHangBanXe.rpChiNhanh();
+            this.xrChiNhanh.SizeF = new System.Drawing.SizeF(629.9999F, 62.58333F);
+            this.xrChiNhanh.BeforePrint += new System.Drawing.Printing.PrintEventHandler(this.xrChiNhanh_BeforePrint);
             // 
             // xrLabel1
             // 
@@ -264,9 +267,9 @@
         #endregion
 
         private DevExpress.XtraReports.UI.DetailBand Detail;
-        private DevExpress.XtraReports.UI.XRSubreport xrSubreport3;
-        private DevExpress.XtraReports.UI.XRSubreport xrSubreport2;
-        private DevExpress.XtraReports.UI.XRSubreport xrSubreport1;
+        private DevExpress.XtraReports.UI.XRSubreport xrXe;
+        private DevExpress.XtraReports.UI.XRSubreport xrKhachHang;
+        private DevExpress.XtraReports.UI.XRSubreport xrChiNhanh;
         private DevExpress.XtraReports.UI.XRLabel xrLabel1;
         private DevExpress.XtraReports.UI.XRLabel xrLabel2;
         private DevExpress.XtraReports.UI.XRLabel xrLabel8;
