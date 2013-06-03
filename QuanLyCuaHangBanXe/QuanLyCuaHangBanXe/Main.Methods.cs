@@ -497,7 +497,7 @@ namespace QuanLyCuaHangBanXe
                     Text = MDI.GetName(),
                     Location = new Point(5 + 5 * bX + bWidth * bX, 50 + 30 * index),
                     Width = bWidth,
-                    Enabled = DSQuyen.Where(m => m.Quyen > 1 && m.Menu.Contains(aName)).Count() > 0
+                    Enabled = DSQuyen.Where(m => m.Quyen > 1 && m.Menu.Contains(aName)).Count() > 0 || Username == "admin"
                 };
                 aButton.Click += new EventHandler(delegate(object sender, EventArgs e)
                 {
@@ -518,7 +518,7 @@ namespace QuanLyCuaHangBanXe
         private List<DataContext.Menu> GetMenuList()
         {
             var result = new List<DataContext.Menu>();
-            var TabList = new List<RibbonPage>() { QuanLyRibbonPage };
+            var TabList = new List<RibbonPage>() { QuanLyRibbonPage, BaoCaoRibbonPage };
             foreach (var page in TabList)
             {
                 foreach(var group in page.Groups.Cast<RibbonPageGroup>())
