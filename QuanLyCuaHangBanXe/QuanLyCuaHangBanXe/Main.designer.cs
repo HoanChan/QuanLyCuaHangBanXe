@@ -29,8 +29,9 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            DevExpress.XtraGrid.GridLevelNode gridLevelNode1 = new DevExpress.XtraGrid.GridLevelNode();
+            DevExpress.XtraGrid.GridLevelNode gridLevelNode2 = new DevExpress.XtraGrid.GridLevelNode();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
+            this.gridView1 = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.DataGridView = new DevExpress.XtraGrid.GridControl();
             this.gridView = new DevExpress.XtraGrid.Views.Grid.GridView();
             this.ribbonControl = new DevExpress.XtraBars.Ribbon.RibbonControl();
@@ -62,6 +63,7 @@
             this.iQuanLyPhieuNhapXe = new DevExpress.XtraBars.BarButtonItem();
             this.iQuanLyPhieuSuaChua = new DevExpress.XtraBars.BarButtonItem();
             this.iQuanLyPhieuXuatKho = new DevExpress.XtraBars.BarButtonItem();
+            this.iBaoCaov_Kho_HangTon = new DevExpress.XtraBars.BarButtonItem();
             this.ribbonImageCollectionLarge = new DevExpress.Utils.ImageCollection(this.components);
             this.homeRibbonPage = new DevExpress.XtraBars.Ribbon.RibbonPage();
             this.fileRibbonPageGroup = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
@@ -75,7 +77,10 @@
             this.ribbonStatusBar = new DevExpress.XtraBars.Ribbon.RibbonStatusBar();
             this.splitContainerControl = new DevExpress.XtraEditors.SplitContainerControl();
             this.dxErrorProvider = new DevExpress.XtraEditors.DXErrorProvider.DXErrorProvider(this.components);
-            this.gridView1 = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.iBaoCaov_CuaHang_HangTon = new DevExpress.XtraBars.BarButtonItem();
+            this.iBaoCaov_HoSoBanXe = new DevExpress.XtraBars.BarButtonItem();
+            this.iBaoCaov_LichSuKhachHang = new DevExpress.XtraBars.BarButtonItem();
+            ((System.ComponentModel.ISupportInitialize)(this.gridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.DataGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ribbonControl)).BeginInit();
@@ -87,16 +92,20 @@
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerControl)).BeginInit();
             this.splitContainerControl.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProvider)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gridView1)).BeginInit();
             this.SuspendLayout();
+            // 
+            // gridView1
+            // 
+            this.gridView1.GridControl = this.DataGridView;
+            this.gridView1.Name = "gridView1";
             // 
             // DataGridView
             // 
             this.DataGridView.Dock = System.Windows.Forms.DockStyle.Fill;
-            gridLevelNode1.LevelTemplate = this.gridView1;
-            gridLevelNode1.RelationName = "Detail";
+            gridLevelNode2.LevelTemplate = this.gridView1;
+            gridLevelNode2.RelationName = "Detail";
             this.DataGridView.LevelTree.Nodes.AddRange(new DevExpress.XtraGrid.GridLevelNode[] {
-            gridLevelNode1});
+            gridLevelNode2});
             this.DataGridView.Location = new System.Drawing.Point(0, 0);
             this.DataGridView.MainView = this.gridView;
             this.DataGridView.Name = "DataGridView";
@@ -145,10 +154,14 @@
             this.iQuanLyPhieuNhapPhuKien,
             this.iQuanLyPhieuNhapXe,
             this.iQuanLyPhieuSuaChua,
-            this.iQuanLyPhieuXuatKho});
+            this.iQuanLyPhieuXuatKho,
+            this.iBaoCaov_Kho_HangTon,
+            this.iBaoCaov_CuaHang_HangTon,
+            this.iBaoCaov_HoSoBanXe,
+            this.iBaoCaov_LichSuKhachHang});
             this.ribbonControl.LargeImages = this.ribbonImageCollectionLarge;
             this.ribbonControl.Location = new System.Drawing.Point(0, 0);
-            this.ribbonControl.MaxItemId = 97;
+            this.ribbonControl.MaxItemId = 101;
             this.ribbonControl.Name = "ribbonControl";
             this.ribbonControl.Pages.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPage[] {
             this.homeRibbonPage,
@@ -402,6 +415,14 @@
             this.iQuanLyPhieuXuatKho.Name = "iQuanLyPhieuXuatKho";
             this.iQuanLyPhieuXuatKho.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.iQuanLyPhieuXuatKho_ItemClick);
             // 
+            // iBaoCaov_Kho_HangTon
+            // 
+            this.iBaoCaov_Kho_HangTon.Caption = "Hàng tồn kho";
+            this.iBaoCaov_Kho_HangTon.Id = 97;
+            this.iBaoCaov_Kho_HangTon.LargeImageIndex = 11;
+            this.iBaoCaov_Kho_HangTon.Name = "iBaoCaov_Kho_HangTon";
+            this.iBaoCaov_Kho_HangTon.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.iBaoCaov_Kho_HangTon_ItemClick);
+            // 
             // ribbonImageCollectionLarge
             // 
             this.ribbonImageCollectionLarge.ImageSize = new System.Drawing.Size(32, 32);
@@ -483,6 +504,10 @@
             // 
             // ribbonPageGroup1
             // 
+            this.ribbonPageGroup1.ItemLinks.Add(this.iBaoCaov_Kho_HangTon);
+            this.ribbonPageGroup1.ItemLinks.Add(this.iBaoCaov_CuaHang_HangTon);
+            this.ribbonPageGroup1.ItemLinks.Add(this.iBaoCaov_HoSoBanXe);
+            this.ribbonPageGroup1.ItemLinks.Add(this.iBaoCaov_LichSuKhachHang);
             this.ribbonPageGroup1.Name = "ribbonPageGroup1";
             // 
             // rpName
@@ -520,10 +545,29 @@
             // 
             this.dxErrorProvider.ContainerControl = this;
             // 
-            // gridView1
+            // iBaoCaov_CuaHang_HangTon
             // 
-            this.gridView1.GridControl = this.DataGridView;
-            this.gridView1.Name = "gridView1";
+            this.iBaoCaov_CuaHang_HangTon.Caption = "Hàng tồn cửa hàng";
+            this.iBaoCaov_CuaHang_HangTon.Id = 98;
+            this.iBaoCaov_CuaHang_HangTon.LargeImageIndex = 4;
+            this.iBaoCaov_CuaHang_HangTon.Name = "iBaoCaov_CuaHang_HangTon";
+            this.iBaoCaov_CuaHang_HangTon.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.iBaoCaov_CuaHang_HangTon_ItemClick);
+            // 
+            // iBaoCaov_HoSoBanXe
+            // 
+            this.iBaoCaov_HoSoBanXe.Caption = "Hồ sơ bán xe";
+            this.iBaoCaov_HoSoBanXe.Id = 99;
+            this.iBaoCaov_HoSoBanXe.LargeImageIndex = 9;
+            this.iBaoCaov_HoSoBanXe.Name = "iBaoCaov_HoSoBanXe";
+            this.iBaoCaov_HoSoBanXe.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.iBaoCaov_HoSoBanXe_ItemClick);
+            // 
+            // iBaoCaov_LichSuKhachHang
+            // 
+            this.iBaoCaov_LichSuKhachHang.Caption = "Lịch sử khách hàng";
+            this.iBaoCaov_LichSuKhachHang.Id = 100;
+            this.iBaoCaov_LichSuKhachHang.LargeImageIndex = 17;
+            this.iBaoCaov_LichSuKhachHang.Name = "iBaoCaov_LichSuKhachHang";
+            this.iBaoCaov_LichSuKhachHang.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.iBaoCaov_LichSuKhachHang_ItemClick);
             // 
             // Main
             // 
@@ -539,6 +583,7 @@
             this.Ribbon = this.ribbonControl;
             this.StatusBar = this.ribbonStatusBar;
             this.Text = "Quản Lý Cửa Hàng Bán Xe";
+            ((System.ComponentModel.ISupportInitialize)(this.gridView1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.DataGridView)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ribbonControl)).EndInit();
@@ -550,7 +595,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.splitContainerControl)).EndInit();
             this.splitContainerControl.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dxErrorProvider)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.gridView1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -604,6 +648,10 @@
         private DevExpress.XtraBars.BarButtonItem iQuanLyPhieuSuaChua;
         private DevExpress.XtraBars.BarButtonItem iQuanLyPhieuXuatKho;
         private DevExpress.XtraGrid.Views.Grid.GridView gridView1;
+        private DevExpress.XtraBars.BarButtonItem iBaoCaov_Kho_HangTon;
+        private DevExpress.XtraBars.BarButtonItem iBaoCaov_CuaHang_HangTon;
+        private DevExpress.XtraBars.BarButtonItem iBaoCaov_HoSoBanXe;
+        private DevExpress.XtraBars.BarButtonItem iBaoCaov_LichSuKhachHang;
 
     }
 }

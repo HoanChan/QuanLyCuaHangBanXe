@@ -77,11 +77,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="HoSoBanXe.cs">
+    <Compile Include="HangTonKho.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="HoSoBanXe.Designer.cs">
-      <DependentUpon>HoSoBanXe.cs</DependentUpon>
+    <Compile Include="HangTonKho.Designer.cs">
+      <DependentUpon>HangTonKho.cs</DependentUpon>
     </Compile>
     <Compile Include="Main.cs">
       <SubType>Form</SubType>
@@ -96,15 +96,66 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReportBuilderHelper.cs" />
+    <Compile Include="rpChiNhanh.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="rpChiNhanh.Designer.cs">
+      <DependentUpon>rpChiNhanh.cs</DependentUpon>
+    </Compile>
+    <Compile Include="rpHoSoBanXe.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="rpHoSoBanXe.Designer.cs">
+      <DependentUpon>rpHoSoBanXe.cs</DependentUpon>
+    </Compile>
+    <Compile Include="rpKhachHang.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="rpKhachHang.Designer.cs">
+      <DependentUpon>rpKhachHang.cs</DependentUpon>
+    </Compile>
+    <Compile Include="rpKho.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="rpKho.Designer.cs">
+      <DependentUpon>rpKho.cs</DependentUpon>
+    </Compile>
+    <Compile Include="rpLichSuKhachHang.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="rpLichSuKhachHang.Designer.cs">
+      <DependentUpon>rpLichSuKhachHang.cs</DependentUpon>
+    </Compile>
+    <Compile Include="rpLoaiXe.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="rpLoaiXe.Designer.cs">
+      <DependentUpon>rpLoaiXe.cs</DependentUpon>
+    </Compile>
+    <Compile Include="rpTonChiNhanh.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="rpTonChiNhanh.Designer.cs">
+      <DependentUpon>rpTonChiNhanh.cs</DependentUpon>
+    </Compile>
+    <Compile Include="rpTonKho.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="rpTonKho.Designer.cs">
+      <DependentUpon>rpTonKho.cs</DependentUpon>
+    </Compile>
+    <Compile Include="rpXe.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="rpXe.Designer.cs">
+      <DependentUpon>rpXe.cs</DependentUpon>
+    </Compile>
     <Compile Include="XtraFormLogin.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="XtraFormLogin.Designer.cs">
       <DependentUpon>XtraFormLogin.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="HoSoBanXe.resx">
-      <DependentUpon>HoSoBanXe.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Main.resx">
       <DependentUpon>Main.cs</DependentUpon>
     </EmbeddedResource>
@@ -119,10 +170,73 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="rpChiNhanh.resx">
+      <DependentUpon>rpChiNhanh.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="rpHoSoBanXe.resx">
+      <DependentUpon>rpHoSoBanXe.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="rpKhachHang.resx">
+      <DependentUpon>rpKhachHang.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="rpKho.resx">
+      <DependentUpon>rpKho.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="rpLichSuKhachHang.resx">
+      <DependentUpon>rpLichSuKhachHang.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="rpLoaiXe.resx">
+      <DependentUpon>rpLoaiXe.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="rpTonChiNhanh.resx">
+      <DependentUpon>rpTonChiNhanh.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="rpTonKho.resx">
+      <DependentUpon>rpTonKho.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="rpXe.resx">
+      <DependentUpon>rpXe.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="XtraFormLogin.resx">
       <DependentUpon>XtraFormLogin.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.config" />
+    <None Include="DataContext.ChiNhanh.datasource" />
+    <None Include="DataContext.ChucVu.datasource" />
+    <None Include="DataContext.CTCungCapPhuKien.datasource" />
+    <None Include="DataContext.CTCungCapXe.datasource" />
+    <None Include="DataContext.CTNhapPhuKien.datasource" />
+    <None Include="DataContext.CTPhieuNhapXe.datasource" />
+    <None Include="DataContext.CTPhieuXuatPhuKien.datasource" />
+    <None Include="DataContext.CTPhieuXuatXe.datasource" />
+    <None Include="DataContext.CTQuyen.datasource" />
+    <None Include="DataContext.CTSuaChua.datasource" />
+    <None Include="DataContext.CTVanChuyen.datasource" />
+    <None Include="DataContext.FKContained.datasource" />
+    <None Include="DataContext.Global.datasource" />
+    <None Include="DataContext.HoSoBanXe.datasource" />
+    <None Include="DataContext.KhachHang.datasource" />
+    <None Include="DataContext.Kho.datasource" />
+    <None Include="DataContext.LoaiPhuKien.datasource" />
+    <None Include="DataContext.LoaiXe.datasource" />
+    <None Include="DataContext.MasterDetailInfo.datasource" />
+    <None Include="DataContext.Menu.datasource" />
+    <None Include="DataContext.NCC.datasource" />
+    <None Include="DataContext.NhanVien.datasource" />
+    <None Include="DataContext.PhieuNhapPhuKien.datasource" />
+    <None Include="DataContext.PhieuNhapXe.datasource" />
+    <None Include="DataContext.PhieuSuaChua.datasource" />
+    <None Include="DataContext.PhieuXuatKho.datasource" />
+    <None Include="DataContext.PhuKien.datasource" />
+    <None Include="DataContext.Quyen.datasource" />
+    <None Include="DataContext.Table.datasource" />
+    <None Include="DataContext.TypeDisplay.datasource" />
+    <None Include="DataContext.v_ChiNhanh_HangTon.datasource" />
+    <None Include="DataContext.v_HoSoBanXe.datasource" />
+    <None Include="DataContext.v_Kho_HangTon.datasource" />
+    <None Include="DataContext.v_LichSuKhachHang.datasource" />
+    <None Include="DataContext.v_ThongKeDoanhThu.datasource" />
+    <None Include="DataContext.Xe.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

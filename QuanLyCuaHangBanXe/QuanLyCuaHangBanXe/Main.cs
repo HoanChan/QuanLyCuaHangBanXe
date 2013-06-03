@@ -192,5 +192,33 @@ namespace QuanLyCuaHangBanXe
             UpdateGridView(new NCC());
         }
 
+        private void iBaoCaov_Kho_HangTon_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            rpTonKho rpTK = new rpTonKho();
+            rpTK.DataSource = Table.GetList(typeof(v_Kho_HangTon), null, null, false);
+            rpTK.ShowPreviewDialog();
+        }
+
+        private void iBaoCaov_CuaHang_HangTon_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            rpTonChiNhanh rp = new rpTonChiNhanh();
+            rp.DataSource = Table.GetList(typeof(v_ChiNhanh_HangTon), null, null, false);
+            rp.ShowPreviewDialog();
+        }
+
+        private void iBaoCaov_HoSoBanXe_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            rpHoSoBanXe rp = new rpHoSoBanXe();
+            rp.DataSource = Table.GetList(typeof(v_HoSoBanXe), null, null, false);
+            rp.ShowPreviewDialog();
+        }
+
+        private void iBaoCaov_LichSuKhachHang_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            rpLichSuKhachHang rp = new rpLichSuKhachHang();
+            rp.DataSource = Table.GetList(typeof(v_LichSuKhachHang), null, null, false);
+            rp.ShowPreviewDialog();
+        }
+
     }
 }

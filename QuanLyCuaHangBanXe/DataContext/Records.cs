@@ -341,79 +341,47 @@ namespace DataContext
 
     public partial class v_Kho_HangTon
     {
-        public string MaLoaiXe { get; set; }
         public string LoaiXe { get; set; }
-        public string Hang { get; set; }
-        public string TGBH { get; set; }
-        public string DongCo { get; set; }
-        public int DTXiLanh { get; set; }
-        public string MauSac { get; set; }
-        public double TrongLuong { get; set; }
-        public string Khung { get; set; }
-        public string Banh { get; set; }
-        public string MaKho { get; set; }
-        public string TenKho { get; set; }
-        public string DiaChi { get; set; }
-        public string SoDT { get; set; }
+        public string Kho { get; set; }
         public string SoLuongTon { get; set; }
     }
 
     public partial class v_ChiNhanh_HangTon
     {
-        public string MaLoaiXe{ get; set; }
-        public string LoaiXe{ get; set; }
-        public string Hang{ get; set; }
-        public string TGBH{ get; set; }
-        public string DongCo{ get; set; }
-        public int DTXiLanh{ get; set; }
-        public string MauSac{ get; set; }
-        public double TrongLuong{ get; set; }
-        public string Khung{ get; set; }
-        public string Banh{ get; set; }
-        public string MaChiNhanh { get; set; }
-        public string ChiNhanh{ get; set; }
-        public string DiaChi{ get; set; }
-        public string SoDT{ get; set; }
-        public string SoLuongTon{ get; set; }
+        public string LoaiXe { get; set; }
+        public string ChiNhanh { get; set; }
+        public string SoLuongTon { get; set; }
     }
 
     public partial class v_HoSoBanXe
     {
-      public string MaHoSo { get; set; }
-      public string TenChiNhanh { get; set; }
-      public string DiaChiCN { get; set; }
-      public string TenNgDaiDien { get; set; }
-      public string CVNgDaiDien { get; set; }
-      public string TenKH { get; set; }
-      public string DiaChiKH { get; set; }
-      public string SdtKH { get; set; }
-      public string HangSxXe { get; set; }
-      public string DTXiLanh { get; set; }
-      public string TenXe { get; set; }
-      public string MauSac { get; set; }
-      public string SoMay { get; set; }
-      public string SoKhung { get; set; }
-      public string DongCo { get; set; }
+        public string Ma { get; set; }
+        public string NgayMua { get; set; }
+        public string KhachHang { get; set; }
+        public string NhanVienBan { get; set; }
+        public string Xe { get; set; }
+        public string LoaiXe { get; set; }
+        public string ChiNhanh { get; set; }
     }
 
     public partial class v_LichSuKhachHang
     {
-      public DateTime NgayMua { get; set; }
-      public string KhachHang { get; set; }
-      public string TenKhachHang { get; set; }
-      public string DiaChi { get; set; }
-      public string SoDT { get; set; }
-      public string SoMay { get; set; }
-      public string SoKhung { get; set; }
-      public string LoaiXe { get; set; }
-      public string Hang { get; set; }
-      public string TGBH { get; set; }
-      public string DongCo { get; set; }
-      public int DTXiLanh { get; set; }
-      public string MauSac { get; set; }
-      public double TrongLuong { get; set; }
-      public string Khung { get; set; }
-      public string Banh { get; set; }
-      public int SoLanBaoHanh { get; set; }
+        public string KhachHang { get; set; }
+        public string Xe { get; set; }
+        public string LoaiXe { get; set; }
+        public DateTime NgayMua { get; set; }
+        public int SoLanBaoHanh { get; set; }
+    }
+
+    public partial class v_ThongKeDoanhThu
+    {
+        public int Thang { get; set; }
+        public int Nam { get; set; }
+        public string ChiNhanh { get; set; }
+        public string NhanVienBan { get; set; }
+        public string SoMay { get; set; }
+        public decimal GiaBan { get; set; }
+        public decimal GiaMua { get; set; }
+        public decimal LoiNhuan { get; set; }
     }
 }
