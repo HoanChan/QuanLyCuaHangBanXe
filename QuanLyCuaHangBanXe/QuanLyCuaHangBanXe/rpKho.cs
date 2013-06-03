@@ -6,9 +6,9 @@ using DevExpress.XtraReports.UI;
 
 namespace QuanLyCuaHangBanXe
 {
-    public partial class HoSoBanXe : DevExpress.XtraReports.UI.XtraReport
+    public partial class rpKho : DevExpress.XtraReports.UI.XtraReport
     {
-        public HoSoBanXe()
+        public rpKho()
         {
             InitializeComponent();
         }
